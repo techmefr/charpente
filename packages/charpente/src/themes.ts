@@ -1,3 +1,4 @@
+import { seasonalThemes } from './seasons'
 import type { ThemeDef } from './types'
 
 export const flat = (color: string): string => `linear-gradient(${color}, ${color})`
@@ -5,7 +6,7 @@ export const flat = (color: string): string => `linear-gradient(${color}, ${colo
 const lines = (color: string): string =>
   `repeating-linear-gradient(to bottom, ${color} 0 0.8lh, transparent 0.8lh 1lh)`
 
-export const builtinThemes: Record<string, ThemeDef> = {
+const coreThemes: Record<string, ThemeDef> = {
   solid: {
     paint: {
       text: {
@@ -147,3 +148,5 @@ export const builtinThemes: Record<string, ThemeDef> = {
     },
   },
 }
+
+export const builtinThemes: Record<string, ThemeDef> = { ...coreThemes, ...seasonalThemes }

@@ -9,7 +9,19 @@ interface Target {
   complex: string
 }
 
-const THEMES = ['solid', 'outline', 'dots', 'cyberpunk', 'web']
+const THEMES = [
+  'solid',
+  'outline',
+  'dots',
+  'cyberpunk',
+  'web',
+  'halloween',
+  'noel',
+  'hiver',
+  'ete',
+  'printemps',
+  'automne',
+]
 const PAGES = ['simple', 'complex'] as const
 const ROOT = '[data-testid="root"]'
 const SETTLE_MS = 1500

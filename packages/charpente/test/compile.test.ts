@@ -67,6 +67,17 @@ describe('compile', () => {
     expect(() => compile({ motion: 'nope' })).toThrow('unknown motion "nope"')
   })
 
+  it.each(['halloween', 'noel', 'hiver', 'ete', 'printemps', 'automne'])(
+    'ships the %s theme with a paint for every leaf type',
+    (name) => {
+      const { css } = compile({ defaultTheme: name })
+      const scope = `[data-charpente-loading][data-charpente-theme="${name}"]`
+      for (const selector of [':is(img, svg', ':is(button, input', '[data-charpente-block]', ':not(:has(*))']) {
+        expect(css).toContain(`${scope} ${selector}`)
+      }
+    },
+  )
+
   it('rejects a schedule entry that uses an unknown theme', () => {
     expect(() =>
       compile({ schedule: [{ theme: 'nope', from: '10-15', to: '11-02' }] }),
