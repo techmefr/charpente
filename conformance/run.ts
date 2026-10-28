@@ -25,6 +25,15 @@ const THEMES = [
   'paper',
   'glass',
   'blueprint',
+  'halftone',
+  'stripes',
+  'scanline',
+  'neon',
+  'aurora',
+  'brutalist',
+  'sketch',
+  'topo',
+  'waves',
 ]
 const PAGES = ['simple', 'complex'] as const
 const ROOT = '[data-testid="root"]'

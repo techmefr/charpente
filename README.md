@@ -54,7 +54,7 @@ import 'virtual:charpente.css'
 </Charpente>
 ```
 
-Thèmes : `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `blueprint`, `halloween`, `noel`, `nouvel-an`, `hiver`, `ete`, `printemps`, `automne`. Motions : `shimmer`, `pulse`, `wave`, `glitch`.
+Thèmes : `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `halloween`, `noel`, `nouvel-an`, `hiver`, `ete`, `printemps`, `automne`. Motions : `shimmer`, `pulse`, `wave`, `glitch`.
 
 `schedule: schedulePresets.all` (import depuis `charpente`) applique les fêtes puis les saisons ; `celebrations` et `seasons` existent séparément.
 
