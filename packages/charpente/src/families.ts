@@ -69,8 +69,8 @@ export const usageThemes: Record<string, ThemeDef> = {
   gaming: {
     tokens: { accent: '#22c55e', shine: 'rgba(134, 239, 172, 0.35)' },
     paint: scaled((step) => ({
-      fill: `repeating-linear-gradient(90deg, ${tint('accent', 45)} 0 ${8 * step}px, transparent ${8 * step}px ${10 * step}px), conic-gradient(var(--charpente-strong) 25%, transparent 0 50%, var(--charpente-strong) 0 75%, transparent 0)`,
-      size: `auto, ${4 * step}px ${4 * step}px`,
+      fill: `conic-gradient(${tint('accent', 42)} 25%, ${tint('accent', 20)} 0 50%, ${tint('accent', 42)} 0 75%, ${tint('accent', 20)} 0)`,
+      size: `${5 * step}px ${5 * step}px`,
       style: {
         borderRadius: '0',
         boxShadow: `inset 0 0 0 ${2}px ${tint('accent', 80)}`,
@@ -99,8 +99,8 @@ export const usageThemes: Record<string, ThemeDef> = {
   travel: {
     tokens: { accent: '#0d9488', accent2: '#f59e0b', shine: 'rgba(255, 255, 255, 0.55)' },
     paint: scaled((step) => ({
-      fill: `radial-gradient(circle, ${tint('accent2', 80)} 1px, transparent 1.6px), repeating-radial-gradient(circle at 70% 30%, transparent 0 ${8 * step}px, ${tint('accent', 45)} ${8 * step}px ${9 * step}px), ${flat(tint('base', 60))}`,
-      size: `${14 * step}px ${14 * step}px, auto, auto`,
+      fill: `radial-gradient(circle, ${tint('accent2', 80)} 1px, transparent 1.6px), repeating-radial-gradient(circle at -25% 140%, transparent 0 ${9 * step}px, ${tint('accent', 40)} ${9 * step}px ${10 * step}px), ${flat(tint('base', 60))}`,
+      size: `${18 * step}px ${18 * step}px, auto, auto`,
       style: { borderRadius: `${3 * step}px` },
     })),
   },

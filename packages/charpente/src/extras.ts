@@ -18,12 +18,12 @@ export const extraThemes: Record<string, ThemeDef> = {
   glass: {
     tokens: { shine: 'rgba(255, 255, 255, 0.6)' },
     paint: scaled((step) => ({
-      fill: `linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.08)), linear-gradient(${tint('strong', 34)}, ${tint('strong', 34)})`,
+      fill: `linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.1)), linear-gradient(${tint('strong', 55)}, ${tint('strong', 55)})`,
       size: 'auto, auto',
       style: {
         borderRadius: `${3 * step}px`,
         backdropFilter: 'blur(6px)',
-        boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.55)',
+        boxShadow: `inset 0 0 0 1px ${tint('strong', 85)}, inset 0 1.5px 0 rgba(255, 255, 255, 0.9), 0 2px 8px rgba(0, 0, 0, 0.08)`,
       },
     })),
   },
@@ -103,7 +103,7 @@ export const extraThemes: Record<string, ThemeDef> = {
   },
   topo: {
     paint: scaled((step) => ({
-      fill: `repeating-radial-gradient(circle at 30% 40%, transparent 0 ${10 * step}px, var(--charpente-strong) ${10 * step}px ${11 * step}px), ${flat(tint('base', 60))}`,
+      fill: `repeating-radial-gradient(circle at 125% 140%, transparent 0 ${9 * step}px, var(--charpente-strong) ${9 * step}px ${10 * step}px), ${flat(tint('base', 60))}`,
       size: 'auto, auto',
       style: { borderRadius: `${2 * step}px` },
     })),
