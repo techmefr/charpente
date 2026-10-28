@@ -15,18 +15,6 @@ export const extraThemes: Record<string, ThemeDef> = {
       },
     })),
   },
-  glass: {
-    tokens: { shine: 'rgba(255, 255, 255, 0.6)' },
-    paint: scaled((step) => ({
-      fill: `linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.1)), linear-gradient(${tint('strong', 55)}, ${tint('strong', 55)})`,
-      size: 'auto, auto',
-      style: {
-        borderRadius: `${3 * step}px`,
-        backdropFilter: 'blur(6px)',
-        boxShadow: `inset 0 0 0 1px ${tint('strong', 85)}, inset 0 1.5px 0 rgba(255, 255, 255, 0.9), 0 2px 8px rgba(0, 0, 0, 0.08)`,
-      },
-    })),
-  },
   blueprint: {
     tokens: { accent: '#93c5fd', shine: 'rgba(147, 197, 253, 0.35)' },
     paint: scaled((step) => ({
@@ -58,6 +46,27 @@ export const extraThemes: Record<string, ThemeDef> = {
       size: 'auto, auto',
       style: { borderRadius: '1px' },
     })),
+  },
+  vegas: {
+    tokens: { accent: '#fc4445', accent2: '#3feee6', shine: 'rgba(255, 255, 255, 0.55)' },
+    paint: {
+      text: {
+        fill: 'linear-gradient(#3feee6, #3feee6)',
+        style: { borderRadius: '0', boxShadow: 'inset 0 -2px 0 #fc4445' },
+      },
+      control: {
+        fill: 'linear-gradient(#fc4445, #fc4445)',
+        style: { borderRadius: '0', boxShadow: 'inset 0 0 0 2px #3feee6' },
+      },
+      media: {
+        fill: 'linear-gradient(135deg, #fc4445 0 50%, #3feee6 50% 100%)',
+        style: { borderRadius: '0' },
+      },
+      block: {
+        fill: 'linear-gradient(90deg, #fc4445 0 20%, #3feee6 20% 40%, #55bcc9 40% 60%, #97caef 60% 80%, #cafafe 80% 100%)',
+        style: { borderRadius: '0' },
+      },
+    },
   },
   neon: {
     tokens: { accent: '#22d3ee', accent2: '#f0abfc', shine: 'rgba(240, 171, 252, 0.3)' },

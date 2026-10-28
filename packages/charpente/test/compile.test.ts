@@ -67,7 +67,7 @@ describe('compile', () => {
     expect(() => compile({ motion: 'nope' })).toThrow('unknown motion "nope"')
   })
 
-  it.each(['halloween', 'christmas', 'winter', 'summer', 'spring', 'autumn', 'new-year', 'paper', 'glass', 'blueprint', 'halftone', 'stripes', 'scanline', 'neon', 'aurora', 'brutalist', 'sketch', 'topo', 'waves', 'valentine', 'birthday', 'pride', 'editorial', 'commerce', 'analytics', 'gaming', 'music', 'developer', 'travel', 'wellness'])(
+  it.each(['halloween', 'christmas', 'winter', 'summer', 'spring', 'autumn', 'new-year', 'paper', 'glass', 'blueprint', 'halftone', 'stripes', 'scanline', 'neon', 'vegas', 'aurora', 'brutalist', 'sketch', 'topo', 'waves', 'valentine', 'birthday', 'pride', 'editorial', 'commerce', 'analytics', 'gaming', 'music', 'developer', 'travel', 'wellness'])(
     'ships the %s theme with a paint for every leaf type',
     (name) => {
       const { css } = compile({ defaultTheme: name })

@@ -29,6 +29,7 @@ const THEMES = [
   'stripes',
   'scanline',
   'neon',
+  'vegas',
   'aurora',
   'brutalist',
   'sketch',

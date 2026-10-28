@@ -55,13 +55,41 @@ import 'virtual:charpente.css'
 </Charpente>
 ```
 
-Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`, `halloween`, `christmas`, `new-year`, `winter`, `summer`, `spring`, `autumn`. Motions: `shimmer`, `pulse`, `wave`, `glitch`.
+Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `vegas`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`, `halloween`, `christmas`, `new-year`, `winter`, `summer`, `spring`, `autumn`. Motions: `shimmer`, `pulse`, `wave`, `glitch`.
 
 `schedule: schedulePresets.all` (imported from `charpente`) applies celebrations first, then seasons; `celebrations` and `seasons` are also available separately.
 
 `include: ['dots', 'christmas']` ships only those themes, plus the default theme, the scheduled ones and your own.
 
 A theme can define `dark: { ... }` for its dark-mode tokens, and `colorScheme.light` (for example `'[data-theme="light"]'`) forces light inside a subtree.
+
+## Glass themes
+
+`glass` is lightly tinted and translucent, `frost` uses stronger blur and a milkier finish,
+and `smoked` uses a dark tint. Place shapes or an image behind the loading area to see the
+backdrop blur. On a flat background, only the tint, edges and reflection are visible.
+The translucent fill remains when backdrop filters are unsupported; no JavaScript is needed.
+
+```ts
+import { createGlassTheme, defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  defaultTheme: 'my-glass',
+  themes: {
+    'my-glass': createGlassTheme({
+      blur: '18px',
+      opacity: 0.15,
+      tint: '#b8c4ff',
+      reflection: 0.2,
+    }),
+  },
+})
+```
+
+Opacity and reflection range from 0 to 1. Local CSS overrides use
+`--charpente-glass-blur`, `--charpente-glass-opacity`, `--charpente-glass-tint`
+and `--charpente-glass-reflection`. These control paint only, leaving the element
+and its children fully opaque. The demo includes live controls and a patterned backdrop.
 
 ## Development
 
