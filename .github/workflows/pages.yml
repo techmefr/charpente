@@ -28,7 +28,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm build
-      - run: pnpm --filter ./examples/svelte exec svelte-kit sync
+      - run: mkdir -p examples/svelte/.svelte-kit && echo '{}' > examples/svelte/.svelte-kit/tsconfig.json
       - run: pnpm --filter ./examples/nuxt exec nuxt prepare
       - run: pnpm --filter site build
       - uses: actions/upload-pages-artifact@v3
