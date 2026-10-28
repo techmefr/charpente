@@ -1,0 +1,48 @@
+---
+import Layout from "../layouts/Layout.astro"
+export const prerender = false
+const loading = Astro.url.searchParams.get("state") === "loading"
+const rootAttrs = loading ? { "data-charpente-loading": "", "aria-busy": "true", inert: true } : {}
+---
+<Layout>
+<main data-testid="root" class="page" {...rootAttrs}>
+  <header class="page__head">
+    <h1>Équipe</h1>
+    <p>Quatre collaborateurs</p>
+  </header>
+  <ul class="people">
+    <li class="person">
+      <img class="person__avatar" width="48" height="48" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+      <div class="person__body">
+        <h2>Camille Durand</h2>
+        <p>Cheffe de projet</p>
+      </div>
+      <a href="mailto:camille@exemple.fr">camille@exemple.fr</a>
+    </li>
+    <li class="person">
+      <img class="person__avatar" width="48" height="48" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+      <div class="person__body">
+        <h2>Mehdi Lambert</h2>
+        <p>Développeur front</p>
+      </div>
+      <a href="mailto:mehdi@exemple.fr">mehdi@exemple.fr</a>
+    </li>
+    <li class="person">
+      <img class="person__avatar" width="48" height="48" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+      <div class="person__body">
+        <h2>Inès Morel</h2>
+        <p>Designeuse</p>
+      </div>
+      <a href="mailto:ines@exemple.fr">ines@exemple.fr</a>
+    </li>
+    <li class="person">
+      <img class="person__avatar" width="48" height="48" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+      <div class="person__body">
+        <h2>Hugo Perrin</h2>
+        <p>Développeur back</p>
+      </div>
+      <a href="mailto:hugo@exemple.fr">hugo@exemple.fr</a>
+    </li>
+  </ul>
+</main>
+</Layout>

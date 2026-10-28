@@ -1,0 +1,5 @@
+node_modules
+.next
+app/charpente.css
+next-env.d.ts
+tsconfig.tsbuildinfo

@@ -88,8 +88,16 @@ describe('compile', () => {
     expect(css).toContain('animation: none !important')
   })
 
+  it('hides the text of every element, including mixed content', () => {
+    expect(compile().css).toMatch(/\[data-charpente-loading\] \* \{\s*-webkit-text-fill-color: transparent/)
+  })
+
   it('keeps the padding of text leaves out of the paint', () => {
     expect(compile().css).toContain('background-clip: content-box !important')
+  })
+
+  it('hides the drawing inside svg so only the svg box is painted', () => {
+    expect(compile().css).toMatch(/\[data-charpente-loading\] svg \* \{\s*visibility: hidden/)
   })
 
   it('hides children of a block so only the block is painted', () => {

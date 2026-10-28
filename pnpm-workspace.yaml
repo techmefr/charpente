@@ -1,4 +1,6 @@
 packages:
   - packages/*
   - demo
-  - examples/*
+  - examples/vanilla
+  - examples/nuxt
+  - examples/react

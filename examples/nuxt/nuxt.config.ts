@@ -6,5 +6,6 @@ export default defineNuxtConfig({
   css: ['virtual:charpente.css'],
   vite: {
     plugins: [charpente()],
+    server: { fs: { allow: ['../..'] } },
   },
 })

@@ -1,0 +1,9 @@
+[
+  { "name": "vanilla", "url": "http://localhost:5201", "simple": "/simple.html", "complex": "/complex.html" },
+  { "name": "nuxt", "url": "http://localhost:5202", "simple": "/simple", "complex": "/complex" },
+  { "name": "react", "url": "http://localhost:5203", "simple": "/simple", "complex": "/complex" },
+  { "name": "next", "url": "http://localhost:5204", "simple": "/simple", "complex": "/complex" },
+  { "name": "svelte", "url": "http://localhost:5205", "simple": "/simple", "complex": "/complex" },
+  { "name": "astro", "url": "http://localhost:5206", "simple": "/simple", "complex": "/complex" },
+  { "name": "livewire", "url": "http://localhost:5207", "simple": "/simple", "complex": "/complex" }
+]

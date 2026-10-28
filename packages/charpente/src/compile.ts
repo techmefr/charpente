@@ -246,8 +246,9 @@ const baseCss = (): string => {
     (_, index) => `${LOADING} :nth-child(${index + 1}) { --charpente-i: ${index + 1}; }`,
   ).join('\n')
   return [
+    `${LOADING} * {\n  -webkit-text-fill-color: transparent;\n  text-shadow: none;\n}`,
     `${allLeaves(LOADING)} {\n  ${hidden};\n}`,
-    `${LOADING} [data-charpente-block] > * {\n  visibility: hidden;\n}`,
+    `${LOADING} [data-charpente-block] > *,\n${LOADING} svg * {\n  visibility: hidden;\n}`,
     `${LOADING} img {\n  content: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");\n}`,
     `${LOADING} ::placeholder {\n  color: transparent;\n}`,
     staggerIndices,
