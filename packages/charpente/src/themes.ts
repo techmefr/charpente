@@ -128,22 +128,22 @@ const coreThemes: Record<string, ThemeDef> = {
   web: {
     paint: {
       text: {
-        fill: `repeating-radial-gradient(circle at 50% 50%, transparent 0 5px, var(--charpente-strong) 5px 6px), repeating-conic-gradient(from 0deg at 50% 50%, transparent 0 20deg, var(--charpente-strong) 20deg 21deg)`,
+        fill: `repeating-linear-gradient(45deg, var(--charpente-strong) 0 1px, transparent 1px 7px), repeating-linear-gradient(-45deg, var(--charpente-strong) 0 1px, transparent 1px 7px)`,
         size: 'auto, auto',
         style: { borderRadius: '3px' },
       },
       media: {
-        fill: `repeating-radial-gradient(circle at 50% 50%, transparent 0 9px, var(--charpente-strong) 9px 10px), repeating-conic-gradient(from 0deg at 50% 50%, transparent 0 22.5deg, var(--charpente-strong) 22.5deg 23.5deg)`,
+        fill: `repeating-radial-gradient(circle at 50% 50%, transparent 0 14px, var(--charpente-strong) 14px 15px), repeating-conic-gradient(from 0deg at 50% 50%, transparent 0 29deg, var(--charpente-strong) 29deg 30deg)`,
         size: 'auto, auto',
         style: { borderRadius: '4px' },
       },
       control: {
-        fill: `repeating-radial-gradient(circle at 50% 50%, transparent 0 6px, var(--charpente-strong) 6px 7px), repeating-conic-gradient(from 0deg at 50% 50%, transparent 0 22.5deg, var(--charpente-strong) 22.5deg 23.5deg)`,
+        fill: `repeating-linear-gradient(45deg, var(--charpente-strong) 0 1px, transparent 1px 6px), repeating-linear-gradient(-45deg, var(--charpente-strong) 0 1px, transparent 1px 6px)`,
         size: 'auto, auto',
         style: { borderRadius: '4px' },
       },
       block: {
-        fill: `repeating-radial-gradient(circle at 50% 50%, transparent 0 12px, var(--charpente-strong) 12px 13px), repeating-conic-gradient(from 0deg at 50% 50%, transparent 0 22.5deg, var(--charpente-strong) 22.5deg 23.5deg)`,
+        fill: `repeating-radial-gradient(circle at 50% 50%, transparent 0 18px, var(--charpente-strong) 18px 19px), repeating-conic-gradient(from 0deg at 50% 50%, transparent 0 29deg, var(--charpente-strong) 29deg 30deg)`,
         size: 'auto, auto',
         style: { borderRadius: '6px' },
       },

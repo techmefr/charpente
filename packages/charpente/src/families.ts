@@ -37,14 +37,32 @@ export const eventThemes: Record<string, ThemeDef> = {
 
 export const usageThemes: Record<string, ThemeDef> = {
   editorial: {
-    paint: scaled((step) => ({
-      fill: `repeating-linear-gradient(90deg, transparent 0 ${7 * step}px, var(--charpente-strong) ${7 * step}px ${8 * step}px), ${flat(tint('base', 55))}`,
-      size: 'auto, auto',
-      style: {
-        borderRadius: '0',
-        boxShadow: 'inset 0 2px 0 var(--charpente-strong), inset 0 -1px 0 var(--charpente-strong)',
+    paint: {
+      text: {
+        fill: flat(tint('base', 70)),
+        style: {
+          borderRadius: '0',
+          boxShadow: 'inset 0 2px 0 var(--charpente-strong), inset 0 -1px 0 var(--charpente-strong)',
+        },
       },
-    })),
+      control: {
+        fill: flat(tint('base', 70)),
+        style: {
+          borderRadius: '0',
+          boxShadow: 'inset 0 0 0 1px var(--charpente-strong), inset 0 -3px 0 var(--charpente-strong)',
+        },
+      },
+      media: {
+        fill: `linear-gradient(to top right, transparent calc(50% - 0.5px), var(--charpente-strong) calc(50% - 0.5px) calc(50% + 0.5px), transparent calc(50% + 0.5px)), linear-gradient(to bottom right, transparent calc(50% - 0.5px), var(--charpente-strong) calc(50% - 0.5px) calc(50% + 0.5px), transparent calc(50% + 0.5px)), ${flat(tint('base', 40))}`,
+        size: '100% 100%, 100% 100%, auto',
+        style: { borderRadius: '0', boxShadow: 'inset 0 0 0 1px var(--charpente-strong)' },
+      },
+      block: {
+        fill: `linear-gradient(to top right, transparent calc(50% - 0.5px), var(--charpente-strong) calc(50% - 0.5px) calc(50% + 0.5px), transparent calc(50% + 0.5px)), linear-gradient(to bottom right, transparent calc(50% - 0.5px), var(--charpente-strong) calc(50% - 0.5px) calc(50% + 0.5px), transparent calc(50% + 0.5px)), ${flat(tint('base', 40))}`,
+        size: '100% 100%, 100% 100%, auto',
+        style: { borderRadius: '0', boxShadow: 'inset 0 0 0 1px var(--charpente-strong)' },
+      },
+    },
   },
   commerce: {
     tokens: { accent: '#b45309', shine: 'rgba(255, 255, 255, 0.5)' },

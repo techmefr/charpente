@@ -1,7 +1,23 @@
 {
   "name": "charpente-vue",
   "version": "0.0.0",
-  "description": "Wrapper Vue pour charpente",
+  "description": "Vue wrapper for charpente: a Charpente component that turns any slot into a pure CSS skeleton while loading.",
+  "keywords": [
+    "vue",
+    "vue3",
+    "skeleton",
+    "skeleton-loader",
+    "loading",
+    "charpente",
+    "nuxt"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techmefr/charpente.git",
+    "directory": "packages/charpente-vue"
+  },
+  "homepage": "https://techmefr.github.io/charpente/",
+  "bugs": "https://github.com/techmefr/charpente/issues",
   "type": "module",
   "files": [
     "dist"

@@ -1,7 +1,31 @@
 {
   "name": "charpente",
   "version": "0.0.0",
-  "description": "Skeleton loaders en CSS pur, thèmes, motions et timing configurables",
+  "description": "Pure CSS skeleton loaders with no runtime JS. DOM detection in CSS, plus 35 themes, motions and timing configured in one file, with dark mode and date-based seasonal theming.",
+  "keywords": [
+    "skeleton",
+    "skeleton-loader",
+    "loading",
+    "placeholder",
+    "shimmer",
+    "css",
+    "pure-css",
+    "zero-js",
+    "theming",
+    "themes",
+    "dark-mode",
+    "seasonal",
+    "vite-plugin",
+    "framework-agnostic",
+    "accessibility"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techmefr/charpente.git",
+    "directory": "packages/charpente"
+  },
+  "homepage": "https://techmefr.github.io/charpente/",
+  "bugs": "https://github.com/techmefr/charpente/issues",
   "type": "module",
   "files": ["dist"],
   "bin": {
