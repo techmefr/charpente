@@ -1,6 +1,6 @@
 {
   "name": "charpente-solid",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "description": "SolidJS wrapper for charpente: a Charpente component that turns any children into a pure CSS skeleton while loading.",
   "keywords": [
@@ -34,11 +34,11 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "charpente": "*",
+    "charpente": ">=0.1.0",
     "solid-js": ">=1.8"
   },
   "devDependencies": {
-    "charpente": "workspace:*",
+    "charpente": "workspace:^",
     "solid-js": "^1.9.0",
     "jsdom": "^27.0.0",
     "vitest": "^5.0.5"

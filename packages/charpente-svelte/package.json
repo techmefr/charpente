@@ -1,6 +1,6 @@
 {
   "name": "charpente-svelte",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "description": "Svelte 5 wrapper for charpente: a Charpente component that turns its content into a pure CSS skeleton while loading.",
   "keywords": [
@@ -32,7 +32,7 @@
     }
   },
   "dependencies": {
-    "charpente": "workspace:*"
+    "charpente": "workspace:^"
   },
   "peerDependencies": {
     "svelte": ">=5"

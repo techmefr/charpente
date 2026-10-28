@@ -1,6 +1,6 @@
 {
   "name": "charpente-astro",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "description": "Astro wrapper for charpente: a Charpente component that turns any slot into a pure CSS skeleton while loading.",
   "keywords": ["astro", "astro-component", "skeleton", "skeleton-loader", "loading", "charpente"],
@@ -18,7 +18,7 @@
     "./Charpente.astro": "./Charpente.astro"
   },
   "dependencies": {
-    "charpente": "link:../charpente"
+    "charpente": "workspace:^"
   },
   "peerDependencies": {
     "astro": ">=4"

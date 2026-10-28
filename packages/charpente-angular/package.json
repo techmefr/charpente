@@ -1,6 +1,6 @@
 {
   "name": "charpente-angular",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "description": "Angular wrapper for charpente: a standalone [charpente] directive that turns any element into a pure CSS skeleton while loading.",
   "keywords": [
@@ -35,7 +35,7 @@
   },
   "peerDependencies": {
     "@angular/core": ">=19",
-    "charpente": "*"
+    "charpente": ">=0.1.0"
   },
   "devDependencies": {
     "@analogjs/vite-plugin-angular": "^2.9.2",
@@ -45,7 +45,7 @@
     "@angular/compiler-cli": "^22.2.3",
     "@angular/core": "^22.0.0",
     "@angular/platform-browser": "^22.2.3",
-    "charpente": "workspace:*",
+    "charpente": "workspace:^",
     "jsdom": "^30.1.3",
     "rxjs": "^7.8.0"
   }
