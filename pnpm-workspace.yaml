@@ -4,6 +4,7 @@ packages:
   - examples/vanilla
   - examples/nuxt
   - examples/react
+  - examples/solid
   - site
 allowBuilds:
   esbuild: false

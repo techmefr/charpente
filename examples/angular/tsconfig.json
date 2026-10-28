@@ -1,0 +1,18 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "experimentalDecorators": true,
+    "paths": { "charpente-angular": ["../../packages/charpente-angular/src/index.ts"] },
+    "isolatedModules": true,
+    "noImplicitOverride": true,
+    "lib": ["ES2022", "DOM"]
+  },
+  "angularCompilerOptions": { "strictTemplates": true },
+  "files": ["src/main.ts"],
+  "include": ["src/**/*.ts", "../../packages/charpente-angular/src/**/*.ts"]
+}

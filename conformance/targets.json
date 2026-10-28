@@ -6,8 +6,10 @@
   { "name": "svelte", "url": "http://localhost:5205", "simple": "/simple", "complex": "/complex" },
   { "name": "astro", "url": "http://localhost:5206", "simple": "/simple", "complex": "/complex" },
   { "name": "livewire", "url": "http://localhost:5207", "simple": "/simple", "complex": "/complex" },
+  { "name": "solid", "url": "http://localhost:5221", "simple": "/simple", "complex": "/complex" },
   { "name": "ui-vuetify", "url": "http://localhost:5211", "simple": "/simple", "complex": "/complex" },
   { "name": "ui-shadcn", "url": "http://localhost:5212", "simple": "/simple", "complex": "/complex" },
   { "name": "ui-mui", "url": "http://localhost:5213", "simple": "/simple", "complex": "/complex" },
-  { "name": "ui-bootstrap", "url": "http://localhost:5214", "simple": "/simple", "complex": "/complex" }
+  { "name": "ui-bootstrap", "url": "http://localhost:5214", "simple": "/simple", "complex": "/complex" },
+  { "name": "angular", "url": "http://localhost:5222", "simple": "/simple", "complex": "/complex" }
 ]

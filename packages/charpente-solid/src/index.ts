@@ -3,9 +3,9 @@ import {
   createEffect,
   createSignal,
   mergeProps,
-  on,
   onCleanup,
   splitProps,
+  untrack,
   type JSX,
 } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
@@ -33,6 +33,11 @@ const SCREEN_READER_ONLY = {
   'white-space': 'nowrap',
 } as const
 
+const booleanInert = (attributes: Record<string, string>): Record<string, string | boolean> => {
+  const { inert, ...others } = attributes
+  return inert === undefined ? others : { ...others, inert: true }
+}
+
 export const Charpente = (props: CharpenteProps): JSX.Element => {
   const [own, rest] = splitProps(props, [
     'loading',
@@ -48,18 +53,16 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
   ])
   const [ready, setReady] = createSignal(false)
 
-  createEffect(
-    on(
-      () => own.loading ?? false,
-      (now, before) => {
-        if (!before || now) return
-        setReady(true)
-        const timer = setTimeout(() => setReady(false), own.revealMs ?? 260)
-        onCleanup(() => clearTimeout(timer))
-      },
-      { defer: true },
-    ),
-  )
+  let wasLoading = own.loading ?? false
+  createEffect(() => {
+    const now = own.loading ?? false
+    const before = wasLoading
+    wasLoading = now
+    if (!before || now) return
+    setReady(true)
+    const timer = setTimeout(() => setReady(false), untrack(() => own.revealMs ?? 260))
+    onCleanup(() => clearTimeout(timer))
+  })
 
   const attributes = () =>
     loadingAttributes({
@@ -77,7 +80,7 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
 
   const root = createComponent(
     Dynamic,
-    mergeProps(rest, () => attributes().attributes, {
+    mergeProps(rest, () => booleanInert(attributes().attributes), {
       get component() {
         return own.tag ?? 'div'
       },

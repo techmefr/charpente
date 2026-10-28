@@ -49,11 +49,20 @@ export default { plugins: [charpente()] }
 import 'virtual:charpente.css'
 ```
 
-```vue
-<Charpente :loading="pending" motion="none">
-  <UserCard :user="user ?? placeholder" />
-</Charpente>
-```
+## Wrappers
+
+Every wrapper takes `loading`, `theme`, `motion`, `delay`, `stagger` and `label`, and sets the attributes for you.
+
+| Framework | Package | Usage |
+| --- | --- | --- |
+| Vue, Nuxt | `charpente-vue` | `<Charpente :loading="pending" motion="none">` |
+| React, Next | `charpente-react` | `<Charpente as="ul" loading={pending}>` |
+| Svelte | `charpente-svelte` | `<Charpente tag="main" loading={pending}>` |
+| Solid | `charpente-solid` | `<Charpente tag="main" loading={pending()}>` |
+| Angular | `charpente-angular` | `<main [charpente]="pending">` |
+| Astro | `charpente-astro` | `<Charpente as="main" loading={pending}>` |
+| Laravel, Livewire | `packages/charpente-blade` | `<x-charpente :loading="$pending" tag="main">` |
+| Vanilla | `charpente/dom` | `setLoading(element, { loading: true })` |
 
 Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `vegas`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`, `halloween`, `christmas`, `new-year`, `winter`, `summer`, `spring`, `autumn`. Motions: `shimmer`, `pulse`, `wave`, `glitch`.
 
