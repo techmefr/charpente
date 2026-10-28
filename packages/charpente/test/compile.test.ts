@@ -7,7 +7,7 @@ describe('compile', () => {
   })
 
   it('scopes every theme by name and the default one without attribute', () => {
-    const { css } = compile({ theme: 'dots' })
+    const { css } = compile({ defaultTheme: 'dots' })
     expect(css).toContain('[data-charpente-loading][data-charpente-theme="cyberpunk"]')
     expect(css).toContain('[data-charpente-loading]:not([data-charpente-theme])')
   })
@@ -43,7 +43,7 @@ describe('compile', () => {
 
   it('lets a custom theme extend a built-in one', () => {
     const config = defineCharpente({
-      theme: 'mine',
+      defaultTheme: 'mine',
       themes: { mine: { extends: 'solid', paint: { text: { fill: 'red' } } } },
     })
     const { css } = compile(config)
@@ -60,16 +60,32 @@ describe('compile', () => {
   })
 
   it('throws on an unknown theme', () => {
-    expect(() => compile({ theme: 'nope' })).toThrow('unknown theme "nope"')
+    expect(() => compile({ defaultTheme: 'nope' })).toThrow('unknown theme "nope"')
   })
 
   it('throws on an unknown motion', () => {
     expect(() => compile({ motion: 'nope' })).toThrow('unknown motion "nope"')
   })
 
+  it('rejects a schedule entry that uses an unknown theme', () => {
+    expect(() =>
+      compile({ schedule: [{ theme: 'nope', from: '10-15', to: '11-02' }] }),
+    ).toThrow('schedule uses unknown theme "nope"')
+  })
+
+  it('rejects a schedule date that is not MM-DD', () => {
+    expect(() =>
+      compile({ schedule: [{ theme: 'web', from: '2026-10-15', to: '11-02' }] }),
+    ).toThrow('must look like MM-DD')
+  })
+
+  it('rejects an unknown time zone', () => {
+    expect(() => compile({ timeZone: 'Mars/Olympus' })).toThrow('unknown time zone')
+  })
+
   it('throws on a theme extending itself', () => {
     expect(() =>
-      compile({ theme: 'loop', themes: { loop: { extends: 'loop' } } }),
+      compile({ defaultTheme: 'loop', themes: { loop: { extends: 'loop' } } }),
     ).toThrow('extends itself')
   })
 

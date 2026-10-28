@@ -6,6 +6,7 @@ import { compile } from './compile'
 import type { CharpenteConfig } from './types'
 
 const VIRTUAL_ID = 'virtual:charpente.css'
+const THEME_ID = 'virtual:charpente.theme'
 
 export interface CharpenteViteOptions {
   config?: CharpenteConfig
@@ -40,19 +41,30 @@ export function charpente(options: CharpenteViteOptions = {}): Plugin {
       configPath = findConfig(resolved.root, options.configFile ?? 'charpente.config.ts')
     },
     resolveId(id) {
-      return id === VIRTUAL_ID ? VIRTUAL_ID : undefined
+      return id === VIRTUAL_ID || id === THEME_ID ? id : undefined
     },
     async load(id) {
-      if (id !== VIRTUAL_ID) return undefined
+      if (id !== VIRTUAL_ID && id !== THEME_ID) return undefined
       if (configPath) this.addWatchFile(configPath)
-      const { css, warnings } = compile(await readConfig())
+      const config = await readConfig()
+      if (id === THEME_ID) {
+        const { defaultTheme, timeZone, schedule } = config
+        return [
+          `import { themeAt } from 'charpente'`,
+          `const config = ${JSON.stringify({ defaultTheme, timeZone, schedule })}`,
+          `export const activeTheme = (date) => themeAt(config, date)`,
+        ].join('\n')
+      }
+      const { css, warnings } = compile(config)
       for (const warning of warnings) this.warn(warning)
       return css
     },
     handleHotUpdate({ file, server }) {
       if (file !== configPath) return undefined
-      const module = server.moduleGraph.getModuleById(VIRTUAL_ID)
-      if (module) server.moduleGraph.invalidateModule(module)
+      for (const id of [VIRTUAL_ID, THEME_ID]) {
+        const module = server.moduleGraph.getModuleById(id)
+        if (module) server.moduleGraph.invalidateModule(module)
+      }
       server.ws.send({ type: 'full-reload' })
       return []
     },

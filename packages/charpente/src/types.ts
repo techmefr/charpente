@@ -40,8 +40,16 @@ export interface ColorScheme {
   }
 }
 
+export interface ScheduleEntry {
+  theme: string
+  from: string
+  to: string
+}
+
 export interface CharpenteConfig {
-  theme?: string
+  defaultTheme?: string
+  timeZone?: string
+  schedule?: ScheduleEntry[]
   motion?: string | string[]
   timing?: Timing
   colorScheme?: ColorScheme

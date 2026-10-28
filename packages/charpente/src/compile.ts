@@ -1,4 +1,5 @@
 import { builtinMotions } from './motions'
+import { validateSchedule } from './schedule'
 import { builtinThemes, flat } from './themes'
 import type {
   CharpenteConfig,
@@ -277,12 +278,13 @@ export function compile(config: CharpenteConfig = {}): CompileResult {
   const warnings: string[] = []
   const themes = { ...builtinThemes, ...config.themes }
   const motions = { ...builtinMotions, ...config.motions }
-  const defaultTheme = config.theme ?? 'solid'
+  const defaultTheme = config.defaultTheme ?? 'solid'
   const defaultMotion = normalizeMotion(config.motion ?? 'shimmer', motions)
   const delay = config.timing?.delay ?? 120
   const stagger = config.timing?.stagger ?? 0
 
   resolveTheme(defaultTheme, themes)
+  validateSchedule(config.schedule ?? [], Object.keys(themes), config.timeZone)
 
   const layered = [
     tokensCss(config),

@@ -1,7 +1,7 @@
 import { defineCharpente } from 'charpente'
 
 export default defineCharpente({
-  theme: 'outline',
+  defaultTheme: 'outline',
   motion: 'pulse',
   timing: { delay: 100, stagger: 60 },
   themes: {
