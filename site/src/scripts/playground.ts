@@ -48,8 +48,8 @@ const setLoading = (loading: boolean): void => {
     root.setAttribute('data-charpente-ready', '')
     window.setTimeout(() => root.removeAttribute('data-charpente-ready'), 280)
   }
-  toggle.textContent = loading ? 'Afficher le contenu' : 'Afficher le squelette'
-  if (status) status.textContent = loading ? 'Chargement en cours' : 'Contenu chargé'
+  toggle.textContent = loading ? 'Show content' : 'Show skeleton'
+  if (status) status.textContent = loading ? 'Loading' : 'Content loaded'
 }
 
 for (const control of [theme, delay, stagger, ...motions]) {

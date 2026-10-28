@@ -22,7 +22,7 @@ const setLoading = (element: HTMLElement, loading: boolean): void => {
 const announce = (element: HTMLElement, loading: boolean): void => {
   const selector = element.dataset.loopStatus
   const region = selector ? document.querySelector(selector) : null
-  if (region) region.textContent = loading ? 'Chargement en cours' : 'Contenu chargé'
+  if (region) region.textContent = loading ? 'Loading' : 'Content loaded'
 }
 
 const run = (element: HTMLElement): void => {
@@ -49,7 +49,7 @@ for (const button of pauseButtons) {
     paused = !paused
     for (const other of pauseButtons) {
       other.setAttribute('aria-pressed', String(paused))
-      other.textContent = paused ? 'Reprendre la boucle' : 'Mettre la boucle en pause'
+      other.textContent = paused ? 'Resume the loop' : 'Pause the loop'
     }
   })
 }

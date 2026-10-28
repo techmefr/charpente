@@ -65,67 +65,67 @@ export default defineCharpente({
 ---
 
 <Base
-  title="Créer un thème"
-  description="Tutoriel pas à pas : partir d'un thème existant avec extends, changer les tokens, ajouter une peinture, écrire une motion et voir le résultat en direct."
+  title="Create a theme"
+  description="Step-by-step tutorial: start from an existing theme with extends, change the tokens, add a paint, write a motion and see the result live."
 >
   <div class="wide">
     <div class="prose">
-      <h1>Créer un thème</h1>
+      <h1>Create a theme</h1>
       <p class="lead">
-        On part de <code>solid</code>, on change les couleurs, on ajoute une peinture, puis une
-        motion. Chaque étape est rendue à côté de son code, avec le vrai CSS généré à partir du
-        fichier de configuration de ce site.
+        We start from <code>solid</code>, change the colors, add a paint, then a
+        motion. Each step is rendered next to its code, with the real CSS generated from this
+        site's configuration file.
       </p>
       <p>
-        Le principe : un thème n'a besoin de décrire que ce qui change.
-        <code>extends</code> hérite du reste. Les options sont détaillées dans la
-        <a href={href('configuration')}>référence</a>.
+        The principle: a theme only needs to describe what changes.
+        <code>extends</code> inherits the rest. The options are detailed in the
+        <a href={href('configuration')}>reference</a>.
       </p>
     </div>
 
     <ol class="steps">
       <li>
-        <h3>Recolorer avec les tokens</h3>
+        <h3>Recolor with tokens</h3>
         <div class="prose">
           <p>
-            Le plus court des thèmes : il étend <code>solid</code> et ne change que ses tokens.
-            Les couleurs sont semi-transparentes pour rester lisibles en clair comme en sombre.
+            The shortest theme: it extends <code>solid</code> and only changes its tokens.
+            The colors are semi-transparent to stay readable in both light and dark.
           </p>
         </div>
         <div class="split">
           <CodeBlock title="charpente.config.ts" code={step1} />
           <div class="stage">
-            <div class="stage__bar"><span class="stage__label">Thème brume</span></div>
+            <div class="stage__bar"><span class="stage__label">Theme brume</span></div>
             <Sample theme="brume" />
           </div>
         </div>
       </li>
 
       <li>
-        <h3>Ajouter une peinture</h3>
+        <h3>Add a paint</h3>
         <div class="prose">
           <p>
-            Un second thème étend le premier et redéfinit la peinture de trois types de feuille.
-            Seuls les champs donnés sont remplacés : ici, le rayon des médias et des contrôles et le
-            fond des blocs.
+            A second theme extends the first and redefines the paint of three leaf types.
+            Only the given fields are replaced: here, the radius of media and controls and the
+            background of blocks.
           </p>
         </div>
         <div class="split">
           <CodeBlock title="charpente.config.ts" code={step2} />
           <div class="stage">
-            <div class="stage__bar"><span class="stage__label">Thème brume-ronde</span></div>
+            <div class="stage__bar"><span class="stage__label">Theme brume-ronde</span></div>
             <Sample theme="brume-ronde" />
           </div>
         </div>
       </li>
 
       <li>
-        <h3>Écrire une motion</h3>
+        <h3>Write a motion</h3>
         <div class="prose">
           <p>
-            Une motion est une animation CSS appliquée à toutes les feuilles. Avec
-            <code>staggered</code>, elle démarre en cascade selon le <code>stagger</code> du site.
-            Les propriétés animées sont libres.
+            A motion is a CSS animation applied to every leaf. With
+            <code>staggered</code>, it starts in a cascade according to the site's <code>stagger</code>.
+            The animated properties are free.
           </p>
         </div>
         <div class="split">
@@ -141,17 +141,17 @@ export default defineCharpente({
       </li>
 
       <li>
-        <h3>L'activer partout</h3>
+        <h3>Enable it everywhere</h3>
         <div class="prose">
           <p>
-            Faites-en le thème par défaut, ou donnez-le à une période de l'année avec le
-            <a href={href('calendrier')}>calendrier saisonnier</a>.
+            Make it the default theme, or assign it to a period of the year with the
+            <a href={href('calendar')}>seasonal calendar</a>.
           </p>
           <CodeBlock title="charpente.config.ts" code={step4} />
           <p class="note">
-            <span>Astuce</span><br />
-            Vous pouvez essayer ces thèmes dans le <a href={href('terrain-de-jeu')}>terrain de jeu</a>,
-            où <code>brume</code> et <code>brume-ronde</code> sont proposés dans la liste.
+            <span>Tip</span><br />
+            You can try these themes in the <a href={href('playground')}>playground</a>,
+            where <code>brume</code> and <code>brume-ronde</code> are offered in the list.
           </p>
         </div>
       </li>

@@ -1,0 +1,165 @@
+---
+import CodeBlock from '../components/CodeBlock.astro'
+import Base from '../layouts/Base.astro'
+import { stateAttributes } from '../lib/state'
+
+const pattern = `
+<section data-charpente-loading aria-busy="true" inert>
+  ...
+</section>
+
+<p role="status" class="sr-only">Loading the order list</p>`
+
+const srOnly = `
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}`
+
+const reduced = `
+@media (prefers-reduced-motion: reduce) {
+  [data-charpente-loading] :is(...leaves) {
+    animation: none !important;
+    --charpente-shine-layer: none !important;
+  }
+}`
+
+const mixed = `
+<p>Order <strong>#1042</strong> confirmed yesterday.</p>`
+
+const wrapped = `
+<p><span>Order</span> <strong>#1042</strong> <span>confirmed yesterday.</span></p>`
+---
+
+<Base
+  title="Accessibility"
+  description="aria-busy, inert, aria-live region, prefers-reduced-motion, contrast and known limitations of charpente."
+>
+  <div class="prose">
+    <h1>Accessibility</h1>
+    <p class="lead">
+      A skeleton is an image. What makes it accessible are the attributes you set
+      around it, and charpente cannot set them for you in pure CSS.
+    </p>
+
+    <h2 id="aria-busy">aria-busy</h2>
+    <p>
+      <code>aria-busy="true"</code> tells assistive technologies that the area is being
+      updated: they can wait until it finishes before reading it. Remove it when the content
+      is ready.
+    </p>
+
+    <h2 id="inert">inert</h2>
+    <p>
+      <code>inert</code> removes the area from keyboard navigation, the accessibility tree and
+      clicks. Without it, a user could activate an invisible button or tab into transparent
+      text. charpente already hides the text (it is rendered transparent), but only
+      <code>inert</code> truly prevents interaction and reading.
+    </p>
+
+    <h2 id="live">Announcing the loading state</h2>
+    <p>
+      <code>aria-busy</code> says nothing out loud. To announce the start and end of
+      loading, add a <code>role="status"</code> region (equivalent to an
+      <code>aria-live="polite"</code>) that stays in the page and whose text you change. It
+      must be <strong>outside</strong> the <code>inert</code> area, otherwise it is no longer
+      accessible.
+    </p>
+    <CodeBlock lang="html" code={pattern} />
+    <p>The visual hiding style, to define once:</p>
+    <CodeBlock lang="css" code={srOnly} />
+    <p>
+      The <code>&lt;Charpente&gt;</code> wrapper from <code>charpente-vue</code> does this with its
+      <code>label</code> prop.
+    </p>
+
+    <h2 id="reduced-motion">prefers-reduced-motion</h2>
+    <p>
+      When the system asks for less motion, charpente turns off all skeleton animations,
+      including the appearance delay: the skeleton is shown immediately, motionless.
+      No configuration is needed.
+    </p>
+    <CodeBlock lang="css" code={reduced} />
+    <p>
+      The demo loops on this site also offer a pause button, as the
+      "automatic motion" criterion requires.
+    </p>
+
+    <h2 id="contrast">Contrast</h2>
+    <p>
+      Skeletons are deliberately low-contrast: they are content placeholders, not
+      content. They carry no information, and the loading state must be conveyed by
+      <code>aria-busy</code> and the <code>role="status"</code> region, not by color alone.
+    </p>
+    <p>
+      If you want a more visible skeleton (dim screens, high-contrast mode), raise
+      <code>strong</code> and <code>base</code> in <code>colorScheme.tokens</code>, or choose
+      <code>outline</code>, whose dots follow <code>strong</code>.
+    </p>
+    <p>
+      For this site: text reaches at least 4.5:1, focus is drawn with a 3 px outline and
+      everything is usable with the keyboard.
+    </p>
+
+    <h2 id="limits">Known limitations</h2>
+    <p>
+      Two cases are not painted. They are rendered below with the same structure as content
+      then as loading.
+    </p>
+
+    <h3 id="checkbox">Checkboxes and radio buttons</h3>
+    <p>
+      A native checkbox ignores the background image: the browser draws it itself. While
+      loading, it therefore stays visible as is, and only its label (bare text in a
+      <code>label</code>) becomes transparent.
+    </p>
+    <div class="split">
+      <div class="stage">
+        <div class="stage__bar"><span class="stage__label">Content</span></div>
+        <label class="switch"><input type="checkbox" checked /> Late only</label>
+      </div>
+      <div class="stage">
+        <div class="stage__bar"><span class="stage__label">Loading</span></div>
+        <label class="switch" {...stateAttributes({ loading: true })}>
+          <input type="checkbox" checked /> Late only
+        </label>
+      </div>
+    </div>
+
+    <h3 id="mixed">Bare text in a mixed-content paragraph</h3>
+    <p>
+      Only elements with no child elements are painted. In a paragraph mixing text and
+      elements, bare text is hidden but not painted: only the parts wrapped in an
+      element appear.
+    </p>
+    <CodeBlock lang="html" code={mixed} />
+    <div class="split">
+      <div class="stage">
+        <div class="stage__bar"><span class="stage__label">Content</span></div>
+        <p>Order <strong>#1042</strong> confirmed yesterday at 4 pm.</p>
+      </div>
+      <div class="stage">
+        <div class="stage__bar"><span class="stage__label">Loading</span></div>
+        <div {...stateAttributes({ loading: true })}>
+          <p>Order <strong>#1042</strong> confirmed yesterday at 4 pm.</p>
+        </div>
+      </div>
+    </div>
+    <p>Wrap each piece of text in an element, such as <code>span</code>:</p>
+    <CodeBlock lang="html" code={wrapped} />
+    <div class="stage">
+      <div class="stage__bar"><span class="stage__label">Loading, wrapped text</span></div>
+      <div {...stateAttributes({ loading: true })}>
+        <p><span>Order</span> <strong>#1042</strong> <span>confirmed yesterday at 4 pm.</span></p>
+      </div>
+    </div>
+    <p>
+      An alternative is to mark the paragraph with <code>data-charpente-block</code>: it is
+      then painted as a single block.
+    </p>
+  </div>
+</Base>

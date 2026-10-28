@@ -11,8 +11,8 @@ export const photo = (from: string, to: string): string =>
   )
 
 export const PEOPLE = [
-  { name: 'Camille Durand', role: 'Cheffe de projet', initials: 'CD', color: '#0b5f73' },
-  { name: 'Mehdi Lambert', role: 'Développeur front', initials: 'ML', color: '#7a3e9d' },
-  { name: 'Inès Morel', role: 'Designeuse', initials: 'IM', color: '#a1400f' },
-  { name: 'Hugo Perrin', role: 'Développeur back', initials: 'HP', color: '#2b6a2f' },
+  { name: 'Camille Durand', role: 'Project lead', initials: 'CD', color: '#0b5f73' },
+  { name: 'Mehdi Lambert', role: 'Front-end developer', initials: 'ML', color: '#7a3e9d' },
+  { name: 'Inès Morel', role: 'Designer', initials: 'IM', color: '#a1400f' },
+  { name: 'Hugo Perrin', role: 'Back-end developer', initials: 'HP', color: '#2b6a2f' },
 ]

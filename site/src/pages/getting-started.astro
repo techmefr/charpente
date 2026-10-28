@@ -45,18 +45,18 @@ export default defineCharpente({
 
 const sections = [
   { id: 'vite', label: 'Vite' },
-  { id: 'nuxt', label: 'Nuxt et Vue' },
+  { id: 'nuxt', label: 'Nuxt and Vue' },
   { id: 'react', label: 'React' },
   { id: 'next', label: 'Next' },
   { id: 'sveltekit', label: 'SvelteKit' },
   { id: 'astro', label: 'Astro' },
-  { id: 'livewire', label: 'Livewire et Laravel' },
-  { id: 'html', label: 'HTML simple' },
+  { id: 'livewire', label: 'Livewire and Laravel' },
+  { id: 'html', label: 'Plain HTML' },
 ]
 
 const install = `
 pnpm add charpente
-# ou : npm install charpente / yarn add charpente`
+# or: npm install charpente / yarn add charpente`
 
 const minimalConfig = `
 import { defineCharpente } from 'charpente'
@@ -69,10 +69,10 @@ export default defineCharpente({
 
 const minimalHtml = `
 <section data-charpente-loading aria-busy="true" inert>
-  <h2>Équipe</h2>
-  <p>Quatre collaborateurs</p>
-  <img src="/photo.jpg" alt="Photo de l'équipe" width="320" height="120" />
-  <button type="button">Inviter</button>
+  <h2>Team</h2>
+  <p>Four members</p>
+  <img src="/photo.jpg" alt="Team photo" width="320" height="120" />
+  <button type="button">Invite</button>
 </section>`
 
 const viteConfig = `
@@ -98,7 +98,7 @@ import { Charpente } from 'charpente-vue'
 </script>
 
 <template>
-  <Charpente :loading="pending" label="Chargement du profil" :motion="['pulse', 'shimmer']" :delay="200">
+  <Charpente :loading="pending" label="Loading the profile" :motion="['pulse', 'shimmer']" :delay="200">
     <UserCard :user="user ?? placeholder" />
   </Charpente>
 </template>`
@@ -108,88 +108,88 @@ const vanillaHead = `
 ---
 
 <Base
-  title="Démarrage"
-  description="Installer charpente, poser les attributs de chargement et brancher le CSS dans Vite, Nuxt, React, Next, SvelteKit, Astro, Livewire ou du HTML simple."
+  title="Getting started"
+  description="Install charpente, set the loading attributes and wire the CSS into Vite, Nuxt, React, Next, SvelteKit, Astro, Livewire or plain HTML."
 >
   <div class="prose">
-    <h1>Démarrage</h1>
+    <h1>Getting started</h1>
     <p class="lead">
-      Trois étapes : installer le paquet, déclarer un thème, puis marquer la zone qui charge.
+      Three steps: install the package, declare a theme, then mark the area that is loading.
     </p>
 
-    <h2 id="installation">1. Installer</h2>
+    <h2 id="installation">1. Install</h2>
     <CodeBlock lang="bash" code={install} />
 
-    <h2 id="config">2. Déclarer la configuration</h2>
+    <h2 id="config">2. Declare the configuration</h2>
     <p>
-      Un fichier <code>charpente.config.ts</code> à la racine du projet. Tout est optionnel : sans
-      configuration, vous obtenez le thème <code>solid</code> et la motion <code>shimmer</code>.
+      A <code>charpente.config.ts</code> file at the project root. Everything is optional: without
+      configuration, you get the <code>solid</code> theme and the <code>shimmer</code> motion.
     </p>
     <CodeBlock title="charpente.config.ts" code={minimalConfig} />
 
-    <h2 id="usage">3. Marquer la zone qui charge</h2>
-    <p>Trois attributs suffisent, posés ensemble sur le conteneur :</p>
+    <h2 id="usage">3. Mark the area that is loading</h2>
+    <p>Three attributes are enough, set together on the container:</p>
     <ul>
       <li>
-        <code>data-charpente-loading</code> active le squelette sur tout le sous-arbre.
+        <code>data-charpente-loading</code> enables the skeleton on the whole subtree.
       </li>
       <li>
-        <code>aria-busy="true"</code> signale aux lecteurs d'écran que la zone est en cours de
-        mise à jour.
+        <code>aria-busy="true"</code> tells screen readers that the area is being
+        updated.
       </li>
       <li>
-        <code>inert</code> sort la zone du parcours clavier et de l'arbre d'accessibilité, pour
-        qu'on ne puisse pas cliquer sur un faux bouton.
+        <code>inert</code> takes the area out of keyboard navigation and the accessibility tree, so
+        nobody can click a fake button.
       </li>
     </ul>
     <CodeBlock lang="html" code={minimalHtml} />
     <p>
-      Quand les données arrivent, retirez les trois attributs : le contenu réel est déjà là, au
-      même endroit, sans saut de mise en page.
+      When the data arrives, remove the three attributes: the real content is already there, in
+      the same place, with no layout shift.
     </p>
 
     <div class="table-wrap">
       <table class="ref">
-        <caption>Attributs et variables CSS reconnus</caption>
+        <caption>Recognized attributes and CSS variables</caption>
         <thead>
-          <tr><th scope="col">Nom</th><th scope="col">Où</th><th scope="col">Rôle</th></tr>
+          <tr><th scope="col">Name</th><th scope="col">Where</th><th scope="col">Role</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>data-charpente-loading</code></td><td>conteneur</td><td>Active le squelette.</td></tr>
-          <tr><td><code>data-charpente-theme</code></td><td>conteneur</td><td>Choisit un thème, sinon <code>defaultTheme</code>.</td></tr>
-          <tr><td><code>data-charpente-motion</code></td><td>conteneur</td><td>Noms triés par ordre alphabétique, séparés par une espace, ou <code>none</code>.</td></tr>
-          <tr><td><code>data-charpente-block</code></td><td>un élément</td><td>Peint l'élément d'un seul bloc et masque ses enfants.</td></tr>
-          <tr><td><code>data-charpente-ready</code></td><td>conteneur</td><td>Posé quelques instants après le chargement pour un fondu d'apparition.</td></tr>
-          <tr><td><code>--charpente-delay</code></td><td>style</td><td>Délai avant apparition du squelette, en <code>ms</code>.</td></tr>
-          <tr><td><code>--charpente-stagger</code></td><td>style</td><td>Décalage entre frères, en <code>ms</code>.</td></tr>
+          <tr><td><code>data-charpente-loading</code></td><td>container</td><td>Enables the skeleton.</td></tr>
+          <tr><td><code>data-charpente-theme</code></td><td>container</td><td>Picks a theme, otherwise <code>defaultTheme</code>.</td></tr>
+          <tr><td><code>data-charpente-motion</code></td><td>container</td><td>Names sorted alphabetically, separated by a space, or <code>none</code>.</td></tr>
+          <tr><td><code>data-charpente-block</code></td><td>an element</td><td>Paints the element as a single block and hides its children.</td></tr>
+          <tr><td><code>data-charpente-ready</code></td><td>container</td><td>Set for a few moments after loading for a fade-in.</td></tr>
+          <tr><td><code>--charpente-delay</code></td><td>style</td><td>Delay before the skeleton appears, in <code>ms</code>.</td></tr>
+          <tr><td><code>--charpente-stagger</code></td><td>style</td><td>Offset between siblings, in <code>ms</code>.</td></tr>
         </tbody>
       </table>
     </div>
 
-    <h2 id="plugin">Plugin Vite et CLI</h2>
+    <h2 id="plugin">Vite plugin and CLI</h2>
     <p>
-      Le plugin Vite compile la configuration à la volée et expose deux modules virtuels. Il
-      relit le fichier à chaque modification.
+      The Vite plugin compiles the configuration on the fly and exposes two virtual modules. It
+      re-reads the file on every change.
     </p>
     <CodeBlock title="vite.config.ts" code={viteConfig} />
     <CodeBlock title="main.ts" code={cssImport} />
     <p>
-      <code>virtual:charpente.theme</code> donne le thème du jour selon le
-      <a href={href('calendrier')}>calendrier saisonnier</a> :
+      <code>virtual:charpente.theme</code> gives today's theme according to the
+      <a href={href('calendar')}>seasonal calendar</a>:
     </p>
     <CodeBlock code={themeModule} />
     <p>
-      Sans Vite, la commande <code>charpente build</code> écrit le CSS dans un fichier. La
-      commande <code>charpente theme</code> affiche le thème actif pour une date.
+      Without Vite, the <code>charpente build</code> command writes the CSS to a file. The
+      <code>charpente theme</code> command prints the active theme for a date.
     </p>
     <CodeBlock lang="bash" code={cli} />
 
-    <h2 id="integrations">Intégrations</h2>
+    <h2 id="integrations">Integrations</h2>
     <p>
-      Chaque extrait ci-dessous provient du dossier <code>examples/</code> du dépôt. Les exemples
-      pilotent l'état de chargement avec <code>?state=loading</code> dans l'URL, pour les tests.
+      Each snippet below comes from the repository's <code>examples/</code> folder. The examples
+      drive the loading state with <code>?state=loading</code> in the URL, for testing.
     </p>
-    <ul class="subnav" aria-label="Intégrations">
+    <ul class="subnav" aria-label="Integrations">
       {sections.map((section) => <li><a href={`#${section.id}`}>{section.label}</a></li>)}
     </ul>
 
@@ -197,8 +197,8 @@ const vanillaHead = `
       <div class="prose">
         <h3 id="vite">Vite</h3>
         <p>
-          Branchez le plugin, importez le CSS une fois dans le point d'entrée, puis posez les
-          attributs.
+          Plug in the plugin, import the CSS once in the entry point, then set the
+          attributes.
         </p>
         <CodeBlock title="vite.config.ts" code={viteConfig} />
         <CodeBlock title="examples/vanilla/src/fixture.js" lang="js" code={vanillaFixture} />
@@ -207,32 +207,32 @@ const vanillaHead = `
 
     <section aria-labelledby="nuxt">
       <div class="prose">
-        <h3 id="nuxt">Nuxt et Vue</h3>
+        <h3 id="nuxt">Nuxt and Vue</h3>
         <p>
-          Ajoutez le plugin dans <code>vite.plugins</code> et le CSS virtuel dans <code>css</code>.
+          Add the plugin to <code>vite.plugins</code> and the virtual CSS to <code>css</code>.
         </p>
         <CodeBlock title="examples/nuxt/nuxt.config.ts" code={nuxtConfig} />
         <CodeBlock title="examples/nuxt/app/pages/simple.vue" lang="vue" code={nuxtPage} />
         <p>
-          Le paquet <code>charpente-vue</code> fournit un composant <code>&lt;Charpente&gt;</code>
-          qui pose les attributs, annonce le chargement et gère le fondu de sortie.
+          The <code>charpente-vue</code> package provides a <code>&lt;Charpente&gt;</code> component
+          that sets the attributes, announces the loading state and handles the fade-out.
         </p>
         <CodeBlock lang="vue" code={vueWrapper} />
         <div class="table-wrap">
           <table class="ref">
-            <caption>Props de &lt;Charpente&gt;</caption>
+            <caption>Props of &lt;Charpente&gt;</caption>
             <thead>
-              <tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">Défaut</th><th scope="col">Rôle</th></tr>
+              <tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">Default</th><th scope="col">Role</th></tr>
             </thead>
             <tbody>
-              <tr><td><code>loading</code></td><td>boolean</td><td><code>false</code></td><td>Active le squelette, pose <code>aria-busy</code> et <code>inert</code>.</td></tr>
-              <tr><td><code>tag</code></td><td>string</td><td><code>div</code></td><td>Élément racine rendu.</td></tr>
-              <tr><td><code>theme</code></td><td>string</td><td>aucun</td><td>Thème local.</td></tr>
-              <tr><td><code>motion</code></td><td>string ou string[]</td><td>aucun</td><td>Motions locales, triées automatiquement.</td></tr>
-              <tr><td><code>delay</code></td><td>number</td><td>aucun</td><td>Délai en ms.</td></tr>
-              <tr><td><code>stagger</code></td><td>number</td><td>aucun</td><td>Décalage en ms.</td></tr>
-              <tr><td><code>label</code></td><td>string</td><td>vide</td><td>Texte d'une zone <code>role="status"</code> lue pendant le chargement.</td></tr>
-              <tr><td><code>revealMs</code></td><td>number</td><td><code>260</code></td><td>Durée de <code>data-charpente-ready</code> après le chargement.</td></tr>
+              <tr><td><code>loading</code></td><td>boolean</td><td><code>false</code></td><td>Enables the skeleton, sets <code>aria-busy</code> and <code>inert</code>.</td></tr>
+              <tr><td><code>tag</code></td><td>string</td><td><code>div</code></td><td>Root element rendered.</td></tr>
+              <tr><td><code>theme</code></td><td>string</td><td>none</td><td>Local theme.</td></tr>
+              <tr><td><code>motion</code></td><td>string or string[]</td><td>none</td><td>Local motions, sorted automatically.</td></tr>
+              <tr><td><code>delay</code></td><td>number</td><td>none</td><td>Delay in ms.</td></tr>
+              <tr><td><code>stagger</code></td><td>number</td><td>none</td><td>Offset in ms.</td></tr>
+              <tr><td><code>label</code></td><td>string</td><td>empty</td><td>Text of a <code>role="status"</code> region read during loading.</td></tr>
+              <tr><td><code>revealMs</code></td><td>number</td><td><code>260</code></td><td>Duration of <code>data-charpente-ready</code> after loading.</td></tr>
             </tbody>
           </table>
         </div>
@@ -242,7 +242,7 @@ const vanillaHead = `
     <section aria-labelledby="react">
       <div class="prose">
         <h3 id="react">React</h3>
-        <p>Même plugin Vite, puis les attributs en JSX.</p>
+        <p>Same Vite plugin, then the attributes in JSX.</p>
         <CodeBlock title="examples/react/vite.config.ts" code={reactVite} />
         <CodeBlock title="examples/react/src/Fixture.tsx" lang="tsx" code={reactFixture} />
       </div>
@@ -252,8 +252,8 @@ const vanillaHead = `
       <div class="prose">
         <h3 id="next">Next</h3>
         <p>
-          Next n'utilise pas Vite : la CLI écrit le CSS avant le démarrage et le build, puis le
-          layout l'importe.
+          Next does not use Vite: the CLI writes the CSS before startup and build, then the
+          layout imports it.
         </p>
         <CodeBlock title="examples/next/package.json" lang="json" code={nextScripts} />
         <CodeBlock title="examples/next/charpente.config.ts" code={nextConfig} />
@@ -280,8 +280,8 @@ const vanillaHead = `
       <div class="prose">
         <h3 id="astro">Astro</h3>
         <p>
-          Ce site est lui-même construit ainsi. L'exemple du dépôt rend la page côté serveur, le
-          présent site la génère en statique : le plugin est identique.
+          This site is itself built this way. The repository's example renders the page on the server, this
+          site generates it statically: the plugin is identical.
         </p>
         <CodeBlock title="examples/astro/astro.config.mjs" lang="js" code={astroConfig} />
         <CodeBlock title="examples/astro/src/layouts/Layout.astro" lang="astro" code={astroLayout} />
@@ -295,10 +295,10 @@ const vanillaHead = `
 
     <section aria-labelledby="livewire">
       <div class="prose">
-        <h3 id="livewire">Livewire et Laravel</h3>
+        <h3 id="livewire">Livewire and Laravel</h3>
         <p>
-          Le plugin Vite se place à côté de <code>laravel-vite-plugin</code>. L'état de chargement
-          vient d'une propriété du composant, le gabarit Blade pose les attributs.
+          The Vite plugin sits next to <code>laravel-vite-plugin</code>. The loading state
+          comes from a component property, the Blade template sets the attributes.
         </p>
         <CodeBlock title="examples/livewire/vite.config.js" lang="js" code={livewireVite} />
         <CodeBlock title="examples/livewire/resources/js/app.js" lang="js" code={livewireApp} />
@@ -313,10 +313,10 @@ const vanillaHead = `
 
     <section aria-labelledby="html">
       <div class="prose">
-        <h3 id="html">HTML simple</h3>
+        <h3 id="html">Plain HTML</h3>
         <p>
-          Sans bundler, générez le fichier avec la CLI et liez-le. Voici le balisage de la page
-          d'exemple de <code>fixtures/simple.html</code>.
+          Without a bundler, generate the file with the CLI and link it. Here is the markup of the example
+          page <code>fixtures/simple.html</code>.
         </p>
         <CodeBlock lang="bash" code="charpente build --out public/charpente.css" />
         <CodeBlock lang="html" code={vanillaHead} />

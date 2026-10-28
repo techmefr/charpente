@@ -45,46 +45,46 @@ declare module 'virtual:charpente.theme' {
 ---
 
 <Base
-  title="Calendrier saisonnier"
-  description="Choisir automatiquement un thème selon la date avec schedule, themeAt, le module virtuel virtual:charpente.theme et la commande charpente theme."
+  title="Seasonal calendar"
+  description="Automatically choose a theme by date with schedule, themeAt, the virtual:charpente.theme virtual module and the charpente theme command."
 >
   <div class="wide">
     <div class="prose">
-      <h1>Calendrier saisonnier</h1>
+      <h1>Seasonal calendar</h1>
       <p class="lead">
-        <code>schedule</code> associe des périodes de l'année à des thèmes. Halloween en octobre,
-        Noël en décembre, et le thème par défaut le reste du temps.
+        <code>schedule</code> maps periods of the year to themes. Halloween in October,
+        Christmas in December, and the default theme the rest of the time.
       </p>
 
-      <h2 id="schedule">Déclarer les créneaux</h2>
+      <h2 id="schedule">Declaring the slots</h2>
       <p>
-        Chaque créneau a un <code>theme</code>, une date de début <code>from</code> et une date de
-        fin <code>to</code>, au format <code>MM-JJ</code>, bornes incluses. Le <strong>premier
-        créneau qui correspond gagne</strong>. Si <code>to</code> précède <code>from</code>, le
-        créneau passe le Nouvel An (<code>12-01</code> à <code>02-15</code>). Sans correspondance,
-        <code>defaultTheme</code> s'applique.
+        Each slot has a <code>theme</code>, a start date <code>from</code> and an end date
+        <code>to</code>, in <code>MM-DD</code> format, bounds included. The <strong>first
+        matching slot wins</strong>. If <code>to</code> comes before <code>from</code>, the
+        slot spans New Year (<code>12-01</code> to <code>02-15</code>). With no match,
+        <code>defaultTheme</code> applies.
       </p>
       <p>
-        La date est lue dans <code>timeZone</code> (par exemple <code>Europe/Paris</code>), pas dans
-        celui du visiteur, pour que le thème change au même instant pour tout le monde.
+        The date is read in <code>timeZone</code> (for example <code>Europe/Paris</code>), not in
+        the visitor's, so the theme changes at the same instant for everyone.
       </p>
       <CodeBlock title="charpente.config.ts" code={scheduleExample} />
       <p class="warn">
-        <span>Ordre des créneaux</span><br />
-        Dans l'exemple, <code>winter</code> est déclaré après <code>christmas</code> : du 15 au 31
-        décembre, c'est <code>christmas</code> qui gagne, comme attendu.
+        <span>Slot order</span><br />
+        In the example, <code>winter</code> is declared after <code>christmas</code>: from December 15 to 31,
+        <code>christmas</code> wins, as expected.
       </p>
 
-      <h2 id="site">Le calendrier de ce site</h2>
+      <h2 id="site">This site's calendar</h2>
       <div class="table-wrap">
         <table class="ref">
-          <caption>schedule de site/charpente.config.ts</caption>
+          <caption>schedule from site/charpente.config.ts</caption>
           <thead>
-            <tr><th scope="col">Thème</th><th scope="col">Du</th><th scope="col">Au</th></tr>
+            <tr><th scope="col">Theme</th><th scope="col">From</th><th scope="col">To</th></tr>
           </thead>
           <tbody>
             {entries.map((entry) => <tr><td><code>{entry.theme}</code></td><td>{entry.from}</td><td>{entry.to}</td></tr>)}
-            <tr><td><code>{config.defaultTheme}</code></td><td colspan="2">le reste de l'année (<code>defaultTheme</code>)</td></tr>
+            <tr><td><code>{config.defaultTheme}</code></td><td colspan="2">the rest of the year (<code>defaultTheme</code>)</td></tr>
           </tbody>
         </table>
       </div>
@@ -92,7 +92,7 @@ declare module 'virtual:charpente.theme' {
 
     <section class="stage" aria-labelledby="calc-title">
       <div class="stage__bar">
-        <h2 id="calc-title" class="stage__label">Quel thème ce jour-là ?</h2>
+        <h2 id="calc-title" class="stage__label">Which theme on that day?</h2>
       </div>
       <div class="split">
         <div class="pg__controls">
@@ -101,7 +101,7 @@ declare module 'virtual:charpente.theme' {
             <input type="date" id="calendar-date" />
           </label>
           <p>
-            Thème actif : <strong id="calendar-theme" aria-live="polite">solid</strong>
+            Active theme: <strong id="calendar-theme" aria-live="polite">solid</strong>
           </p>
           <p class="pg__readout"><code id="calendar-call">activeTheme()</code></p>
         </div>
@@ -114,26 +114,26 @@ declare module 'virtual:charpente.theme' {
     <div class="prose">
       <h2 id="theme-at">themeAt</h2>
       <p>
-        <code>themeAt(config, date)</code> est la fonction pure derrière tout le reste. La date vaut
-        « maintenant » si on l'omet.
+        <code>themeAt(config, date)</code> is the pure function behind everything else. The date defaults to
+        "now" when omitted.
       </p>
       <CodeBlock code={themeAtExample} />
 
       <h2 id="virtual">virtual:charpente.theme</h2>
       <p>
-        Le plugin Vite fournit un module virtuel avec <code>defaultTheme</code>,
-        <code>timeZone</code> et <code>schedule</code> déjà embarqués. Il exporte
+        The Vite plugin provides a virtual module with <code>defaultTheme</code>,
+        <code>timeZone</code> and <code>schedule</code> already bundled. It exports
         <code>activeTheme(date?)</code>.
       </p>
       <CodeBlock code={virtualExample} />
-      <p>Pour TypeScript, déclarez le module dans un fichier <code>env.d.ts</code> :</p>
+      <p>For TypeScript, declare the module in an <code>env.d.ts</code> file:</p>
       <CodeBlock code={typesExample} />
 
       <h2 id="cli">charpente theme --date</h2>
       <p>
-        La commande affiche le thème actif, utile dans un script de déploiement ou pour vérifier un
-        calendrier. Sans <code>--date</code>, elle prend le jour même. Voici les résultats pour la
-        configuration de ce site :
+        The command prints the active theme, useful in a deploy script or to check a
+        calendar. Without <code>--date</code>, it uses today. Here are the results for this
+        site's configuration:
       </p>
       <CodeBlock lang="bash" code={transcripts} />
     </div>

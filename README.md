@@ -1,14 +1,15 @@
 # charpente
 
-Skeleton loaders en CSS pur : le thème, la motion et le timing sont trois axes indépendants, configurés dans un seul `charpente.config.ts`. Aucun JS au runtime.
+Pure CSS skeleton loaders: theme, motion and timing are three independent axes, configured in a single `charpente.config.ts`. No runtime JS.
 
-## Paquets
+## Packages
 
-- `packages/charpente` : compilateur config vers CSS et plugin Vite (`charpente/vite`)
-- `packages/charpente-vue` : wrapper `<Charpente :loading>`
-- `demo` : page de démo avec bascule en direct du thème, de la motion, du timing et du mode sombre
+- `packages/charpente`: config-to-CSS compiler and Vite plugin (`charpente/vite`)
+- `packages/charpente-vue`: `<Charpente :loading>` wrapper
+- `demo`: demo page with live switching of theme, motion, timing and dark mode
+- `site`: Astro documentation and demo site
 
-## Utilisation
+## Usage
 
 ```ts
 // charpente.config.ts
@@ -27,7 +28,7 @@ export default defineCharpente({
 })
 ```
 
-Le premier créneau qui correspond à la date gagne, sinon `defaultTheme` s'applique. Les dates sont lues dans `timeZone`.
+The first matching entry wins, otherwise `defaultTheme` applies. Dates are read in `timeZone`.
 
 ```ts
 import { activeTheme } from 'virtual:charpente.theme'
@@ -35,7 +36,7 @@ import { activeTheme } from 'virtual:charpente.theme'
 const theme = activeTheme()
 ```
 
-En ligne de commande : `charpente theme --date 2026-10-31`.
+From the command line: `charpente theme --date 2026-10-31`.
 
 ```ts
 // vite.config.ts
@@ -54,15 +55,15 @@ import 'virtual:charpente.css'
 </Charpente>
 ```
 
-Thèmes : `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`, `halloween`, `christmas`, `new-year`, `winter`, `summer`, `spring`, `autumn`. Motions : `shimmer`, `pulse`, `wave`, `glitch`.
+Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`, `halloween`, `christmas`, `new-year`, `winter`, `summer`, `spring`, `autumn`. Motions: `shimmer`, `pulse`, `wave`, `glitch`.
 
-`schedule: schedulePresets.all` (import depuis `charpente`) applique les fêtes puis les saisons ; `celebrations` et `seasons` existent séparément.
+`schedule: schedulePresets.all` (imported from `charpente`) applies celebrations first, then seasons; `celebrations` and `seasons` are also available separately.
 
-`include: ['dots', 'christmas']` ne livre que ces thèmes, plus le thème par défaut, ceux du calendrier et les vôtres.
+`include: ['dots', 'christmas']` ships only those themes, plus the default theme, the scheduled ones and your own.
 
-Un thème peut définir `dark: { ... }` pour ses tokens en mode sombre, et `colorScheme.light` (ex. `'[data-theme="light"]'`) force le clair dans un sous-arbre.
+A theme can define `dark: { ... }` for its dark-mode tokens, and `colorScheme.light` (for example `'[data-theme="light"]'`) forces light inside a subtree.
 
-## Développement
+## Development
 
 ```bash
 pnpm install

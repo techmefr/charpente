@@ -10,11 +10,11 @@ interface Props {
 
 const { title, description } = Astro.props
 const current = Astro.url.pathname
-const fullTitle = title === 'Accueil' ? `${SITE_NAME}, skeleton loaders en CSS pur` : `${title} · ${SITE_NAME}`
+const fullTitle = title === 'Home' ? `${SITE_NAME}, pure CSS skeleton loaders` : `${title} · ${SITE_NAME}`
 ---
 
 <!doctype html>
-<html lang="fr" data-theme="light">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,7 +32,7 @@ const fullTitle = title === 'Accueil' ? `${SITE_NAME}, skeleton loaders en CSS p
     </script>
   </head>
   <body>
-    <a class="skip" href="#contenu">Aller au contenu</a>
+    <a class="skip" href="#content">Skip to content</a>
     <header class="top">
       <a class="brand" href={href()}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
@@ -41,16 +41,16 @@ const fullTitle = title === 'Accueil' ? `${SITE_NAME}, skeleton loaders en CSS p
         </svg>
         {SITE_NAME}
       </a>
-      <span class="top__tag">CSS pur</span>
+      <span class="top__tag">Pure CSS</span>
       <div class="top__actions">
         <a class="btn btn--ghost" href="https://github.com/techmefr/charpente">GitHub</a>
         <button type="button" class="btn btn--ghost" data-scheme-toggle aria-pressed="false">
-          Mode sombre
+          Dark mode
         </button>
       </div>
     </header>
     <div class="shell">
-      <nav class="sidenav" aria-label="Principal">
+      <nav class="sidenav" aria-label="Main">
         <ul>
           {
             NAV.map((item) => {
@@ -66,12 +66,12 @@ const fullTitle = title === 'Accueil' ? `${SITE_NAME}, skeleton loaders en CSS p
           }
         </ul>
       </nav>
-      <main id="contenu" tabindex="-1">
+      <main id="content" tabindex="-1">
         <slot />
       </main>
     </div>
     <footer class="footer">
-      <p>charpente, skeleton loaders en CSS pur. Licence du dépôt applicable.</p>
+      <p>charpente, pure CSS skeleton loaders. Repository license applies.</p>
     </footer>
     <script>
       import '../scripts/scheme'

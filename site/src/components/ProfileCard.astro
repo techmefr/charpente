@@ -7,7 +7,7 @@ interface Props extends StateOptions {
   action?: string
 }
 
-const { index = 0, action = 'Suivre', ...state } = Astro.props
+const { index = 0, action = 'Follow', ...state } = Astro.props
 const person = PEOPLE[index % PEOPLE.length]!
 ---
 

@@ -12,9 +12,9 @@ const markup = `
   <img src="/avatar.png" alt="" width="54" height="54" />
   <div>
     <span>Camille Durand</span>
-    <span>Cheffe de projet</span>
+    <span>Project lead</span>
   </div>
-  <button type="button">Suivre</button>
+  <button type="button">Follow</button>
 </article>`
 
 const config = `
@@ -29,34 +29,34 @@ export default defineCharpente({
 ---
 
 <Base
-  title="Accueil"
-  description="charpente génère des skeleton loaders en CSS pur à partir d'un seul fichier de configuration : thème, motion et timing sont trois axes indépendants."
+  title="Home"
+  description="charpente generates pure CSS skeleton loaders from a single configuration file: theme, motion and timing are three independent axes."
 >
   <div class="hero">
-    <h1>Des squelettes de chargement en CSS pur</h1>
+    <h1>Pure CSS loading skeletons</h1>
     <p class="lead">
-      Vous posez un attribut sur la zone qui charge. <code>charpente</code> peint les textes, les
-      images, les boutons et les blocs avec le thème et l'animation de votre choix, sans une ligne
-      de JavaScript au runtime.
+      You set an attribute on the area that is loading. <code>charpente</code> paints the text,
+      images, buttons and blocks with the theme and animation of your choice, without a single
+      line of runtime JavaScript.
     </p>
     <div class="cta">
-      <a class="btn" href={href('demarrage')}>Démarrer</a>
-      <a class="btn btn--ghost" href={href('terrain-de-jeu')}>Ouvrir le terrain de jeu</a>
+      <a class="btn" href={href('getting-started')}>Get started</a>
+      <a class="btn btn--ghost" href={href('playground')}>Open the playground</a>
     </div>
   </div>
 
   <section class="prose" aria-labelledby="demo-title">
-    <h2 id="demo-title">La démo, en vrai</h2>
+    <h2 id="demo-title">The demo, for real</h2>
     <p>
-      Cette carte alterne toute seule entre l'état de chargement et le contenu. C'est le même
-      balisage : seuls trois attributs changent.
+      This card switches on its own between the loading state and the content. It is the same
+      markup: only three attributes change.
     </p>
     <div class="split">
       <div class="stage">
         <div class="stage__bar">
-          <span class="stage__label">Carte de profil</span>
+          <span class="stage__label">Profile card</span>
           <button type="button" class="btn btn--ghost" data-loop-pause aria-pressed="false">
-            Mettre la boucle en pause
+            Pause the loop
           </button>
         </div>
         <div
@@ -69,43 +69,43 @@ export default defineCharpente({
         >
           <ProfileCard loading={false} />
           <p class="lines__text">
-            Camille pilote la refonte du site depuis trois ans. Elle aime les projets où le design
-            et le code avancent ensemble.
+            Camille has led the site redesign for three years. She likes projects where design
+            and code move forward together.
           </p>
           <div class="chips">
-            <span class="badge">12 projets</span>
+            <span class="badge">12 projects</span>
             <span class="badge">Lyon</span>
-            <span class="badge">Équipe produit</span>
+            <span class="badge">Product team</span>
           </div>
         </div>
         <p id="demo-status" class="sr-only" role="status"></p>
       </div>
-      <CodeBlock lang="html" title="Ce que charpente attend" code={markup} />
+      <CodeBlock lang="html" title="What charpente expects" code={markup} />
     </div>
   </section>
 
   <section class="prose" aria-labelledby="axes-title">
-    <h2 id="axes-title">Trois axes indépendants</h2>
+    <h2 id="axes-title">Three independent axes</h2>
     <ul>
       <li>
-        <strong>Le thème</strong> dit à quoi ressemble un squelette : <code>solid</code>,
-        <code>outline</code>, <code>dots</code>, <code>cyberpunk</code>, <code>web</code> et six
-        thèmes de saison.
+        <strong>The theme</strong> says what a skeleton looks like: <code>solid</code>,
+        <code>outline</code>, <code>dots</code>, <code>cyberpunk</code>, <code>web</code> and six
+        seasonal themes.
       </li>
       <li>
-        <strong>La motion</strong> dit comment il bouge : <code>shimmer</code>, <code>pulse</code>,
-        <code>wave</code>, <code>glitch</code>, seules ou combinées.
+        <strong>The motion</strong> says how it moves: <code>shimmer</code>, <code>pulse</code>,
+        <code>wave</code>, <code>glitch</code>, alone or combined.
       </li>
       <li>
-        <strong>Le timing</strong> dit quand : un délai avant l'apparition, pour éviter les
-        clignotements sur les chargements rapides, et un décalage entre les éléments.
+        <strong>The timing</strong> says when: a delay before appearing, to avoid flicker on
+        fast loads, and an offset between elements.
       </li>
     </ul>
     <CodeBlock title="charpente.config.ts" code={config} />
   </section>
 
   <section class="prose" aria-labelledby="suite-title">
-    <h2 id="suite-title">Explorer la documentation</h2>
+    <h2 id="suite-title">Explore the documentation</h2>
     <ul class="linkgrid">
       {
         links.map((item) => (

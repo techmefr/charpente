@@ -16,40 +16,40 @@ export default defineCharpente({
 ---
 
 <Base
-  title="Thèmes"
-  description="Les 35 thèmes de charpente rendus avec de vrais éléments : base, usages, atlas, saisons et fêtes."
+  title="Themes"
+  description="The 35 charpente themes rendered with real elements: base, use cases, atlas, seasons and holidays."
 >
   <div class="wide">
     <div class="prose">
-      <h1>Thèmes</h1>
+      <h1>Themes</h1>
       <p class="lead">
-        Un thème décrit comment peindre quatre familles d'éléments : le texte, les médias, les
-        contrôles et les blocs. Chaque carte ci-dessous est un vrai balisage en état de chargement.
+        A theme describes how to paint four families of elements: text, media, controls and
+        blocks. Each card below is real markup in its loading state.
       </p>
       <p>
-        Choisissez le thème d'une zone avec <code>data-charpente-theme</code>, ou d'un site entier
-        avec <code>defaultTheme</code>. Vous pouvez aussi{' '}
-        <a href={href('creer-un-theme')}>créer le vôtre</a>.
+        Choose the theme of an area with <code>data-charpente-theme</code>, or of an entire site
+        with <code>defaultTheme</code>. You can also{' '}
+        <a href={href('create-a-theme')}>create your own</a>.
       </p>
       <CodeBlock lang="html" code={usage} />
       <CodeBlock title="charpente.config.ts" code={extra} />
     </div>
 
     <div class="controls" role="group" aria-labelledby="gallery-controls">
-      <h2 id="gallery-controls" class="sr-only">Réglages de la galerie</h2>
+      <h2 id="gallery-controls" class="sr-only">Gallery settings</h2>
       <label class="field">
-        <span>Motion de toute la galerie</span>
+        <span>Motion for the whole gallery</span>
         <select id="gallery-motion">
-          <option value="">Défaut du site (shimmer)</option>
+          <option value="">Site default (shimmer)</option>
           {MOTIONS.map((motion) => <option value={motion.name}>{motion.name}</option>)}
           <option value="pulse shimmer">pulse + shimmer</option>
-          <option value="none">Aucune (none)</option>
+          <option value="none">None (none)</option>
         </select>
       </label>
       <div class="field">
-        <span>Fond de la page</span>
+        <span>Page background</span>
         <button type="button" class="btn btn--ghost" data-scheme-toggle aria-pressed="false">
-          Mode sombre
+          Dark mode
         </button>
       </div>
     </div>

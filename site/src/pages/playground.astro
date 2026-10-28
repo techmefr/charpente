@@ -13,22 +13,22 @@ const motions = [
 ]
 
 const kpis = [
-  { label: 'Chiffre d’affaires', value: '48 210 €', icon: 'circle' },
-  { label: 'Commandes', value: '1 204', icon: 'square' },
-  { label: 'Panier moyen', value: '40,05 €', icon: 'triangle' },
+  { label: 'Revenue', value: '$48,210', icon: 'circle' },
+  { label: 'Orders', value: '1,204', icon: 'square' },
+  { label: 'Average basket', value: '$40.05', icon: 'triangle' },
 ]
 
 const orders = [
-  ['1001', 'Atelier Lumière', '1 240,00 €', 'Payée'],
-  ['1002', 'Maison Verdier', '389,90 €', 'En cours'],
-  ['1003', 'Studio Pivoine', '2 075,50 €', 'Payée'],
-  ['1004', 'Café du Port', '96,00 €', 'Remboursée'],
+  ['1001', 'Lumière Workshop', '$1,240.00', 'Paid'],
+  ['1002', 'Verdier House', '$389.90', 'Pending'],
+  ['1003', 'Peony Studio', '$2,075.50', 'Paid'],
+  ['1004', 'Harbor Café', '$96.00', 'Refunded'],
 ]
 
 const products = [
-  { name: 'Carnet à spirale', note: 'Papier recyclé', from: '#f59e0b', to: '#ef4444' },
-  { name: 'Stylo plume bleu', note: 'Plume fine', from: '#38bdf8', to: '#6366f1' },
-  { name: 'Lampe de bureau', note: 'LED chaude', from: '#34d399', to: '#0ea5e9' },
+  { name: 'Spiral notebook', note: 'Recycled paper', from: '#f59e0b', to: '#ef4444' },
+  { name: 'Blue fountain pen', note: 'Fine nib', from: '#38bdf8', to: '#6366f1' },
+  { name: 'Desk lamp', note: 'Warm LED', from: '#34d399', to: '#0ea5e9' },
 ]
 
 const initial = stateAttributes({
@@ -41,29 +41,29 @@ const initial = stateAttributes({
 ---
 
 <Base
-  title="Terrain de jeu"
-  description="Choisissez le thème, les motions, le délai et le décalage, basculez entre clair et sombre et entre chargement et contenu, sur un tableau de bord réduit."
+  title="Playground"
+  description="Choose the theme, motions, delay and offset, switch between light and dark and between loading and content, on a small dashboard."
 >
   <div class="wide">
     <div class="prose">
-      <h1>Terrain de jeu</h1>
+      <h1>Playground</h1>
       <p class="lead">
-        Réglez les trois axes sur une page type tableau de bord. Le script de cette page ne fait
-        que poser et retirer des attributs : tout le rendu vient du CSS de charpente.
+        Adjust the three axes on a dashboard-style page. This page's script only
+        sets and removes attributes: all the rendering comes from charpente's CSS.
       </p>
     </div>
 
     <div class="pg">
       <form class="pg__controls" aria-labelledby="pg-title" onsubmit="return false">
-        <h2 id="pg-title" class="stage__label">Réglages</h2>
+        <h2 id="pg-title" class="stage__label">Settings</h2>
 
         <label class="field">
-          <span>Thème</span>
+          <span>Theme</span>
           <select id="pg-theme">
-            <optgroup label="Thèmes fournis">
+            <optgroup label="Built-in themes">
               {THEMES.map((theme) => <option value={theme.name}>{theme.label}</option>)}
             </optgroup>
-            <optgroup label="Thèmes de ce site">
+            <optgroup label="This site's themes">
               {CUSTOM_THEMES.map((theme) => <option value={theme.name}>{theme.label}</option>)}
             </optgroup>
           </select>
@@ -86,7 +86,7 @@ const initial = stateAttributes({
         </fieldset>
 
         <label class="field">
-          <span>Délai : <output id="pg-delay-out">120 ms</output></span>
+          <span>Delay: <output id="pg-delay-out">120 ms</output></span>
           <input id="pg-delay" type="range" min="0" max="2000" step="10" value="120" />
         </label>
 
@@ -98,19 +98,19 @@ const initial = stateAttributes({
         <div class="field">
           <span>Mode</span>
           <button type="button" class="btn btn--ghost" data-scheme-toggle aria-pressed="false">
-            Mode sombre
+            Dark mode
           </button>
         </div>
 
         <div class="field">
-          <span>État</span>
+          <span>State</span>
           <button type="button" class="btn" id="pg-toggle">
-            Afficher le contenu
+            Show content
           </button>
         </div>
 
         <div class="field">
-          <span>Attributs posés</span>
+          <span>Applied attributes</span>
           <p class="pg__readout"><code id="pg-readout"></code></p>
         </div>
         <p class="sr-only" id="pg-status" role="status"></p>
@@ -124,12 +124,12 @@ const initial = stateAttributes({
           {...initial}
         >
           <div class="mini__top">
-            <h3>Tableau de bord</h3>
-            <input type="search" placeholder="Rechercher" aria-label="Rechercher" />
-            <button type="button" class="ui-btn">Exporter</button>
+            <h3>Dashboard</h3>
+            <input type="search" placeholder="Search" aria-label="Search" />
+            <button type="button" class="ui-btn">Export</button>
           </div>
 
-          <section class="mini__kpis" aria-label="Indicateurs">
+          <section class="mini__kpis" aria-label="Indicators">
             {
               kpis.map((kpi) => (
                 <article class="kpi">
@@ -146,8 +146,8 @@ const initial = stateAttributes({
           </section>
 
           <section class="panel">
-            <h4>Ventes sur 12 mois</h4>
-            <svg class="chart" viewBox="0 0 600 140" role="img" aria-label="Courbe des ventes" preserveAspectRatio="none">
+            <h4>Sales over 12 months</h4>
+            <svg class="chart" viewBox="0 0 600 140" role="img" aria-label="Sales curve" preserveAspectRatio="none">
               <polyline
                 points="0,110 50,90 100,100 150,60 200,70 250,40 300,55 350,30 400,45 450,20 500,35 550,15 600,25"
                 fill="none"
@@ -158,10 +158,10 @@ const initial = stateAttributes({
           </section>
 
           <section class="panel">
-            <h4>Commandes récentes</h4>
+            <h4>Recent orders</h4>
             <table class="orders">
               <thead>
-                <tr><th scope="col">N°</th><th scope="col">Client</th><th scope="col">Total</th><th scope="col">Statut</th></tr>
+                <tr><th scope="col">No.</th><th scope="col">Customer</th><th scope="col">Total</th><th scope="col">Status</th></tr>
               </thead>
               <tbody>
                 {
@@ -179,30 +179,30 @@ const initial = stateAttributes({
           </section>
 
           <section class="panel">
-            <h4>Filtres</h4>
+            <h4>Filters</h4>
             <form class="mini__form" onsubmit="return false">
-              <label>Client <input type="text" name="customer" placeholder="Nom du client" /></label>
+              <label>Customer <input type="text" name="customer" placeholder="Customer name" /></label>
               <label>
-                Statut
+                Status
                 <select name="status">
-                  <option>Tous</option>
-                  <option>Payée</option>
-                  <option>En cours</option>
+                  <option>All</option>
+                  <option>Paid</option>
+                  <option>Pending</option>
                 </select>
               </label>
-              <label class="check"><input type="checkbox" name="late" /> Retards seulement</label>
-              <button type="submit" class="ui-btn">Appliquer</button>
+              <label class="check"><input type="checkbox" name="late" /> Late only</label>
+              <button type="submit" class="ui-btn">Apply</button>
             </form>
           </section>
 
-          <section class="mini__cards" aria-label="Catalogue">
+          <section class="mini__cards" aria-label="Catalog">
             {
               products.map((product) => (
                 <article class="mini__card">
                   <img width="320" height="120" alt="" src={photo(product.from, product.to)} />
                   <span class="lines__title">{product.name}</span>
                   <span class="lines__text">{product.note}</span>
-                  <button type="button" class="ui-btn">Ajouter</button>
+                  <button type="button" class="ui-btn">Add</button>
                 </article>
               ))
             }
