@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
 import { createJiti } from 'jiti'
 import type { Plugin } from 'vite'
 import { compile } from './compile'
@@ -10,6 +10,17 @@ const VIRTUAL_ID = 'virtual:charpente.css'
 export interface CharpenteViteOptions {
   config?: CharpenteConfig
   configFile?: string
+}
+
+const findConfig = (from: string, fileName: string): string | undefined => {
+  let directory = resolve(from)
+  while (true) {
+    const candidate = resolve(directory, fileName)
+    if (existsSync(candidate)) return candidate
+    const parent = dirname(directory)
+    if (parent === directory) return undefined
+    directory = parent
+  }
 }
 
 export function charpente(options: CharpenteViteOptions = {}): Plugin {
@@ -26,8 +37,7 @@ export function charpente(options: CharpenteViteOptions = {}): Plugin {
   return {
     name: 'charpente',
     configResolved(resolved) {
-      const candidate = resolve(resolved.root, options.configFile ?? 'charpente.config.ts')
-      configPath = existsSync(candidate) ? candidate : undefined
+      configPath = findConfig(resolved.root, options.configFile ?? 'charpente.config.ts')
     },
     resolveId(id) {
       return id === VIRTUAL_ID ? VIRTUAL_ID : undefined

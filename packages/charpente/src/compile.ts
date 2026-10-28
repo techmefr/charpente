@@ -159,6 +159,9 @@ const themeCss = (name: string, isDefault: boolean, themes: Record<string, Theme
       `background-size: 60% 100%, ${sizeList.join(', ')} !important`,
       `background-repeat: no-repeat, ${layers.map(() => 'repeat').join(', ')} !important`,
       `background-position: var(--charpente-shine-x, -80%) 0, ${layers.map(() => '0 0').join(', ')} !important`,
+      ...(type === 'text'
+        ? ['background-clip: content-box !important', 'background-origin: content-box !important']
+        : []),
       declarations(paint.style),
     ]
       .filter(Boolean)
@@ -262,10 +265,10 @@ const tokensCss = (config: CharpenteConfig): string => {
 
 const revealCss = (): string =>
   [
-    `[data-charpente-ready] > [data-charpente-content] > * {\n  animation: charpente-reveal-in 260ms ease-out;\n}`,
+    `[data-charpente-ready] > * {\n  animation: charpente-reveal-in 260ms ease-out;\n}`,
     `@media (prefers-reduced-motion: reduce) {`,
     `  ${allLeaves(LOADING).replace(/\n/g, '\n  ')} {\n    animation: none !important;\n    --charpente-shine-layer: none !important;\n  }`,
-    `  [data-charpente-ready] > [data-charpente-content] > * {\n    animation: none;\n  }`,
+    `  [data-charpente-ready] > * {\n    animation: none;\n  }`,
     `}`,
   ].join('\n')
 

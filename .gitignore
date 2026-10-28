@@ -1,3 +1,13 @@
 node_modules
 dist
 .DS_Store
+.nuxt
+.output
+.next
+.svelte-kit
+.astro
+vendor
+*.log
+test-results
+playwright-report
+screenshots

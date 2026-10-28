@@ -1,4 +1,13 @@
-import { defineComponent, h, onBeforeUnmount, ref, watch, type CSSProperties, type PropType } from 'vue'
+import {
+  Fragment,
+  defineComponent,
+  h,
+  onBeforeUnmount,
+  ref,
+  watch,
+  type CSSProperties,
+  type PropType,
+} from 'vue'
 
 const SCREEN_READER_ONLY: CSSProperties = {
   position: 'absolute',
@@ -17,6 +26,7 @@ export const motionAttribute = (motion: string | string[] | undefined): string |
 
 export const Charpente = defineComponent({
   name: 'Charpente',
+  inheritAttrs: false,
   props: {
     loading: { type: Boolean, default: false },
     tag: { type: String, default: 'div' },
@@ -27,7 +37,7 @@ export const Charpente = defineComponent({
     label: { type: String, default: '' },
     revealMs: { type: Number, default: 260 },
   },
-  setup(props, { slots }) {
+  setup(props, { slots, attrs }) {
     const ready = ref(false)
     let timer: ReturnType<typeof setTimeout> | undefined
 
@@ -49,31 +59,23 @@ export const Charpente = defineComponent({
       if (props.delay !== undefined) style['--charpente-delay'] = `${props.delay}ms`
       if (props.stagger !== undefined) style['--charpente-stagger'] = `${props.stagger}ms`
 
-      return h(
+      const root = h(
         props.tag,
         {
+          ...attrs,
           'data-charpente-loading': props.loading ? '' : undefined,
           'data-charpente-ready': ready.value ? '' : undefined,
           'data-charpente-theme': props.theme,
           'data-charpente-motion': motionAttribute(props.motion),
           'aria-busy': props.loading ? 'true' : undefined,
-          style,
+          inert: props.loading ? '' : undefined,
+          style: attrs.style || Object.keys(style).length > 0 ? [attrs.style, style] : undefined,
         },
-        [
-          h(
-            'div',
-            {
-              'data-charpente-content': '',
-              'aria-hidden': props.loading ? 'true' : undefined,
-              style: { display: 'contents' },
-            },
-            slots.default?.(),
-          ),
-          props.loading && props.label
-            ? h('span', { role: 'status', style: SCREEN_READER_ONLY }, props.label)
-            : null,
-        ],
+        slots.default?.(),
       )
+
+      if (!props.loading || !props.label) return root
+      return h(Fragment, [root, h('span', { role: 'status', style: SCREEN_READER_ONLY }, props.label)])
     }
   },
 })

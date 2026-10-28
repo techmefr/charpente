@@ -88,6 +88,10 @@ describe('compile', () => {
     expect(css).toContain('animation: none !important')
   })
 
+  it('keeps the padding of text leaves out of the paint', () => {
+    expect(compile().css).toContain('background-clip: content-box !important')
+  })
+
   it('hides children of a block so only the block is painted', () => {
     expect(compile().css).toContain('[data-charpente-block] > *')
   })
