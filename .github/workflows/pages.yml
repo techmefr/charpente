@@ -28,6 +28,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm build
+      - run: pnpm --filter ./examples/svelte exec svelte-kit sync
+      - run: pnpm --filter ./examples/nuxt exec nuxt prepare
       - run: pnpm --filter site build
       - uses: actions/upload-pages-artifact@v3
         with:
