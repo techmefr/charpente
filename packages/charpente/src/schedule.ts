@@ -55,15 +55,15 @@ export const themeAt = (config: ScheduleConfig, date: Date = new Date()): string
 
 const celebrations: ScheduleEntry[] = [
   { theme: 'halloween', from: '10-15', to: '11-02' },
-  { theme: 'noel', from: '12-15', to: '12-26' },
-  { theme: 'nouvel-an', from: '12-27', to: '01-03' },
+  { theme: 'christmas', from: '12-15', to: '12-26' },
+  { theme: 'new-year', from: '12-27', to: '01-03' },
 ]
 
 const seasons: ScheduleEntry[] = [
-  { theme: 'hiver', from: '12-21', to: '03-19' },
-  { theme: 'printemps', from: '03-20', to: '06-20' },
-  { theme: 'ete', from: '06-21', to: '09-22' },
-  { theme: 'automne', from: '09-23', to: '12-20' },
+  { theme: 'winter', from: '12-21', to: '03-19' },
+  { theme: 'spring', from: '03-20', to: '06-20' },
+  { theme: 'summer', from: '06-21', to: '09-22' },
+  { theme: 'autumn', from: '09-23', to: '12-20' },
 ]
 
 export const schedulePresets = {

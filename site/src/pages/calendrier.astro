@@ -19,8 +19,8 @@ export default defineCharpente({
   timeZone: 'Europe/Paris',
   schedule: [
     { theme: 'halloween', from: '10-24', to: '11-02' },
-    { theme: 'noel', from: '12-15', to: '12-31' },
-    { theme: 'hiver', from: '12-01', to: '02-15' },
+    { theme: 'christmas', from: '12-15', to: '12-31' },
+    { theme: 'winter', from: '12-01', to: '02-15' },
   ],
 })`
 
@@ -71,8 +71,8 @@ declare module 'virtual:charpente.theme' {
       <CodeBlock title="charpente.config.ts" code={scheduleExample} />
       <p class="warn">
         <span>Ordre des créneaux</span><br />
-        Dans l'exemple, <code>hiver</code> est déclaré après <code>noel</code> : du 15 au 31
-        décembre, c'est <code>noel</code> qui gagne, comme attendu.
+        Dans l'exemple, <code>winter</code> est déclaré après <code>christmas</code> : du 15 au 31
+        décembre, c'est <code>christmas</code> qui gagne, comme attendu.
       </p>
 
       <h2 id="site">Le calendrier de ce site</h2>

@@ -1,4 +1,5 @@
 import { extraThemes } from './extras'
+import { eventThemes, usageThemes } from './families'
 import { seasonalThemes } from './seasons'
 import type { ThemeDef } from './types'
 
@@ -153,5 +154,7 @@ const coreThemes: Record<string, ThemeDef> = {
 export const builtinThemes: Record<string, ThemeDef> = {
   ...coreThemes,
   ...extraThemes,
+  ...usageThemes,
+  ...eventThemes,
   ...seasonalThemes,
 }

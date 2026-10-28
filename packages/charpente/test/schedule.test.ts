@@ -51,13 +51,13 @@ describe('schedulePresets', () => {
   const config = { defaultTheme: 'solid', schedule: schedulePresets.all }
   it.each([
     ['2026-10-31', 'halloween'],
-    ['2026-12-25', 'noel'],
-    ['2026-12-31', 'nouvel-an'],
-    ['2027-01-02', 'nouvel-an'],
-    ['2027-02-10', 'hiver'],
-    ['2026-04-10', 'printemps'],
-    ['2026-07-14', 'ete'],
-    ['2026-09-30', 'automne'],
+    ['2026-12-25', 'christmas'],
+    ['2026-12-31', 'new-year'],
+    ['2027-01-02', 'new-year'],
+    ['2027-02-10', 'winter'],
+    ['2026-04-10', 'spring'],
+    ['2026-07-14', 'summer'],
+    ['2026-09-30', 'autumn'],
   ])('picks the theme for %s', (day, theme) => {
     expect(themeAt(config, new Date(`${day}T12:00:00Z`))).toBe(theme)
   })

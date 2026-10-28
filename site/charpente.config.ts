@@ -7,12 +7,12 @@ export default defineCharpente({
   timing: { delay: 120, stagger: 60 },
   colorScheme: { dark: '[data-theme="dark"]' },
   schedule: [
-    { theme: 'hiver', from: '01-01', to: '02-15' },
-    { theme: 'printemps', from: '03-20', to: '05-31' },
-    { theme: 'ete', from: '07-01', to: '08-31' },
-    { theme: 'automne', from: '09-22', to: '10-23' },
+    { theme: 'winter', from: '01-01', to: '02-15' },
+    { theme: 'spring', from: '03-20', to: '05-31' },
+    { theme: 'summer', from: '07-01', to: '08-31' },
+    { theme: 'autumn', from: '09-22', to: '10-23' },
     { theme: 'halloween', from: '10-24', to: '11-02' },
-    { theme: 'noel', from: '12-15', to: '12-31' },
+    { theme: 'christmas', from: '12-15', to: '12-31' },
   ],
   themes: {
     brume: {
