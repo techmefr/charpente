@@ -1,0 +1,145 @@
+:root {
+  --bg: #ffffff;
+  --surface: #f6f7f9;
+  --text: #15171c;
+  --muted: #5d6472;
+  --line: #e3e6ec;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+[data-theme='dark'] {
+  --bg: #0e1015;
+  --surface: #171a21;
+  --text: #eef0f4;
+  --muted: #9aa1b0;
+  --line: #262a33;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+.page__head h1 {
+  margin: 0;
+}
+
+.page__head p {
+  margin: 4px 0 24px;
+  color: var(--muted);
+}
+
+.panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  align-items: end;
+  padding: 16px;
+  margin-bottom: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.panel label,
+.panel fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.875rem;
+}
+
+.panel fieldset {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+}
+
+.panel legend {
+  margin-bottom: 4px;
+  padding: 0;
+}
+
+.check {
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.card__banner {
+  height: 72px;
+  background: linear-gradient(120deg, #6366f1, #ec4899);
+  border-radius: 8px;
+}
+
+.card__row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.card__avatar {
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.card__role {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.card__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.card__actions button,
+.card__actions input {
+  padding: 8px 12px;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.card__actions input {
+  flex: 1;
+  min-width: 0;
+}
