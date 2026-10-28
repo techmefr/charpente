@@ -1,0 +1,16 @@
+---
+import Sample from './Sample.astro'
+
+interface Props {
+  label: string
+  theme: string
+  motion?: string
+}
+
+const { label, theme, motion } = Astro.props
+---
+
+<div class="not-content cp stage">
+  <div class="stage__bar"><span class="stage__label">{label}</span></div>
+  <Sample theme={theme} motion={motion} />
+</div>

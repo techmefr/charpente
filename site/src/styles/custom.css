@@ -1,0 +1,17 @@
+:root {
+  --sl-content-width: 56rem;
+  --sl-font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --sl-color-accent-low: #cafafe;
+  --sl-color-accent: #b81d27;
+  --sl-color-accent-high: #7a1018;
+}
+
+:root[data-theme='dark'] {
+  --sl-color-accent-low: #3d1417;
+  --sl-color-accent: #fc4445;
+  --sl-color-accent-high: #3feee6;
+}
+
+.hero h1 {
+  letter-spacing: -0.03em;
+}

@@ -1,0 +1,118 @@
+---
+import Sample from './Sample.astro'
+import { MOTIONS } from '../lib/site'
+import { stateAttributes } from '../lib/state'
+
+interface Props {
+  kind: 'motions' | 'combos' | 'delays' | 'staggers'
+}
+
+const { kind } = Astro.props
+
+const combos = [
+  {
+    motion: 'pulse shimmer',
+    title: 'pulse + shimmer',
+    note: 'Compatible: the glint goes through a background layer, the breathing through opacity.',
+  },
+  {
+    motion: 'glitch shimmer',
+    title: 'glitch + shimmer',
+    note: 'Compatible: a movement and a background layer do not interfere.',
+  },
+  {
+    motion: 'pulse wave',
+    title: 'pulse + wave (conflict)',
+    note: 'Both animate opacity. Both animations are applied, the last one in the list wins, and the offset of wave disappears.',
+  },
+  {
+    motion: 'shimmer pulse',
+    title: 'shimmer pulse (badly sorted)',
+    note: 'No rule matches this order: the skeleton stays frozen. Always sort the names alphabetically.',
+  },
+]
+---
+
+<div class="not-content cp">
+  {
+    kind === 'motions' && (
+      <ul class="motionlist">
+        {MOTIONS.map((motion) => (
+          <li class="themecard">
+            <h3>
+              {motion.name} <code>{`data-charpente-motion="${motion.name}"`}</code>
+            </h3>
+            <p>{motion.note}</p>
+            <Sample motion={motion.name} />
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  {
+    kind === 'combos' && (
+      <ul class="combo">
+        {combos.map((combo) => (
+          <li class="themecard">
+            <h3>{combo.title}</h3>
+            <p>{combo.note}</p>
+            <Sample motion={combo.motion} />
+            <p>
+              <code>{`data-charpente-motion="${combo.motion}"`}</code>
+            </p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  {
+    kind === 'delays' && (
+      <ul class="combo">
+        {[0, 600, 1500].map((delay) => (
+          <li class="themecard">
+            <h3>
+              Delay <code>{`${delay} ms`}</code>
+            </h3>
+            <div
+              class="lines"
+              data-loop
+              data-loop-on="4200"
+              data-loop-off="1400"
+              {...stateAttributes({ loading: true, delay, motion: 'pulse' })}
+            >
+              <span class="lines__title">Card title</span>
+              <p class="lines__text">A text spanning two lines to judge how the skeleton appears.</p>
+              <button type="button" class="ui-btn">Action</button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  {
+    kind === 'staggers' && (
+      <ul class="combo">
+        {[0, 150].map((stagger) => (
+          <li class="themecard">
+            <h3>
+              Stagger <code>{`${stagger} ms`}</code>
+            </h3>
+            <div
+              class="bars"
+              data-loop
+              data-loop-on="4200"
+              data-loop-off="1400"
+              {...stateAttributes({ loading: true, delay: 0, stagger, motion: 'wave' })}
+            >
+              {Array.from({ length: 8 }, () => <div class="bar" />)}
+            </div>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</div>
+
+<script>
+  import '../scripts/loop'
+</script>

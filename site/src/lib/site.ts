@@ -1,32 +1,3 @@
-export const SITE_NAME = 'charpente'
-
-export const href = (path = ''): string => {
-  const base = import.meta.env.BASE_URL.replace(/\/+$/, '')
-  const clean = path.replace(/^\/+/, '')
-  return clean === '' ? `${base}/` : `${base}/${clean.replace(/\/*$/, '/')}`
-}
-
-export const asset = (path: string): string =>
-  `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/${path.replace(/^\/+/, '')}`
-
-export interface NavItem {
-  path: string
-  label: string
-  summary: string
-}
-
-export const NAV: NavItem[] = [
-  { path: '', label: 'Home', summary: 'Overview and live demo' },
-  { path: 'getting-started', label: 'Getting started', summary: 'Installation and integrations' },
-  { path: 'themes', label: 'Themes', summary: 'All 35 themes rendered for real' },
-  { path: 'motions', label: 'Motions and timing', summary: 'Animations, delay, stagger' },
-  { path: 'configuration', label: 'Configuration', summary: 'charpente.config.ts reference' },
-  { path: 'calendar', label: 'Seasonal calendar', summary: 'A theme chosen by date' },
-  { path: 'create-a-theme', label: 'Create a theme', summary: 'Step-by-step tutorial' },
-  { path: 'playground', label: 'Playground', summary: 'Tweak everything live' },
-  { path: 'accessibility', label: 'Accessibility', summary: 'What charpente does and does not do' },
-]
-
 export const THEMES = [
   { name: 'solid', label: 'Solid', note: 'Flat fill with text lines' },
   { name: 'outline', label: 'Outline', note: 'Dotted outlines' },
@@ -34,12 +5,15 @@ export const THEMES = [
   { name: 'cyberpunk', label: 'Cyberpunk', note: 'Neon, scanlines and cut corners' },
   { name: 'web', label: 'Web', note: 'Spider web' },
   { name: 'paper', label: 'Paper', note: 'Ruled paper, warm tone' },
-  { name: 'glass', label: 'Glass', note: 'Frosted glass, glint' },
+  { name: 'glass', label: 'Glass', note: 'Transparent glass with backdrop blur' },
+  { name: 'frost', label: 'Frost', note: 'Milky glass with stronger blur' },
+  { name: 'smoked', label: 'Smoked', note: 'Dark translucent smoked glass' },
   { name: 'blueprint', label: 'Blueprint', note: 'Blue gridded plan' },
   { name: 'halftone', label: 'Halftone', note: 'Print halftone dots' },
   { name: 'stripes', label: 'Stripes', note: 'Diagonal bands' },
   { name: 'scanline', label: 'Scanline', note: 'Sweep lines' },
   { name: 'neon', label: 'Neon', note: 'Glowing outline' },
+  { name: 'vegas', label: 'Vegas', note: 'Cyan and red conference palette' },
   { name: 'aurora', label: 'Aurora', note: 'Northern-lights gradient' },
   { name: 'brutalist', label: 'Brutalist', note: 'Hard block, sharp shadow' },
   { name: 'sketch', label: 'Sketch', note: 'Pencil hatching' },

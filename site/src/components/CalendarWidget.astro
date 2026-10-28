@@ -1,0 +1,26 @@
+---
+import Sample from './Sample.astro'
+---
+
+<section class="not-content cp stage" aria-labelledby="calc-title">
+  <div class="stage__bar">
+    <h3 id="calc-title" class="stage__label">Which theme on that day?</h3>
+  </div>
+  <div class="split">
+    <div class="pg__controls">
+      <label class="field">
+        <span>Date</span>
+        <input type="date" id="calendar-date" />
+      </label>
+      <p>Active theme: <strong id="calendar-theme" aria-live="polite">solid</strong></p>
+      <p class="pg__readout"><code id="calendar-call">activeTheme()</code></p>
+    </div>
+    <div id="calendar-sample">
+      <Sample theme="solid" />
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/calendar'
+</script>

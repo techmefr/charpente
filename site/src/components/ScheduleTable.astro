@@ -1,0 +1,16 @@
+---
+import config from '../../charpente.config'
+
+const entries = config.schedule ?? []
+---
+
+<table>
+  <caption>schedule from site/charpente.config.ts</caption>
+  <thead>
+    <tr><th scope="col">Theme</th><th scope="col">From</th><th scope="col">To</th></tr>
+  </thead>
+  <tbody>
+    {entries.map((entry) => <tr><td><code>{entry.theme}</code></td><td>{entry.from}</td><td>{entry.to}</td></tr>)}
+    <tr><td><code>{config.defaultTheme}</code></td><td colspan="2">the rest of the year (<code>defaultTheme</code>)</td></tr>
+  </tbody>
+</table>

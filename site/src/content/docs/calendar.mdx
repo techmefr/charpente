@@ -1,0 +1,79 @@
+---
+title: Seasonal calendar
+description: Automatically choose a theme by date with schedule, themeAt, the virtual:charpente.theme virtual module and the charpente theme command.
+---
+
+import { Aside } from '@astrojs/starlight/components'
+import CalendarWidget from '../../components/CalendarWidget.astro'
+import ScheduleTable from '../../components/ScheduleTable.astro'
+import ThemeTranscripts from '../../components/ThemeTranscripts.astro'
+
+`schedule` maps periods of the year to themes. Halloween in October, Christmas in December, and the default theme the rest of the time.
+
+## Declaring the slots
+
+Each slot has a `theme`, a start date `from` and an end date `to`, in `MM-DD` format, bounds included. The **first matching slot wins**. If `to` comes before `from`, the slot spans New Year (`12-01` to `02-15`). With no match, `defaultTheme` applies.
+
+The date is read in `timeZone` (for example `Europe/Paris`), not in the visitor's, so the theme changes at the same instant for everyone.
+
+```ts title="charpente.config.ts"
+import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  defaultTheme: 'solid',
+  timeZone: 'Europe/Paris',
+  schedule: [
+    { theme: 'halloween', from: '10-24', to: '11-02' },
+    { theme: 'christmas', from: '12-15', to: '12-31' },
+    { theme: 'winter', from: '12-01', to: '02-15' },
+  ],
+})
+```
+
+<Aside type="caution" title="Slot order">
+In the example, `winter` is declared after `christmas`: from December 15 to 31, `christmas` wins, as expected.
+</Aside>
+
+## This site's calendar
+
+<ScheduleTable />
+
+<CalendarWidget />
+
+## themeAt
+
+`themeAt(config, date)` is the pure function behind everything else. The date defaults to "now" when omitted.
+
+```ts
+import { themeAt } from 'charpente'
+import config from './charpente.config'
+
+themeAt(config, new Date('2026-10-31T12:00:00Z'))
+themeAt(config)
+```
+
+## virtual:charpente.theme
+
+The Vite plugin provides a virtual module with `defaultTheme`, `timeZone` and `schedule` already bundled. It exports `activeTheme(date?)`.
+
+```ts
+import { activeTheme } from 'virtual:charpente.theme'
+
+const root = document.documentElement
+root.dataset.charpenteTheme = activeTheme()
+root.dataset.charpenteTheme = activeTheme(new Date('2026-12-25T12:00:00Z'))
+```
+
+For TypeScript, declare the module in an `env.d.ts` file:
+
+```ts
+declare module 'virtual:charpente.theme' {
+  export const activeTheme: (date?: Date) => string
+}
+```
+
+## charpente theme --date
+
+The command prints the active theme, useful in a deploy script or to check a calendar. Without `--date`, it uses today. Here are the results for this site's configuration:
+
+<ThemeTranscripts />

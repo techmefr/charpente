@@ -1,0 +1,7 @@
+.sample:is([data-charpente-theme='glass'], [data-charpente-theme='frost'], [data-charpente-theme='smoked'])[data-charpente-loading] {
+  background:
+    radial-gradient(ellipse at 20% 25%, #8b5cf6 0 15%, transparent 15.5%),
+    radial-gradient(ellipse at 80% 70%, #f59eaa 0 20%, transparent 20.5%),
+    repeating-linear-gradient(115deg, transparent 0 24px, rgb(255 255 255 / 0.3) 24px 27px),
+    linear-gradient(135deg, #a2cee2, #c6b7e4 50%, #94cfc8);
+}

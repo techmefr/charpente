@@ -1,40 +1,37 @@
 ---
-import CodeBlock from '../components/CodeBlock.astro'
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro'
+import { Code } from '@astrojs/starlight/components'
 import Sample from '../components/Sample.astro'
-import Base from '../layouts/Base.astro'
-import { href, MOTIONS, THEMES } from '../lib/site'
+import { MOTIONS, THEMES } from '../lib/site'
 
-const usage = `
-<section data-charpente-loading data-charpente-theme="cyberpunk" aria-busy="true" inert>
+const usage = `<section data-charpente-loading data-charpente-theme="cyberpunk" aria-busy="true" inert>
   ...
 </section>`
 
-const extra = `
-export default defineCharpente({
+const extra = `export default defineCharpente({
   defaultTheme: 'cyberpunk',
 })`
 ---
 
-<Base
-  title="Themes"
-  description="The 35 charpente themes rendered with real elements: base, use cases, atlas, seasons and holidays."
+<StarlightPage
+  frontmatter={{
+    title: 'Themes',
+    description: 'The 35 charpente themes rendered with real elements: base, use cases, atlas, seasons and holidays.',
+    tableOfContents: false,
+  }}
 >
-  <div class="wide">
-    <div class="prose">
-      <h1>Themes</h1>
-      <p class="lead">
-        A theme describes how to paint four families of elements: text, media, controls and
-        blocks. Each card below is real markup in its loading state.
-      </p>
-      <p>
-        Choose the theme of an area with <code>data-charpente-theme</code>, or of an entire site
-        with <code>defaultTheme</code>. You can also{' '}
-        <a href={href('create-a-theme')}>create your own</a>.
-      </p>
-      <CodeBlock lang="html" code={usage} />
-      <CodeBlock title="charpente.config.ts" code={extra} />
-    </div>
+  <p>
+    A theme describes how to paint four families of elements: text, media, controls and blocks.
+    Each card below is real markup in its loading state.
+  </p>
+  <p>
+    Choose the theme of an area with <code>data-charpente-theme</code>, or of an entire site with
+    <code>defaultTheme</code>. You can also <a href="/charpente/create-a-theme/">create your own</a>.
+  </p>
+  <Code lang="html" code={usage} />
+  <Code lang="ts" title="charpente.config.ts" code={extra} />
 
+  <div class="not-content cp">
     <div class="controls" role="group" aria-labelledby="gallery-controls">
       <h2 id="gallery-controls" class="sr-only">Gallery settings</h2>
       <label class="field">
@@ -46,12 +43,6 @@ export default defineCharpente({
           <option value="none">None (none)</option>
         </select>
       </label>
-      <div class="field">
-        <span>Page background</span>
-        <button type="button" class="btn btn--ghost" data-scheme-toggle aria-pressed="false">
-          Dark mode
-        </button>
-      </div>
     </div>
 
     <ul class="themegrid" id="gallery">
@@ -72,4 +63,4 @@ export default defineCharpente({
   <script>
     import '../scripts/gallery'
   </script>
-</Base>
+</StarlightPage>

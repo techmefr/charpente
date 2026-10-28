@@ -1,0 +1,78 @@
+---
+title: charpente
+description: charpente generates pure CSS skeleton loaders from a single configuration file; theme, motion and timing are three independent axes.
+template: splash
+hero:
+  title: Pure CSS loading skeletons
+  tagline: You set an attribute on the area that is loading. charpente paints the text, images, buttons and blocks with the theme and animation of your choice, without a single line of runtime JavaScript.
+  actions:
+    - text: Get started
+      link: /charpente/getting-started/
+      icon: right-arrow
+    - text: Open the playground
+      link: /charpente/playground/
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components'
+import HomeDemo from '../../components/HomeDemo.astro'
+
+## The demo, for real
+
+This card switches on its own between the loading state and the content. It is the same markup: only three attributes change.
+
+<HomeDemo />
+
+## Three independent axes
+
+<CardGrid>
+  <Card title="The theme" icon="seti:css">
+    Says what a skeleton looks like: `solid`, `outline`, `dots`, `cyberpunk`, `web` and six seasonal themes.
+  </Card>
+  <Card title="The motion" icon="rocket">
+    Says how it moves: `shimmer`, `pulse`, `wave`, `glitch`, alone or combined.
+  </Card>
+  <Card title="The timing" icon="pencil">
+    Says when: a delay before appearing, to avoid flicker on fast loads, and an offset between elements.
+  </Card>
+</CardGrid>
+
+```ts title="charpente.config.ts"
+import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  defaultTheme: 'cyberpunk',
+  motion: ['shimmer', 'glitch'],
+  timing: { delay: 120, stagger: 40 },
+  colorScheme: { dark: '[data-theme="dark"]' },
+})
+```
+
+## Explore the documentation
+
+<CardGrid>
+  <Card title="Getting started" icon="open-book">
+    [Installation and integrations](/charpente/getting-started/)
+  </Card>
+  <Card title="Themes" icon="star">
+    [All 35 themes rendered for real](/charpente/themes/)
+  </Card>
+  <Card title="Motions and timing" icon="rocket">
+    [Animations, delay, stagger](/charpente/motions/)
+  </Card>
+  <Card title="Configuration" icon="setting">
+    [charpente.config.ts reference](/charpente/configuration/)
+  </Card>
+  <Card title="Seasonal calendar" icon="list-format">
+    [A theme chosen by date](/charpente/calendar/)
+  </Card>
+  <Card title="Create a theme" icon="pencil">
+    [Step-by-step tutorial](/charpente/create-a-theme/)
+  </Card>
+  <Card title="Playground" icon="puzzle">
+    [Tweak everything live](/charpente/playground/)
+  </Card>
+  <Card title="Accessibility" icon="approve-check">
+    [What charpente does and does not do](/charpente/accessibility/)
+  </Card>
+</CardGrid>

@@ -1,5 +1,7 @@
 ---
+import '../styles/glass.css'
 import { avatar, photo } from '../lib/avatars'
+import { palette } from '../lib/palette'
 import { stateAttributes, type StateOptions } from '../lib/state'
 
 interface Props extends StateOptions {
@@ -11,7 +13,7 @@ const { class: className, ...state } = Astro.props
 
 <div class:list={['sample', className]} {...stateAttributes(state)}>
   <div class="sample__head">
-    <img class="sample__avatar" width="44" height="44" alt="" src={avatar('CD', '#0b5f73')} />
+    <img class="sample__avatar" width="44" height="44" alt="" src={avatar('CD', palette.teal)} />
     <div class="sample__who">
       <span class="sample__name">Camille Durand</span>
       <span class="sample__role">Project lead</span>
@@ -20,7 +22,7 @@ const { class: className, ...state } = Astro.props
   <p class="sample__text">
     A short introduction spanning two or three lines, to show how text is painted line by line.
   </p>
-  <img class="sample__photo" width="320" height="90" alt="" src={photo('#38bdf8', '#6366f1')} />
+  <img class="sample__photo" width="320" height="90" alt="" src={photo(palette.sky, palette.indigo)} />
   <div class="sample__row">
     <button type="button" class="ui-btn">Follow</button>
     <button type="button" class="ui-btn">Message</button>

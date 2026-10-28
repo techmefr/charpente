@@ -1,6 +1,7 @@
 ---
-import Base from '../layouts/Base.astro'
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro'
 import { avatar, photo } from '../lib/avatars'
+import { palette } from '../lib/palette'
 import { CUSTOM_THEMES, THEMES } from '../lib/site'
 import { stateAttributes } from '../lib/state'
 
@@ -26,9 +27,9 @@ const orders = [
 ]
 
 const products = [
-  { name: 'Spiral notebook', note: 'Recycled paper', from: '#f59e0b', to: '#ef4444' },
-  { name: 'Blue fountain pen', note: 'Fine nib', from: '#38bdf8', to: '#6366f1' },
-  { name: 'Desk lamp', note: 'Warm LED', from: '#34d399', to: '#0ea5e9' },
+  { name: 'Spiral notebook', note: 'Recycled paper', from: palette.amber, to: palette.red },
+  { name: 'Blue fountain pen', note: 'Fine nib', from: palette.sky, to: palette.indigo },
+  { name: 'Desk lamp', note: 'Warm LED', from: palette.emerald, to: palette.ocean },
 ]
 
 const initial = stateAttributes({
@@ -40,18 +41,19 @@ const initial = stateAttributes({
 })
 ---
 
-<Base
-  title="Playground"
-  description="Choose the theme, motions, delay and offset, switch between light and dark and between loading and content, on a small dashboard."
+<StarlightPage
+  frontmatter={{
+    title: 'Playground',
+    description: 'Choose the theme, motions, delay and offset, switch between light and dark and between loading and content, on a small dashboard.',
+    tableOfContents: false,
+  }}
 >
-  <div class="wide">
-    <div class="prose">
-      <h1>Playground</h1>
-      <p class="lead">
-        Adjust the three axes on a dashboard-style page. This page's script only
-        sets and removes attributes: all the rendering comes from charpente's CSS.
-      </p>
-    </div>
+  <p>
+    Adjust the three axes on a dashboard-style page. This page's script only sets and removes
+    attributes: all the rendering comes from charpente's CSS. Use the theme switcher in the header
+    to toggle dark mode.
+  </p>
+  <div class="not-content cp">
 
     <div class="pg">
       <form class="pg__controls" aria-labelledby="pg-title" onsubmit="return false">
@@ -94,13 +96,6 @@ const initial = stateAttributes({
           <span>Stagger : <output id="pg-stagger-out">60 ms</output></span>
           <input id="pg-stagger" type="range" min="0" max="300" step="10" value="60" />
         </label>
-
-        <div class="field">
-          <span>Mode</span>
-          <button type="button" class="btn btn--ghost" data-scheme-toggle aria-pressed="false">
-            Dark mode
-          </button>
-        </div>
 
         <div class="field">
           <span>State</span>
@@ -215,4 +210,4 @@ const initial = stateAttributes({
   <script>
     import '../scripts/playground'
   </script>
-</Base>
+</StarlightPage>

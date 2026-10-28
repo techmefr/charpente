@@ -1,0 +1,101 @@
+---
+title: Create a theme
+description: 'Step-by-step tutorial: start from an existing theme with extends, change the tokens, add a paint, write a motion and see the result live.'
+---
+
+import { Aside } from '@astrojs/starlight/components'
+import ThemeStage from '../../components/ThemeStage.astro'
+
+We start from `solid`, change the colors, add a paint, then a motion. Each step is rendered next to its code, with the real CSS generated from this site's configuration file.
+
+The principle: a theme only needs to describe what changes. `extends` inherits the rest. The options are detailed in the [reference](/charpente/configuration/).
+
+## 1. Recolor with tokens
+
+The shortest theme: it extends `solid` and only changes its tokens. The colors are semi-transparent to stay readable in both light and dark.
+
+```ts title="charpente.config.ts"
+import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  themes: {
+    brume: {
+      extends: 'solid',
+      tokens: {
+        base: 'rgba(96, 165, 250, 0.3)',
+        strong: 'rgba(59, 130, 246, 0.55)',
+        shine: 'rgba(255, 255, 255, 0.6)',
+      },
+    },
+  },
+})
+```
+
+<ThemeStage label="Theme brume" theme="brume" />
+
+## 2. Add a paint
+
+A second theme extends the first and redefines the paint of three leaf types. Only the given fields are replaced: here, the radius of media and controls and the background of blocks.
+
+```ts title="charpente.config.ts"
+themes: {
+  'brume-ronde': {
+    extends: 'brume',
+    paint: {
+      media: { style: { borderRadius: '50%' } },
+      control: { style: { borderRadius: '999px' } },
+      block: {
+        fill: 'repeating-linear-gradient(45deg, var(--charpente-base) 0 10px, var(--charpente-strong) 10px 20px)',
+      },
+    },
+  },
+}
+```
+
+<ThemeStage label="Theme brume-ronde" theme="brume-ronde" />
+
+## 3. Write a motion
+
+A motion is a CSS animation applied to every leaf. With `staggered`, it starts in a cascade according to the site's `stagger`. The animated properties are free.
+
+```ts title="charpente.config.ts"
+motions: {
+  rebond: {
+    duration: '1.2s',
+    staggered: true,
+    keyframes: {
+      '0%, 100%': { transform: 'translateY(0)' },
+      '50%': { transform: 'translateY(-3px)' },
+    },
+  },
+}
+```
+
+```html
+<div
+  data-charpente-loading
+  data-charpente-theme="brume-ronde"
+  data-charpente-motion="rebond"
+  aria-busy="true"
+  inert
+>
+  ...
+</div>
+```
+
+<ThemeStage label="brume-ronde + rebond" theme="brume-ronde" motion="rebond" />
+
+## 4. Enable it everywhere
+
+Make it the default theme, or assign it to a period of the year with the [seasonal calendar](/charpente/calendar/).
+
+```ts title="charpente.config.ts"
+export default defineCharpente({
+  defaultTheme: 'brume-ronde',
+  motion: 'rebond',
+})
+```
+
+<Aside type="tip">
+You can try these themes in the [playground](/charpente/playground/), where `brume` and `brume-ronde` are offered in the list.
+</Aside>

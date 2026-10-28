@@ -144,7 +144,9 @@ expect((await root.getAttribute('data-charpente-loading')) !== null && (await ro
 expect((await style('backgroundImage')) !== 'none', 'playground: paint is back')
 
 const baseLight = await root.evaluate((e) => getComputedStyle(e).getPropertyValue('--charpente-base').trim())
-await playground.click('header [data-scheme-toggle]')
+for (let attempt = 0; attempt < 3 && (await playground.evaluate(() => document.documentElement.dataset.theme)) !== 'dark'; attempt++) {
+  await playground.click('starlight-rapide-theme-select button:visible')
+}
 expect((await playground.evaluate(() => document.documentElement.dataset.theme)) === 'dark', 'playground: switches to dark')
 const baseDark = await root.evaluate((e) => getComputedStyle(e).getPropertyValue('--charpente-base').trim())
 expect(baseDark !== baseLight, `playground: dark tokens active (${baseLight} -> ${baseDark})`)
@@ -154,12 +156,12 @@ await playground.close()
 const gallery = await context.newPage()
 await gallery.goto(urlOf('themes'), { waitUntil: 'networkidle' })
 const roots = gallery.locator('#gallery .sample')
-expect((await roots.count()) === 35, "themes: 35 themes rendered")
+expect((await roots.count()) === 36, "themes: 36 themes rendered")
 const images = new Set()
-for (let index = 0; index < 35; index++) {
+for (let index = 0; index < 36; index++) {
   images.add(await roots.nth(index).locator('.sample__name').evaluate((e) => getComputedStyle(e).backgroundImage))
 }
-expect(images.size === 35, `themes: 35 distinct text paints (${images.size})`)
+expect(images.size === 36, `themes: 36 distinct text paints (${images.size})`)
 await gallery.selectOption('#gallery-motion', 'glitch')
 expect((await roots.first().locator('.sample__name').evaluate((e) => getComputedStyle(e).animationName)).includes('charpente-glitch'), 'themes: global motion selector')
 await gallery.close()
@@ -171,7 +173,7 @@ if (shotsDir) {
   for (const scheme of ['light', 'dark']) {
     for (const [label, viewport] of Object.entries(sizes)) {
       const shotContext = await browser.newContext({ viewport })
-      await shotContext.addInitScript((value) => localStorage.setItem('charpente-scheme', value), scheme)
+      await shotContext.addInitScript((value) => localStorage.setItem('starlight-theme', value), scheme)
       for (const slug of targets) {
         const page = await shotContext.newPage()
         await page.goto(urlOf(slug), { waitUntil: 'networkidle' })

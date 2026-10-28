@@ -1,0 +1,67 @@
+---
+title: Motions and timing
+description: Shimmer, pulse, wave and glitch; each motion rendered, the delay before appearing, the offset between elements, combinations and their conflicts.
+---
+
+import { Aside } from '@astrojs/starlight/components'
+import LoopPause from '../../components/LoopPause.astro'
+import MotionDemos from '../../components/MotionDemos.astro'
+
+The motion describes the movement, the timing describes the moment. Both are set independently of the theme.
+
+<LoopPause />
+
+## The four motions
+
+Each one is a CSS animation applied to every leaf of the area. Without an attribute, the motion from `motion` in the configuration applies.
+
+<MotionDemos kind="motions" />
+
+## Combining and conflicts
+
+`data-charpente-motion` accepts several names separated by a space, **sorted alphabetically**. The compiler generates one rule per combination, up to six declared motions; beyond that, only single motions are generated.
+
+```html
+<div data-charpente-loading data-charpente-motion="pulse shimmer" aria-busy="true" inert>
+  ...
+</div>
+```
+
+Two motions that animate the same property conflict: the last one in the list wins. In the configuration, the compiler reports it with a warning; on an attribute, nothing is reported.
+
+```ts title="charpente.config.ts"
+export default defineCharpente({
+  motion: ['pulse', 'shimmer'],
+  timing: { delay: 120, stagger: 40 },
+})
+```
+
+<MotionDemos kind="combos" />
+
+## The delay
+
+`delay` postpones the appearance of the skeleton. In the meantime, the elements are hidden: a load shorter than the delay causes no flicker. Global setting in `timing.delay`, local setting with `--charpente-delay`.
+
+<MotionDemos kind="delays" />
+
+## The offset between elements
+
+`stagger` adds a delay proportional to the position of each element among its siblings (from 1 to 16): the skeleton appears in a cascade, and the `wave` motion ripples from one element to the next. Global setting in `timing.stagger`, local with `--charpente-stagger`.
+
+```html
+<div
+  data-charpente-loading
+  data-charpente-motion="wave"
+  style="--charpente-delay: 600ms; --charpente-stagger: 150ms"
+  aria-busy="true"
+  inert
+>
+  ...
+</div>
+```
+
+<MotionDemos kind="staggers" />
+
+<Aside title="Reduced motion">
+If the system asks for less animation (`prefers-reduced-motion`), all motions and the delay are disabled: the skeleton shows immediately, static. See the [Accessibility](/charpente/accessibility/) page.
+</Aside>

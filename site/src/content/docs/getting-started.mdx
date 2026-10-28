@@ -1,0 +1,232 @@
+---
+title: Getting started
+description: Install charpente, set the loading attributes and wire the CSS into Vite, Nuxt, React, Next, SvelteKit, Astro, Livewire or plain HTML.
+---
+
+import { Code } from '@astrojs/starlight/components'
+import { firstLine, firstLines, openingTag, throughLine } from '../../lib/snippets'
+import astroConfig from '../../../../examples/astro/astro.config.mjs?raw'
+import astroLayout from '../../../../examples/astro/src/layouts/Layout.astro?raw'
+import astroPage from '../../../../examples/astro/src/pages/simple.astro?raw'
+import livewireApp from '../../../../examples/livewire/resources/js/app.js?raw'
+import livewireBlade from '../../../../examples/livewire/resources/views/livewire/simple.blade.php?raw'
+import livewireComponent from '../../../../examples/livewire/app/Livewire/Simple.php?raw'
+import livewireVite from '../../../../examples/livewire/vite.config.js?raw'
+import nextLayout from '../../../../examples/next/app/layout.tsx?raw'
+import nextPackage from '../../../../examples/next/package.json'
+import nextState from '../../../../examples/next/app/_lib/state.ts?raw'
+import nuxtConfig from '../../../../examples/nuxt/nuxt.config.ts?raw'
+import nuxtPage from '../../../../examples/nuxt/app/pages/simple.vue?raw'
+import reactFixture from '../../../../examples/react/src/Fixture.tsx?raw'
+import reactVite from '../../../../examples/react/vite.config.ts?raw'
+import svelteLayout from '../../../../examples/svelte/src/routes/+layout.svelte?raw'
+import svelteLoad from '../../../../examples/svelte/src/routes/simple/+page.server.ts?raw'
+import sveltePage from '../../../../examples/svelte/src/routes/simple/+page.svelte?raw'
+import svelteVite from '../../../../examples/svelte/vite.config.ts?raw'
+import vanillaFixture from '../../../../examples/vanilla/src/fixture.js?raw'
+import simpleHtml from '../../../../fixtures/simple.html?raw'
+
+export const nextScripts = JSON.stringify({ scripts: nextPackage.scripts }, null, 2)
+export const nextConfig = `import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  defaultTheme: 'solid',
+  motion: 'shimmer',
+  timing: { delay: 120, stagger: 40 },
+})`
+
+Three steps: install the package, declare a theme, then mark the area that is loading.
+
+## 1. Install
+
+```bash
+pnpm add charpente
+# or: npm install charpente / yarn add charpente
+```
+
+## 2. Declare the configuration
+
+A `charpente.config.ts` file at the project root. Everything is optional: without configuration, you get the `solid` theme and the `shimmer` motion.
+
+```ts title="charpente.config.ts"
+import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  defaultTheme: 'solid',
+  motion: 'shimmer',
+  timing: { delay: 120 },
+})
+```
+
+## 3. Mark the area that is loading
+
+Three attributes are enough, set together on the container:
+
+- `data-charpente-loading` enables the skeleton on the whole subtree.
+- `aria-busy="true"` tells screen readers that the area is being updated.
+- `inert` takes the area out of keyboard navigation and the accessibility tree, so nobody can click a fake button.
+
+```html
+<section data-charpente-loading aria-busy="true" inert>
+  <h2>Team</h2>
+  <p>Four members</p>
+  <img src="/photo.jpg" alt="Team photo" width="320" height="120" />
+  <button type="button">Invite</button>
+</section>
+```
+
+When the data arrives, remove the three attributes: the real content is already there, in the same place, with no layout shift.
+
+| Name | Where | Role |
+| --- | --- | --- |
+| `data-charpente-loading` | container | Enables the skeleton. |
+| `data-charpente-theme` | container | Picks a theme, otherwise `defaultTheme`. |
+| `data-charpente-motion` | container | Names sorted alphabetically, separated by a space, or `none`. |
+| `data-charpente-block` | an element | Paints the element as a single block and hides its children. |
+| `data-charpente-ready` | container | Set for a few moments after loading for a fade-in. |
+| `--charpente-delay` | style | Delay before the skeleton appears, in `ms`. |
+| `--charpente-stagger` | style | Offset between siblings, in `ms`. |
+
+## Vite plugin and CLI
+
+The Vite plugin compiles the configuration on the fly and exposes two virtual modules. It re-reads the file on every change.
+
+```ts title="vite.config.ts"
+import { charpente } from 'charpente/vite'
+
+export default { plugins: [charpente()] }
+```
+
+```ts title="main.ts"
+import 'virtual:charpente.css'
+```
+
+`virtual:charpente.theme` gives today's theme according to the [seasonal calendar](/charpente/calendar/):
+
+```ts
+import { activeTheme } from 'virtual:charpente.theme'
+
+document.documentElement.dataset.charpenteTheme = activeTheme()
+```
+
+Without Vite, the `charpente build` command writes the CSS to a file. The `charpente theme` command prints the active theme for a date.
+
+```bash
+charpente build --config charpente.config.ts --out charpente.css
+charpente theme --date 2026-10-31
+```
+
+## Integrations
+
+Each snippet below comes from the repository's `examples/` folder. The examples drive the loading state with `?state=loading` in the URL, for testing.
+
+### Vite
+
+Plug in the plugin, import the CSS once in the entry point, then set the attributes.
+
+```ts title="vite.config.ts"
+import { charpente } from 'charpente/vite'
+
+export default { plugins: [charpente()] }
+```
+
+<Code title="examples/vanilla/src/fixture.js" lang="js" code={vanillaFixture} />
+
+### Nuxt and Vue
+
+Add the plugin to `vite.plugins` and the virtual CSS to `css`.
+
+<Code title="examples/nuxt/nuxt.config.ts" lang="ts" code={nuxtConfig} />
+
+<Code title="examples/nuxt/app/pages/simple.vue" lang="vue" code={nuxtPage} />
+
+The `charpente-vue` package provides a `<Charpente>` component that sets the attributes, announces the loading state and handles the fade-out.
+
+```vue
+<script setup lang="ts">
+import { Charpente } from 'charpente-vue'
+</script>
+
+<template>
+  <Charpente :loading="pending" label="Loading the profile" :motion="['pulse', 'shimmer']" :delay="200">
+    <UserCard :user="user ?? placeholder" />
+  </Charpente>
+</template>
+```
+
+| Prop | Type | Default | Role |
+| --- | --- | --- | --- |
+| `loading` | boolean | `false` | Enables the skeleton, sets `aria-busy` and `inert`. |
+| `tag` | string | `div` | Root element rendered. |
+| `theme` | string | none | Local theme. |
+| `motion` | string or string[] | none | Local motions, sorted automatically. |
+| `delay` | number | none | Delay in ms. |
+| `stagger` | number | none | Offset in ms. |
+| `label` | string | empty | Text of a `role="status"` region read during loading. |
+| `revealMs` | number | `260` | Duration of `data-charpente-ready` after loading. |
+
+### React
+
+Same Vite plugin, then the attributes in JSX.
+
+<Code title="examples/react/vite.config.ts" lang="ts" code={reactVite} />
+
+<Code title="examples/react/src/Fixture.tsx" lang="tsx" code={reactFixture} />
+
+### Next
+
+Next does not use Vite: the CLI writes the CSS before startup and build, then the layout imports it.
+
+<Code title="examples/next/package.json" lang="json" code={nextScripts} />
+
+<Code title="examples/next/charpente.config.ts" lang="ts" code={nextConfig} />
+
+<Code title="examples/next/app/layout.tsx" lang="tsx" code={nextLayout} />
+
+<Code title="examples/next/app/_lib/state.ts" lang="ts" code={nextState} />
+
+### SvelteKit
+
+<Code title="examples/svelte/vite.config.ts" lang="ts" code={svelteVite} />
+
+<Code title="examples/svelte/src/routes/+layout.svelte" lang="svelte" code={svelteLayout} />
+
+<Code title="examples/svelte/src/routes/simple/+page.server.ts" lang="ts" code={svelteLoad} />
+
+<Code title="examples/svelte/src/routes/simple/+page.svelte" lang="svelte" code={openingTag(sveltePage, '<main')} />
+
+### Astro
+
+This site is itself built this way. The repository's example renders the page on the server, this site generates it statically: the plugin is identical.
+
+<Code title="examples/astro/astro.config.mjs" lang="js" code={astroConfig} />
+
+<Code title="examples/astro/src/layouts/Layout.astro" lang="astro" code={astroLayout} />
+
+<Code title="examples/astro/src/pages/simple.astro" lang="astro" code={throughLine(astroPage, '<main')} />
+
+### Livewire and Laravel
+
+The Vite plugin sits next to `laravel-vite-plugin`. The loading state comes from a component property, the Blade template sets the attributes.
+
+<Code title="examples/livewire/vite.config.js" lang="js" code={livewireVite} />
+
+<Code title="examples/livewire/resources/js/app.js" lang="js" code={livewireApp} />
+
+<Code title="examples/livewire/app/Livewire/Simple.php" lang="php" code={livewireComponent} />
+
+<Code title="examples/livewire/resources/views/livewire/simple.blade.php" lang="blade" code={firstLine(livewireBlade)} />
+
+### Plain HTML
+
+Without a bundler, generate the file with the CLI and link it. Here is the markup of the example page `fixtures/simple.html`.
+
+```bash
+charpente build --out public/charpente.css
+```
+
+```html
+<link rel="stylesheet" href="/charpente.css" />
+```
+
+<Code title="fixtures/simple.html" lang="html" code={firstLines(simpleHtml, 12)} />

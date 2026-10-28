@@ -1,0 +1,12 @@
+---
+import { Code } from '@astrojs/starlight/components'
+import { themeAt } from 'charpente'
+import config from '../../charpente.config'
+
+const sampleDates = ['2026-03-01', '2026-10-31', '2026-12-25', '2026-06-15']
+const transcripts = sampleDates
+  .map((date) => `$ charpente theme --date ${date}\n${themeAt(config, new Date(`${date}T12:00:00Z`))}`)
+  .join('\n\n')
+---
+
+<Code lang="bash" code={transcripts} />

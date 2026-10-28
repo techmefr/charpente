@@ -1,0 +1,14 @@
+---
+import Default from '@astrojs/starlight/components/Search.astro'
+---
+
+<Default {...Astro.props}><slot /></Default>
+
+<script>
+  document.querySelectorAll('button[data-open-modal]').forEach((button) => {
+    const keys = [...button.querySelectorAll('kbd kbd')]
+    keys.forEach((key) => key.before(' '))
+    const shortcut = keys.map((key) => key.textContent).join(' ')
+    button.setAttribute('aria-label', [button.getAttribute('aria-label'), shortcut].filter(Boolean).join(' '))
+  })
+</script>

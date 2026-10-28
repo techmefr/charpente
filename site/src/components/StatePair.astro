@@ -1,0 +1,53 @@
+---
+import { stateAttributes } from '../lib/state'
+
+interface Props {
+  kind: 'checkbox' | 'mixed' | 'wrapped'
+}
+
+const { kind } = Astro.props
+const loading = stateAttributes({ loading: true })
+---
+
+<div class="not-content cp split">
+  {
+    kind === 'checkbox' && (
+      <>
+        <div class="stage">
+          <div class="stage__bar"><span class="stage__label">Content</span></div>
+          <label class="switch"><input type="checkbox" checked /> Late only</label>
+        </div>
+        <div class="stage">
+          <div class="stage__bar"><span class="stage__label">Loading</span></div>
+          <label class="switch" {...loading}><input type="checkbox" checked /> Late only</label>
+        </div>
+      </>
+    )
+  }
+  {
+    kind === 'mixed' && (
+      <>
+        <div class="stage">
+          <div class="stage__bar"><span class="stage__label">Content</span></div>
+          <p>Order <strong>#1042</strong> confirmed yesterday at 4 pm.</p>
+        </div>
+        <div class="stage">
+          <div class="stage__bar"><span class="stage__label">Loading</span></div>
+          <div {...loading}>
+            <p>Order <strong>#1042</strong> confirmed yesterday at 4 pm.</p>
+          </div>
+        </div>
+      </>
+    )
+  }
+  {
+    kind === 'wrapped' && (
+      <div class="stage">
+        <div class="stage__bar"><span class="stage__label">Loading, wrapped text</span></div>
+        <div {...loading}>
+          <p><span>Order</span> <strong>#1042</strong> <span>confirmed yesterday at 4 pm.</span></p>
+        </div>
+      </div>
+    )
+  }
+</div>

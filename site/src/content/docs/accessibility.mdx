@@ -1,0 +1,96 @@
+---
+title: Accessibility
+description: aria-busy, inert, aria-live region, prefers-reduced-motion, contrast and known limitations of charpente.
+---
+
+import StatePair from '../../components/StatePair.astro'
+
+A skeleton is an image. What makes it accessible are the attributes you set around it, and charpente cannot set them for you in pure CSS.
+
+## aria-busy
+
+`aria-busy="true"` tells assistive technologies that the area is being updated: they can wait until it finishes before reading it. Remove it when the content is ready.
+
+## inert
+
+`inert` removes the area from keyboard navigation, the accessibility tree and clicks. Without it, a user could activate an invisible button or tab into transparent text. charpente already hides the text (it is rendered transparent), but only `inert` truly prevents interaction and reading.
+
+## Announcing the loading state
+
+`aria-busy` says nothing out loud. To announce the start and end of loading, add a `role="status"` region (equivalent to an `aria-live="polite"`) that stays in the page and whose text you change. It must be **outside** the `inert` area, otherwise it is no longer accessible.
+
+```html
+<section data-charpente-loading aria-busy="true" inert>
+  ...
+</section>
+
+<p role="status" class="sr-only">Loading the order list</p>
+```
+
+The visual hiding style, to define once:
+
+```css
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+```
+
+The `<Charpente>` wrapper from `charpente-vue` does this with its `label` prop.
+
+## prefers-reduced-motion
+
+When the system asks for less motion, charpente turns off all skeleton animations, including the appearance delay: the skeleton is shown immediately, motionless. No configuration is needed.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  [data-charpente-loading] :is(...leaves) {
+    animation: none !important;
+    --charpente-shine-layer: none !important;
+  }
+}
+```
+
+The demo loops on this site also offer a pause button, as the "automatic motion" criterion requires.
+
+## Contrast
+
+Skeletons are deliberately low-contrast: they are content placeholders, not content. They carry no information, and the loading state must be conveyed by `aria-busy` and the `role="status"` region, not by color alone.
+
+If you want a more visible skeleton (dim screens, high-contrast mode), raise `strong` and `base` in `colorScheme.tokens`, or choose `outline`, whose dots follow `strong`.
+
+For this site: text reaches at least 4.5:1, focus is drawn with a 3 px outline and everything is usable with the keyboard.
+
+## Known limitations
+
+Two cases are not painted. They are rendered below with the same structure as content then as loading.
+
+### Checkboxes and radio buttons
+
+A native checkbox ignores the background image: the browser draws it itself. While loading, it therefore stays visible as is, and only its label (bare text in a `label`) becomes transparent.
+
+<StatePair kind="checkbox" />
+
+### Bare text in a mixed-content paragraph
+
+Only elements with no child elements are painted. In a paragraph mixing text and elements, bare text is hidden but not painted: only the parts wrapped in an element appear.
+
+```html
+<p>Order <strong>#1042</strong> confirmed yesterday.</p>
+```
+
+<StatePair kind="mixed" />
+
+Wrap each piece of text in an element, such as `span`:
+
+```html
+<p><span>Order</span> <strong>#1042</strong> <span>confirmed yesterday.</span></p>
+```
+
+<StatePair kind="wrapped" />
+
+An alternative is to mark the paragraph with `data-charpente-block`: it is then painted as a single block.

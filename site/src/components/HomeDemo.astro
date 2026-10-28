@@ -1,0 +1,57 @@
+---
+import { Code } from '@astrojs/starlight/components'
+import ProfileCard from './ProfileCard.astro'
+import { stateAttributes } from '../lib/state'
+
+const markup = `<article data-charpente-loading aria-busy="true" inert>
+  <img src="/avatar.png" alt="" width="54" height="54" />
+  <div>
+    <span>Camille Durand</span>
+    <span>Project lead</span>
+  </div>
+  <button type="button">Follow</button>
+</article>`
+---
+
+<div class="not-content split cp">
+  <div class="stage">
+    <div class="stage__bar">
+      <span class="stage__label">Profile card</span>
+      <button type="button" class="btn btn--ghost" data-loop-pause aria-pressed="false">
+        Pause the loop
+      </button>
+    </div>
+    <div
+      class="demo-profile"
+      data-loop
+      data-loop-on="2800"
+      data-loop-off="2400"
+      data-loop-status="#demo-status"
+      {...stateAttributes({ loading: true, theme: 'solid' })}
+    >
+      <ProfileCard loading={false} />
+      <p class="lines__text">
+        Camille has led the site redesign for three years. She likes projects where design and code
+        move forward together.
+      </p>
+      <div class="chips">
+        <span class="badge">12 projects</span>
+        <span class="badge">Lyon</span>
+        <span class="badge">Product team</span>
+      </div>
+    </div>
+    <p id="demo-status" class="sr-only" role="status"></p>
+  </div>
+  <Code lang="html" title="What charpente expects" code={markup} />
+</div>
+
+<script>
+  import '../scripts/loop'
+</script>
+
+<style is:global>
+  .demo-profile {
+    display: grid;
+    gap: 0.8rem;
+  }
+</style>

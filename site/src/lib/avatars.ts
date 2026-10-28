@@ -1,6 +1,8 @@
+import { palette } from './palette'
+
 const encode = (svg: string): string => `data:image/svg+xml,${encodeURIComponent(svg)}`
 
-export const avatar = (initials: string, background: string, foreground = '#ffffff'): string =>
+export const avatar = (initials: string, background: string, foreground = palette.white): string =>
   encode(
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="${background}"/><text x="32" y="40" font-family="system-ui,sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="${foreground}">${initials}</text></svg>`,
   )
@@ -11,8 +13,8 @@ export const photo = (from: string, to: string): string =>
   )
 
 export const PEOPLE = [
-  { name: 'Camille Durand', role: 'Project lead', initials: 'CD', color: '#0b5f73' },
-  { name: 'Mehdi Lambert', role: 'Front-end developer', initials: 'ML', color: '#7a3e9d' },
-  { name: 'Inès Morel', role: 'Designer', initials: 'IM', color: '#a1400f' },
-  { name: 'Hugo Perrin', role: 'Back-end developer', initials: 'HP', color: '#2b6a2f' },
+  { name: 'Camille Durand', role: 'Project lead', initials: 'CD', color: palette.teal },
+  { name: 'Mehdi Lambert', role: 'Front-end developer', initials: 'ML', color: palette.violet },
+  { name: 'Inès Morel', role: 'Designer', initials: 'IM', color: palette.rust },
+  { name: 'Hugo Perrin', role: 'Back-end developer', initials: 'HP', color: palette.green },
 ]

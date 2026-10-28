@@ -1,0 +1,180 @@
+---
+title: Configuration
+description: 'Full reference for charpente.config.ts: defaultTheme, schedule, timeZone, motion, timing, colorScheme, themes, motions, tokens and paints.'
+---
+
+Everything is set in `charpente.config.ts`. `defineCharpente` only types the object.
+
+```ts title="charpente.config.ts"
+import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  defaultTheme: 'solid',
+  timeZone: 'Europe/Paris',
+  schedule: [{ theme: 'christmas', from: '12-15', to: '12-31' }],
+  motion: ['pulse', 'shimmer'],
+  timing: { delay: 120, stagger: 40 },
+  colorScheme: {
+    dark: '[data-theme="dark"]',
+    tokens: {
+      light: { base: '#e5e7eb' },
+      dark: { base: '#2a2d34' },
+    },
+  },
+  themes: {
+    brume: {
+      extends: 'solid',
+      tokens: { base: 'rgba(96, 165, 250, 0.28)' },
+      paint: {
+        media: { style: { borderRadius: '50%' } },
+      },
+    },
+  },
+  motions: {
+    rebond: {
+      duration: '1.2s',
+      staggered: true,
+      keyframes: {
+        '0%, 100%': { transform: 'translateY(0)' },
+        '50%': { transform: 'translateY(-3px)' },
+      },
+    },
+  },
+})
+```
+
+## Top-level options
+
+| Option | Type | Default | Role |
+| --- | --- | --- | --- |
+| `defaultTheme` | string | `'solid'` | Theme of areas without `data-charpente-theme`. |
+| `schedule` | `ScheduleEntry[]` | `[]` | Seasonal slots, see [the calendar](/charpente/calendar/). |
+| `timeZone` | string (IANA) | runtime time zone | Time zone used to read today's date in `schedule`. |
+| `motion` | string or string[] | `'shimmer'` | Default motion(s). `'none'` disables. |
+| `timing` | `Timing` | `{ delay: 120, stagger: 0 }` | Default delay and offset. |
+| `colorScheme` | `ColorScheme` | system media query | Dark mode and per-mode tokens. |
+| `themes` | `Record<string, ThemeDef>` | `{}` | Adds themes, or replaces a built-in theme of the same name. |
+| `motions` | `Record<string, MotionDef>` | `{}` | Adds motions, or replaces a built-in motion. |
+
+### timing
+
+| Key | Default | Role |
+| --- | --- | --- |
+| `delay` | `120` ms | Wait before the skeleton appears. Overridable with `--charpente-delay`. |
+| `stagger` | `0` ms | Delay added per rank among siblings. Overridable with `--charpente-stagger`. |
+
+### colorScheme
+
+Without `dark`, dark tokens apply through `@media (prefers-color-scheme: dark)`. With `dark`, they apply to the element matching the selector, for example the `html` element carrying `data-theme="dark"`.
+
+```ts
+colorScheme: {
+  dark: '[data-theme="dark"]',
+  tokens: { dark: { base: '#1f2937', strong: '#374151' } },
+}
+```
+
+| Key | Type | Role |
+| --- | --- | --- |
+| `dark` | CSS selector | Replaces the media query with a selector. |
+| `tokens.light` | Tokens | Overrides light-mode tokens, set on `:root`. |
+| `tokens.dark` | Tokens | Overrides dark-mode tokens. |
+
+## Themes
+
+A theme has three fields, all optional: `extends`, `tokens` and `paint`. With `extends`, the theme inherits the parent's tokens and paints: tokens are merged, paints are merged type by type, and within `style` key by key. `fill` and `size` replace the parent's.
+
+### Tokens
+
+`--charpente-*` CSS variables usable in `fill` and `style`. A token defined in a theme applies to areas of that theme, whether the mode is light or dark.
+
+| Token | Light | Dark | Usage |
+| --- | --- | --- | --- |
+| `base` | `#e5e7eb` | `#2a2d34` | Main color of the skeleton. |
+| `strong` | `#c4c8d0` | `#454a55` | Outlines, patterns, subtle accents. |
+| `shine` | `rgba(255, 255, 255, 0.7)` | `rgba(255, 255, 255, 0.08)` | Glint color of `shimmer`. |
+| `accent` | `#0891b2` | `#22d3ee` | First decoration color. |
+| `accent2` | `#c026d3` | `#e879f9` | Second decoration color. |
+
+A `--charpente-radius` variable (`0.35em`) is also set on `:root`, used by `solid` for its corners.
+
+### Paint per leaf type
+
+A "leaf" is an element that is painted as a single piece. `paint` assigns a paint to each of the four types:
+
+| Type | Elements concerned |
+| --- | --- |
+| `text` | Any element without child elements (a paragraph, a heading, a link, a cell), except media and controls. |
+| `media` | `img`, `svg`, `video`, `canvas`, `picture`, `iframe`. |
+| `control` | `button`, `input`, `select`, `textarea`. |
+| `block` | Elements marked `data-charpente-block`: the element is painted as one block and its children are hidden. |
+
+| Key | Type | Role |
+| --- | --- | --- |
+| `fill` | string | Comma-separated background layers (`background-image`). Default: a flat `var(--charpente-base)` fill. |
+| `size` | string | Size of each layer, in the same order (`background-size`). `auto` for an unspecified layer. |
+| `style` | `Record<string, string>` | Added CSS declarations: `borderRadius`, `clipPath`, `outline`, or an `--x` variable. |
+
+```ts title="Custom paints"
+themes: {
+  stripes: {
+    extends: 'solid',
+    paint: {
+      text: {
+        fill: 'repeating-linear-gradient(to bottom, var(--charpente-base) 0 0.8lh, transparent 0.8lh 1lh)',
+        style: { borderRadius: '2px' },
+      },
+      media: {
+        fill: 'radial-gradient(circle, var(--charpente-strong) 1.4px, transparent 2px), linear-gradient(var(--charpente-base), var(--charpente-base))',
+        size: '8px 8px, auto',
+      },
+    },
+  },
+}
+```
+
+## Motions
+
+| Key | Default | Role |
+| --- | --- | --- |
+| `duration` | required | Duration of one cycle, for example `'1.4s'`. |
+| `easing` | `'ease-in-out'` | CSS timing function. |
+| `iterations` | `'infinite'` | Number of cycles. |
+| `staggered` | `false` | If true, starts after `delay + rank × stagger`, like `wave`. |
+| `layer` | none | Background layer overlaid on the leaves, used by `shimmer` for its glint. |
+| `keyframes` | required | Animation steps: `from`, `to` or percentages, each with its declarations. |
+
+```ts title="A custom motion"
+motions: {
+  blink: {
+    duration: '900ms',
+    easing: 'steps(2, end)',
+    iterations: 'infinite',
+    keyframes: {
+      from: { opacity: '1' },
+      to: { opacity: '0.4' },
+    },
+  },
+}
+```
+
+## Configuration errors
+
+The compiler fails with an explicit message in these cases:
+
+- an unknown theme in `defaultTheme`, `extends` or `schedule`;
+- a theme that extends itself, directly or in a loop;
+- an unknown motion in `motion`;
+- a `schedule` date that is not in `MM-DD` form;
+- an unknown time zone in `timeZone`.
+
+It warns, without failing, when two default motions animate the same property: the last one wins.
+
+## Exposed CSS variables
+
+| Variable | Role |
+| --- | --- |
+| `--charpente-delay` | Local delay, with unit (`200ms`). |
+| `--charpente-stagger` | Local offset, with unit. |
+| `--charpente-base`, `-strong`, `-shine`, `-accent`, `-accent2` | Tokens, overridable on any element of the area. |
+| `--charpente-radius` | Radius of `solid`. |
