@@ -1,6 +1,7 @@
 {
   "name": "charpente-vue",
   "version": "0.0.0",
+  "license": "MIT",
   "description": "Vue wrapper for charpente: a Charpente component that turns any slot into a pure CSS skeleton while loading.",
   "keywords": [
     "vue",

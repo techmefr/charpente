@@ -1,6 +1,7 @@
 {
   "name": "charpente",
   "version": "0.0.0",
+  "license": "MIT",
   "description": "Pure CSS skeleton loaders with no runtime JS. DOM detection in CSS, plus 35 themes, motions and timing configured in one file, with dark mode and date-based seasonal theming.",
   "keywords": [
     "skeleton",

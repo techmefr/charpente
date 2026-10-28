@@ -71,3 +71,7 @@ pnpm build
 pnpm test
 pnpm demo
 ```
+
+## License
+
+MIT
