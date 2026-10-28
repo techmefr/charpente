@@ -13,8 +13,9 @@ export interface LoadingAttributes {
 
 export const motionAttribute = (motion: string | string[] | undefined): string | undefined => {
   if (motion === undefined) return undefined
-  const names = Array.isArray(motion) ? [...motion].sort() : [motion]
-  return names.length === 0 ? 'none' : names.join(' ')
+  const names = (Array.isArray(motion) ? motion : [motion]).filter((name) => name !== '' && name !== 'none')
+  const unique = [...new Set(names)].sort()
+  return unique.length === 0 ? 'none' : unique.join(' ')
 }
 
 export const loadingAttributes = (options: LoadingOptions): LoadingAttributes => {

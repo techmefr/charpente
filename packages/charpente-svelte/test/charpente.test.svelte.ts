@@ -66,14 +66,14 @@ describe("Charpente", () => {
     expect(root.getAttribute("data-charpente-motion")).toBe("glitch shimmer")
   })
 
-  it("renders a status label only while loading", () => {
+  it("keeps the status region mounted and only fills it while loading", () => {
     render({ loading: true, label: "Loading" })
     expect(host.querySelector("[role=status]")?.textContent).toBe("Loading")
     unmount(instance!)
     host.innerHTML = ""
     instance = mount(Charpente, { target: host, props: { children: content, label: "Loading" } })
     flushSync()
-    expect(host.querySelector("[role=status]")).toBeNull()
+    expect(host.querySelector("[role=status]")?.textContent).toBe("")
   })
 
   it("sets the ready attribute for revealMs after loading ends", () => {
