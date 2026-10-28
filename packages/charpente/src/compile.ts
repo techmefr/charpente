@@ -46,6 +46,7 @@ const DEFAULT_TOKENS: { light: Required<Tokens>; dark: Required<Tokens> } = {
 
 interface ResolvedTheme {
   tokens: Tokens
+  dark: Tokens
   paint: Partial<Record<PaintType, Paint>>
 }
 
@@ -107,9 +108,10 @@ const resolveTheme = (
   if (chain.includes(name)) throw new Error(`charpente: theme "${name}" extends itself`)
   const parent = def.extends
     ? resolveTheme(def.extends, themes, [...chain, name])
-    : { tokens: {}, paint: {} }
+    : { tokens: {}, dark: {}, paint: {} }
   return {
     tokens: { ...parent.tokens, ...def.tokens },
+    dark: { ...parent.dark, ...def.dark },
     paint: mergePaint(parent.paint, def.paint),
   }
 }
@@ -140,7 +142,26 @@ const subsets = (names: string[]): string[][] => {
   return result
 }
 
-const themeCss = (name: string, isDefault: boolean, themes: Record<string, ThemeDef>): string => {
+const darkThemeTokens = (
+  scopes: string[],
+  tokens: Tokens,
+  scheme: CharpenteConfig['colorScheme'],
+): string => {
+  const body = tokenDeclarations(tokens)
+  if (scheme?.dark) {
+    const dark = scheme.dark
+    return `${scopes.map((scope) => `${dark} ${scope}`).join(',\n')} {\n  ${body};\n}`
+  }
+  const guarded = scheme?.light ? scopes.map((scope) => `${scope}:not(${scheme.light} *)`) : scopes
+  return `@media (prefers-color-scheme: dark) {\n  ${guarded.join(',\n  ')} {\n    ${body};\n  }\n}`
+}
+
+const themeCss = (
+  name: string,
+  isDefault: boolean,
+  themes: Record<string, ThemeDef>,
+  scheme: CharpenteConfig['colorScheme'],
+): string => {
   const resolved = resolveTheme(name, themes)
   const scopes = [`${LOADING}[data-charpente-theme="${name}"]`]
   if (isDefault) scopes.push(`${LOADING}:not([data-charpente-theme])`)
@@ -149,6 +170,9 @@ const themeCss = (name: string, isDefault: boolean, themes: Record<string, Theme
   if (Object.keys(resolved.tokens).length > 0) {
     blocks.push(`${scopes.join(',\n')} {\n  ${tokenDeclarations(resolved.tokens)};\n}`)
   }
+  if (Object.keys(resolved.dark).length > 0) {
+    blocks.push(darkThemeTokens(scopes, resolved.dark, scheme))
+  }
 
   for (const type of PAINT_TYPES) {
     const paint = resolved.paint[type] ?? {}
@@ -156,6 +180,7 @@ const themeCss = (name: string, isDefault: boolean, themes: Record<string, Theme
     const sizes = paint.size ? splitTopLevel(paint.size) : []
     const sizeList = layers.map((_, index) => sizes[index] ?? 'auto')
     const body = [
+      'background-color: transparent !important',
       `background-image: var(--charpente-shine-layer, none), ${layers.join(', ')} !important`,
       `background-size: 60% 100%, ${sizeList.join(', ')} !important`,
       `background-repeat: no-repeat, ${layers.map(() => 'repeat').join(', ')} !important`,
@@ -190,7 +215,7 @@ const motionCss = (
   const staggerDelay = `calc(${delayVar} + var(--charpente-i, 0) * var(--charpente-stagger, ${stagger}ms))`
   const reveal = `charpente-reveal 0s linear ${staggerDelay} both`
 
-  const rule = (scope: string, names: string[]): string => {
+  const rule = (scopes: string[], names: string[]): string => {
     const animations = [
       reveal,
       ...names.map((name) => {
@@ -202,7 +227,18 @@ const motionCss = (
     const layer = names.map((name) => motions[name]?.layer).find(Boolean)
     const body = [`animation: ${animations.join(', ')}`]
     if (layer) body.push(`--charpente-shine-layer: ${layer}`)
-    return `${allLeaves(scope)} {\n  ${body.join(';\n  ')};\n}`
+    return `${scopes.map(allLeaves).join(',\n')} {\n  ${body.join(';\n  ')};\n}`
+  }
+
+  const allNames = Object.keys(motions).sort()
+  const motionScopes = (names: string[]): string[] => {
+    const exact = `${LOADING}[data-charpente-motion="${names.join(' ')}"]`
+    if (allNames.length > MAX_COMBINED_MOTIONS) return [exact]
+    const has = names.map((name) => `[data-charpente-motion~="${name}"]`)
+    const lacks = allNames
+      .filter((name) => !names.includes(name))
+      .map((name) => `:not([data-charpente-motion~="${name}"])`)
+    return [exact, `${LOADING}${has.join('')}${lacks.join('')}`]
   }
 
   const seen = new Map<string, string>()
@@ -222,11 +258,9 @@ const motionCss = (
   }
 
   const rules = [
-    rule(`${LOADING}:not([data-charpente-motion])`, defaultNames),
-    rule(`${LOADING}[data-charpente-motion="none"]`, []),
-    ...subsets(Object.keys(motions).sort()).map((names) =>
-      rule(`${LOADING}[data-charpente-motion="${names.join(' ')}"]`, names),
-    ),
+    rule([`${LOADING}:not([data-charpente-motion])`], defaultNames),
+    rule([`${LOADING}[data-charpente-motion="none"]`], []),
+    ...subsets(allNames).map((names) => rule(motionScopes(names), names)),
   ]
   return rules.join('\n')
 }
@@ -261,8 +295,25 @@ const tokensCss = (config: CharpenteConfig): string => {
   const dark = { ...DEFAULT_TOKENS.dark, ...config.colorScheme?.tokens?.dark }
   const root = `:root {\n  --charpente-radius: 0.35em;\n  ${tokenDeclarations(light)};\n}`
   const darkSelector = config.colorScheme?.dark
-  if (darkSelector) return `${root}\n${darkSelector} {\n  ${tokenDeclarations(dark)};\n}`
-  return `${root}\n@media (prefers-color-scheme: dark) {\n  :root {\n    ${tokenDeclarations(dark)};\n  }\n}`
+  const lightSelector = config.colorScheme?.light
+  const forcedLight = lightSelector ? `\n${lightSelector} {\n  ${tokenDeclarations(light)};\n}` : ''
+  if (darkSelector) return `${root}\n${darkSelector} {\n  ${tokenDeclarations(dark)};\n}${forcedLight}`
+  return `${root}\n@media (prefers-color-scheme: dark) {\n  :root {\n    ${tokenDeclarations(dark)};\n  }\n}${forcedLight}`
+}
+
+const selectThemes = (config: CharpenteConfig, themes: Record<string, ThemeDef>): string[] => {
+  const all = Object.keys(themes)
+  if (!config.include) return all
+  for (const name of config.include) {
+    if (!themes[name]) throw new Error(`charpente: include uses unknown theme "${name}"`)
+  }
+  const kept = new Set([
+    ...config.include,
+    config.defaultTheme ?? 'solid',
+    ...(config.schedule ?? []).map((entry) => entry.theme),
+    ...Object.keys(config.themes ?? {}),
+  ])
+  return all.filter((name) => kept.has(name))
 }
 
 const revealCss = (): string =>
@@ -289,7 +340,9 @@ export function compile(config: CharpenteConfig = {}): CompileResult {
   const layered = [
     tokensCss(config),
     baseCss(),
-    ...Object.keys(themes).map((name) => themeCss(name, name === defaultTheme, themes)),
+    ...selectThemes(config, themes).map((name) =>
+      themeCss(name, name === defaultTheme, themes, config.colorScheme),
+    ),
     motionCss(motions, defaultMotion, delay, stagger, warnings),
     revealCss(),
   ].join('\n')

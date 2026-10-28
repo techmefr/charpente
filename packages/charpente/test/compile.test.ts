@@ -127,6 +127,44 @@ describe('compile', () => {
     expect(compile().css).toMatch(/\[data-charpente-loading\] svg \* \{\s*visibility: hidden/)
   })
 
+  it('neutralises the host background color on every leaf', () => {
+    expect(compile().css).toContain('background-color: transparent !important')
+  })
+
+  it('applies theme dark tokens under the media query', () => {
+    const { css } = compile({ defaultTheme: 'hiver' })
+    expect(css).toMatch(/@media \(prefers-color-scheme: dark\) \{\s*\[data-charpente-loading\]\[data-charpente-theme="hiver"\]/)
+  })
+
+  it('applies theme dark tokens under the dark selector and keeps forced light out', () => {
+    const selector = compile({ defaultTheme: 'hiver', colorScheme: { dark: '[data-theme="dark"]' } }).css
+    expect(selector).toContain('[data-theme="dark"] [data-charpente-loading][data-charpente-theme="hiver"]')
+    const media = compile({ defaultTheme: 'hiver', colorScheme: { light: '[data-theme="light"]' } }).css
+    expect(media).toContain('[data-charpente-theme="hiver"]:not([data-theme="light"] *)')
+    expect(media).toContain('[data-theme="light"] {')
+  })
+
+  it('matches motion names whatever their order in the attribute', () => {
+    expect(compile().css).toContain(
+      '[data-charpente-loading][data-charpente-motion~="glitch"][data-charpente-motion~="shimmer"]:not([data-charpente-motion~="pulse"])',
+    )
+  })
+
+  it('ships only the included themes plus default, scheduled and custom ones', () => {
+    const { css } = compile({
+      defaultTheme: 'solid',
+      include: ['dots'],
+      schedule: [{ theme: 'noel', from: '12-15', to: '12-26' }],
+      themes: { mine: { extends: 'solid' } },
+    })
+    for (const name of ['solid', 'dots', 'noel', 'mine']) expect(css).toContain(`data-charpente-theme="${name}"`)
+    for (const name of ['cyberpunk', 'halloween']) expect(css).not.toContain(`data-charpente-theme="${name}"`)
+  })
+
+  it('rejects an include entry that is not a theme', () => {
+    expect(() => compile({ include: ['nope'] })).toThrow('include uses unknown theme "nope"')
+  })
+
   it('hides children of a block so only the block is painted', () => {
     expect(compile().css).toContain('[data-charpente-block] > *')
   })

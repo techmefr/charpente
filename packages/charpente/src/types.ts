@@ -15,6 +15,7 @@ export interface Paint {
 export interface ThemeDef {
   extends?: string
   tokens?: Tokens
+  dark?: Tokens
   paint?: Partial<Record<PaintType, Paint>>
 }
 
@@ -34,6 +35,7 @@ export interface Timing {
 
 export interface ColorScheme {
   dark?: string
+  light?: string
   tokens?: {
     light?: Tokens
     dark?: Tokens
@@ -48,6 +50,7 @@ export interface ScheduleEntry {
 
 export interface CharpenteConfig {
   defaultTheme?: string
+  include?: string[]
   timeZone?: string
   schedule?: ScheduleEntry[]
   motion?: string | string[]

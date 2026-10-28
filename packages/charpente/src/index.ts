@@ -2,7 +2,7 @@ import type { CharpenteConfig } from './types'
 
 export { compile } from './compile'
 export { builtinMotions } from './motions'
-export { themeAt } from './schedule'
+export { schedulePresets, themeAt } from './schedule'
 export { builtinThemes, flat } from './themes'
 export type * from './types'
 

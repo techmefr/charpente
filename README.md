@@ -54,7 +54,13 @@ import 'virtual:charpente.css'
 </Charpente>
 ```
 
-Thèmes : `solid`, `outline`, `dots`, `cyberpunk`, `web`. Motions : `shimmer`, `pulse`, `wave`, `glitch`.
+Thèmes : `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `blueprint`, `halloween`, `noel`, `nouvel-an`, `hiver`, `ete`, `printemps`, `automne`. Motions : `shimmer`, `pulse`, `wave`, `glitch`.
+
+`schedule: schedulePresets.all` (import depuis `charpente`) applique les fêtes puis les saisons ; `celebrations` et `seasons` existent séparément.
+
+`include: ['dots', 'noel']` ne livre que ces thèmes, plus le thème par défaut, ceux du calendrier et les vôtres.
+
+Un thème peut définir `dark: { ... }` pour ses tokens en mode sombre, et `colorScheme.light` (ex. `'[data-theme="light"]'`) force le clair dans un sous-arbre.
 
 ## Développement
 
