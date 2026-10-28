@@ -154,12 +154,12 @@ await playground.close()
 const gallery = await context.newPage()
 await gallery.goto(urlOf('themes'), { waitUntil: 'networkidle' })
 const roots = gallery.locator('#gallery .sample')
-expect((await roots.count()) === 11, 'themes: 11 thèmes rendus')
+expect((await roots.count()) === 24, "themes: 24 thèmes rendus")
 const images = new Set()
-for (let index = 0; index < 11; index++) {
+for (let index = 0; index < 24; index++) {
   images.add(await roots.nth(index).locator('.sample__name').evaluate((e) => getComputedStyle(e).backgroundImage))
 }
-expect(images.size === 11, `themes: 11 peintures texte distinctes (${images.size})`)
+expect(images.size === 24, `themes: 24 peintures texte distinctes (${images.size})`)
 await gallery.selectOption('#gallery-motion', 'glitch')
 expect((await roots.first().locator('.sample__name').evaluate((e) => getComputedStyle(e).animationName)).includes('charpente-glitch'), 'themes: sélecteur de motion global')
 await gallery.close()
