@@ -2,10 +2,10 @@ import type { Paint, PaintType, ThemeDef } from './types'
 
 type PaintBuilder = (step: number) => Paint
 
-const tint = (token: string, percent: number): string =>
+export const tint = (token: string, percent: number): string =>
   `color-mix(in srgb, var(--charpente-${token}) ${percent}%, transparent)`
 
-const scaled = (build: PaintBuilder): Partial<Record<PaintType, Paint>> => ({
+export const scaled = (build: PaintBuilder): Partial<Record<PaintType, Paint>> => ({
   text: build(1),
   control: build(1.5),
   media: build(2.5),
@@ -61,6 +61,14 @@ export const seasonalThemes: Record<string, ThemeDef> = {
     paint: scaled((step) => ({
       fill: `radial-gradient(circle at 25% 30%, rgba(244, 114, 182, 0.75) 0 ${2.5 * step}px, transparent ${2.5 * step + 0.5}px), radial-gradient(circle at 75% 70%, rgba(250, 204, 21, 0.8) 0 ${2 * step}px, transparent ${2 * step + 0.5}px), linear-gradient(90deg, #dcfce7, #fce7f3)`,
       size: `${16 * step}px ${16 * step}px, ${16 * step}px ${16 * step}px, auto`,
+      style: { borderRadius: `${3 * step}px` },
+    })),
+  },
+  'nouvel-an': {
+    tokens: { accent: '#eab308', accent2: '#a855f7', shine: 'rgba(255, 244, 200, 0.85)' },
+    paint: scaled((step) => ({
+      fill: `radial-gradient(circle at 20% 35%, ${tint('accent2', 80)} 0 ${1.5 * step}px, transparent ${1.5 * step + 0.5}px), radial-gradient(circle at 70% 65%, rgba(255, 255, 255, 0.9) 0 ${1.2 * step}px, transparent ${1.2 * step + 0.5}px), linear-gradient(90deg, ${tint('accent', 55)}, rgba(250, 204, 21, 0.3), ${tint('accent', 55)})`,
+      size: `${14 * step}px ${14 * step}px, ${10 * step}px ${10 * step}px, auto`,
       style: { borderRadius: `${3 * step}px` },
     })),
   },

@@ -21,6 +21,10 @@ const THEMES = [
   'ete',
   'printemps',
   'automne',
+  'nouvel-an',
+  'paper',
+  'glass',
+  'blueprint',
 ]
 const PAGES = ['simple', 'complex'] as const
 const ROOT = '[data-testid="root"]'

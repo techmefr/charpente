@@ -67,7 +67,7 @@ describe('compile', () => {
     expect(() => compile({ motion: 'nope' })).toThrow('unknown motion "nope"')
   })
 
-  it.each(['halloween', 'noel', 'hiver', 'ete', 'printemps', 'automne'])(
+  it.each(['halloween', 'noel', 'hiver', 'ete', 'printemps', 'automne', 'nouvel-an', 'paper', 'glass', 'blueprint'])(
     'ships the %s theme with a paint for every leaf type',
     (name) => {
       const { css } = compile({ defaultTheme: name })
