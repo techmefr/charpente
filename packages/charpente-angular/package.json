@@ -1,0 +1,44 @@
+{
+  "name": "charpente-angular",
+  "version": "0.0.0",
+  "license": "MIT",
+  "description": "Angular wrapper for charpente: a standalone [charpente] directive that turns any element into a pure CSS skeleton while loading.",
+  "keywords": [
+    "angular",
+    "skeleton",
+    "skeleton-loader",
+    "loading",
+    "charpente"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techmefr/charpente.git",
+    "directory": "packages/charpente-angular"
+  },
+  "homepage": "https://techmefr.github.io/charpente/",
+  "bugs": "https://github.com/techmefr/charpente/issues",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=19",
+    "charpente": "*"
+  },
+  "devDependencies": {
+    "@angular/core": "^22.0.0",
+    "charpente": "workspace:*",
+    "rxjs": "^7.8.0"
+  }
+}

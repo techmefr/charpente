@@ -1,5 +1,6 @@
 import 'virtual:charpente.css'
 import './style.css'
+import { setLoading } from 'charpente/dom'
 
 const GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
@@ -25,19 +26,17 @@ const row = (person) => `
     <a class="text-sm text-indigo-600" href="mailto:${person.mail}">${person.mail}</a>
   </li>`
 
-const setLoading = (loading) => {
-  list.toggleAttribute('data-charpente-loading', loading)
-  list.setAttribute('aria-busy', String(loading))
-  list.toggleAttribute('inert', loading)
+const setBusy = (loading) => {
+  setLoading(list, { loading })
   reload.disabled = loading
 }
 
 const load = () => {
-  setLoading(true)
+  setBusy(true)
   list.innerHTML = people.map(() => row(placeholder)).join('')
   setTimeout(() => {
     list.innerHTML = people.map(row).join('')
-    setLoading(false)
+    setBusy(false)
   }, 1800)
 }
 

@@ -8,7 +8,8 @@
     "preview": "vite preview --port 5205 --strictPort --host"
   },
   "dependencies": {
-    "charpente": "link:../../packages/charpente"
+    "charpente": "link:../../packages/charpente",
+    "charpente-svelte": "link:../../packages/charpente-svelte"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^6.0.0",

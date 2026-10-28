@@ -11,6 +11,9 @@ importers:
       charpente:
         specifier: link:../../packages/charpente
         version: link:../../packages/charpente
+      charpente-react:
+        specifier: link:../../packages/charpente-react
+        version: link:../../packages/charpente-react
       next:
         specifier: ^16.4.3
         version: 16.4.3(@types/node@24.19.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)

@@ -1,4 +1,4 @@
-<div data-testid="root" class="dash" @if ($loading) data-charpente-loading aria-busy="true" inert @endif>
+<x-charpente :loading="$loading" tag="div" data-testid="root" class="dash">
   <aside class="dash__side">
     <p class="dash__brand">Atelier</p>
     <nav aria-label="Principal">
@@ -129,4 +129,4 @@
       </div>
     </section>
   </div>
-</div>
+</x-charpente>

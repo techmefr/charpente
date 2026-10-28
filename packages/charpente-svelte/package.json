@@ -1,0 +1,30 @@
+{
+  "name": "charpente-svelte",
+  "version": "0.0.0",
+  "license": "MIT",
+  "description": "Svelte 5 wrapper for charpente: a Charpente component that turns its content into a pure CSS skeleton while loading.",
+  "keywords": ["svelte", "svelte5", "sveltekit", "skeleton", "skeleton-loader", "loading", "charpente"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techmefr/charpente.git",
+    "directory": "packages/charpente-svelte"
+  },
+  "homepage": "https://techmefr.github.io/charpente/",
+  "bugs": "https://github.com/techmefr/charpente/issues",
+  "type": "module",
+  "files": ["src"],
+  "svelte": "./src/index.js",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "svelte": "./src/index.js",
+      "default": "./src/index.js"
+    }
+  },
+  "dependencies": {
+    "charpente": "workspace:*"
+  },
+  "peerDependencies": {
+    "svelte": ">=5"
+  }
+}

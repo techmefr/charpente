@@ -1,9 +1,10 @@
-import { loadingAttributes, type SearchParams } from "../_lib/state"
+import { Charpente } from "charpente-react"
+import { isLoading, type SearchParams } from "../_lib/state"
 
 export default async function SimplePage({ searchParams }: { searchParams: SearchParams }) {
-  const attributes = await loadingAttributes(searchParams)
+  const loading = await isLoading(searchParams)
   return (
-    <main data-testid="root" className="page" {...attributes}>
+    <Charpente as="main" data-testid="root" className="page" loading={loading}>
         <header className="page__head">
           <h1>Équipe</h1>
           <p>Quatre collaborateurs</p>
@@ -42,6 +43,6 @@ export default async function SimplePage({ searchParams }: { searchParams: Searc
             <a href="mailto:hugo@exemple.fr">hugo@exemple.fr</a>
           </li>
         </ul>
-      </main>
+      </Charpente>
   )
 }

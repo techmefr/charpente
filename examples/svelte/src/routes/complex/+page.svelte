@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Charpente } from "charpente-svelte"
   let { data } = $props()
 
   const pixel = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
@@ -27,13 +28,7 @@
   const tabs = ["Populaires", "Nouveautés", "Promotions"]
 </script>
 
-<div
-  data-testid="root"
-  class="dash"
-  data-charpente-loading={data.loading ? "" : undefined}
-  aria-busy={data.loading ? "true" : undefined}
-  inert={data.loading}
->
+<Charpente data-testid="root" class="dash" loading={data.loading}>
   <aside class="dash__side">
     <p class="dash__brand">Atelier</p>
     <nav aria-label="Principal">
@@ -149,4 +144,4 @@
       </div>
     </section>
   </div>
-</div>
+</Charpente>

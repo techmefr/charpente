@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Charpente } from "charpente-svelte"
   let { data } = $props()
 
   const people = [
@@ -10,13 +11,7 @@
   const pixel = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
 </script>
 
-<main
-  data-testid="root"
-  class="page"
-  data-charpente-loading={data.loading ? "" : undefined}
-  aria-busy={data.loading ? "true" : undefined}
-  inert={data.loading}
->
+<Charpente tag="main" data-testid="root" class="page" loading={data.loading}>
   <header class="page__head">
     <h1>Équipe</h1>
     <p>Quatre collaborateurs</p>
@@ -33,4 +28,4 @@
       </li>
     {/each}
   </ul>
-</main>
+</Charpente>

@@ -5,4 +5,5 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   server: { port: 5203, strictPort: true, fs: { allow: ['../..'] } },
   plugins: [react(), charpente()],
+  build: { target: "esnext" },
 })

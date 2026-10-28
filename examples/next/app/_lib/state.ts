@@ -1,9 +1,7 @@
 export type SearchParams = Promise<{ state?: string | string[] }>
 
-export const loadingAttributes = async (searchParams: SearchParams) => {
+export const isLoading = async (searchParams: SearchParams): Promise<boolean> => {
   const { state } = await searchParams
   const value = Array.isArray(state) ? state[0] : state
   return value === "loading"
-    ? { "data-charpente-loading": "", "aria-busy": "true" as const, inert: true }
-    : {}
 }

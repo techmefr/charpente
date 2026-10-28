@@ -30,14 +30,16 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean --external vue",
+    "build": "tsup src/index.ts --format esm --dts --clean --external vue --external charpente",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vue": ">=3.4"
+    "vue": ">=3.4",
+    "charpente": "*"
   },
   "devDependencies": {
-    "vue": ">=3.4"
+    "vue": ">=3.4",
+    "charpente": "workspace:*"
   }
 }

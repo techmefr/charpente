@@ -1,11 +1,11 @@
 ---
+import Charpente from "charpente-astro"
 import Layout from "../layouts/Layout.astro"
 export const prerender = false
 const loading = Astro.url.searchParams.get("state") === "loading"
-const rootAttrs = loading ? { "data-charpente-loading": "", "aria-busy": "true", inert: true } : {}
 ---
 <Layout>
-<div data-testid="root" class="dash" {...rootAttrs}>
+<Charpente as="div" loading={loading} data-testid="root" class="dash">
   <aside class="dash__side">
     <p class="dash__brand">Atelier</p>
     <nav aria-label="Principal">
@@ -138,5 +138,5 @@ const rootAttrs = loading ? { "data-charpente-loading": "", "aria-busy": "true",
       </div>
     </section>
   </div>
-</div>
+</Charpente>
 </Layout>

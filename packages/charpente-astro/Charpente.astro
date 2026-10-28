@@ -1,0 +1,24 @@
+---
+import { loadingAttributes } from "charpente"
+
+interface Props {
+  loading?: boolean
+  as?: string
+  theme?: string
+  motion?: string | string[]
+  delay?: number
+  stagger?: number
+  label?: string
+  [attribute: string]: unknown
+}
+
+const { loading = false, as: Tag = "div", theme, motion, delay, stagger, label = "", style, ...rest } = Astro.props
+const { attributes: base, style: variables } = loadingAttributes({ loading, theme, motion, delay, stagger })
+const attributes: Record<string, string | boolean> = { ...base }
+if (loading) attributes.inert = true
+const inline = Object.entries(variables).map(([name, value]) => name + ":" + value).join(";")
+const mergedStyle = [typeof style === "string" ? style : "", inline].filter(Boolean).join(";") || undefined
+const screenReaderOnly = "position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"
+---
+<Tag {...rest} {...attributes} style={mergedStyle}><slot /></Tag>
+{loading && label && <span role="status" style={screenReaderOnly}>{label}</span>}

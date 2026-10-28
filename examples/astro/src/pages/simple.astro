@@ -1,11 +1,11 @@
 ---
+import Charpente from "charpente-astro"
 import Layout from "../layouts/Layout.astro"
 export const prerender = false
 const loading = Astro.url.searchParams.get("state") === "loading"
-const rootAttrs = loading ? { "data-charpente-loading": "", "aria-busy": "true", inert: true } : {}
 ---
 <Layout>
-<main data-testid="root" class="page" {...rootAttrs}>
+<Charpente as="main" loading={loading} data-testid="root" class="page">
   <header class="page__head">
     <h1>Équipe</h1>
     <p>Quatre collaborateurs</p>
@@ -44,5 +44,5 @@ const rootAttrs = loading ? { "data-charpente-loading": "", "aria-busy": "true",
       <a href="mailto:hugo@exemple.fr">hugo@exemple.fr</a>
     </li>
   </ul>
-</main>
+</Charpente>
 </Layout>

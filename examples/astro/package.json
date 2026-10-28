@@ -10,6 +10,7 @@
   "dependencies": {
     "@astrojs/node": "^11.1.9",
     "astro": "^7.4.2",
-    "charpente": "link:../../packages/charpente"
+    "charpente": "link:../../packages/charpente",
+    "charpente-astro": "link:../../packages/charpente-astro"
   }
 }

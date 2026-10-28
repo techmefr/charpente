@@ -11,6 +11,9 @@ importers:
       charpente:
         specifier: link:../../packages/charpente
         version: link:../../packages/charpente
+      charpente-svelte:
+        specifier: link:../../packages/charpente-svelte
+        version: link:../../packages/charpente-svelte
     devDependencies:
       '@sveltejs/adapter-auto':
         specifier: ^6.0.0

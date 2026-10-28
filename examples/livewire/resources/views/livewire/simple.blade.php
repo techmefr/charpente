@@ -1,4 +1,4 @@
-<main data-testid="root" class="page" @if ($loading) data-charpente-loading aria-busy="true" inert @endif>
+<x-charpente :loading="$loading" tag="main" data-testid="root" class="page">
   <header class="page__head">
     <h1>Équipe</h1>
     <p>Quatre collaborateurs</p>
@@ -20,4 +20,4 @@
       </li>
     @endforeach
   </ul>
-</main>
+</x-charpente>

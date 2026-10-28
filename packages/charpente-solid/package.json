@@ -1,0 +1,43 @@
+{
+  "name": "charpente-solid",
+  "version": "0.0.0",
+  "license": "MIT",
+  "description": "SolidJS wrapper for charpente: a Charpente component that turns any children into a pure CSS skeleton while loading.",
+  "keywords": [
+    "solid",
+    "solidjs",
+    "skeleton",
+    "skeleton-loader",
+    "loading",
+    "charpente"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techmefr/charpente.git",
+    "directory": "packages/charpente-solid"
+  },
+  "homepage": "https://techmefr.github.io/charpente/",
+  "bugs": "https://github.com/techmefr/charpente/issues",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean --external solid-js --external charpente",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "charpente": "*",
+    "solid-js": ">=1.8"
+  },
+  "devDependencies": {
+    "charpente": "workspace:*",
+    "solid-js": "^1.9.0"
+  }
+}

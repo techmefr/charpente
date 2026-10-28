@@ -1,16 +1,15 @@
 <script setup lang="ts">
+import { Charpente } from 'charpente-vue'
 import '../../../../fixtures/page.css'
 import html from '../../../../fixtures/complex.html?raw'
 
 const route = useRoute()
 const loading = computed(() => route.query.state === 'loading')
-const markup = computed(() =>
-  loading.value
-    ? html.replace('data-testid="root"', 'data-testid="root" data-charpente-loading aria-busy="true" inert')
-    : html,
-)
+const inner = html.replace(/^<div[^>]*>/, '').replace(/<\/div>\s*$/, '')
 </script>
 
 <template>
-  <div v-html="markup" />
+  <div>
+    <Charpente tag="div" class="dash" data-testid="root" :loading="loading" v-html="inner" />
+  </div>
 </template>

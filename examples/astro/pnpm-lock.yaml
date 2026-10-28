@@ -17,6 +17,9 @@ importers:
       charpente:
         specifier: link:../../packages/charpente
         version: link:../../packages/charpente
+      charpente-astro:
+        specifier: link:../../packages/charpente-astro
+        version: link:../../packages/charpente-astro
 
 packages:
 

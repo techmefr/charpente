@@ -8,6 +8,7 @@ import {
   type CSSProperties,
   type PropType,
 } from 'vue'
+import { loadingAttributes, motionAttribute } from 'charpente'
 
 const SCREEN_READER_ONLY: CSSProperties = {
   position: 'absolute',
@@ -18,11 +19,7 @@ const SCREEN_READER_ONLY: CSSProperties = {
   whiteSpace: 'nowrap',
 }
 
-export const motionAttribute = (motion: string | string[] | undefined): string | undefined => {
-  if (motion === undefined) return undefined
-  const names = Array.isArray(motion) ? [...motion].sort() : [motion]
-  return names.length === 0 ? 'none' : names.join(' ')
-}
+export { motionAttribute }
 
 export const Charpente = defineComponent({
   name: 'Charpente',
@@ -55,20 +52,20 @@ export const Charpente = defineComponent({
     onBeforeUnmount(() => clearTimeout(timer))
 
     return () => {
-      const style: Record<string, string> = {}
-      if (props.delay !== undefined) style['--charpente-delay'] = `${props.delay}ms`
-      if (props.stagger !== undefined) style['--charpente-stagger'] = `${props.stagger}ms`
+      const { attributes, style } = loadingAttributes({
+        loading: props.loading,
+        theme: props.theme,
+        motion: props.motion,
+        delay: props.delay,
+        stagger: props.stagger,
+      })
 
       const root = h(
         props.tag,
         {
           ...attrs,
-          'data-charpente-loading': props.loading ? '' : undefined,
+          ...attributes,
           'data-charpente-ready': ready.value ? '' : undefined,
-          'data-charpente-theme': props.theme,
-          'data-charpente-motion': motionAttribute(props.motion),
-          'aria-busy': props.loading ? 'true' : undefined,
-          inert: props.loading ? '' : undefined,
           style: attrs.style || Object.keys(style).length > 0 ? [attrs.style, style] : undefined,
         },
         slots.default?.(),

@@ -1,3 +1,4 @@
+import { Charpente } from 'charpente-react'
 import { useEffect, useState } from 'react'
 
 interface Product {
@@ -50,13 +51,7 @@ export function App() {
         </div>
       </header>
 
-      <ul
-        className="grid"
-        data-charpente-loading={loading ? '' : undefined}
-        data-charpente-theme={theme}
-        aria-busy={loading}
-        inert={loading}
-      >
+      <Charpente as="ul" className="grid" loading={loading} theme={theme}>
         {items.map((product, index) => (
           <li key={index} className="tile">
             <img className="tile__img" width={96} height={96} alt="" src={GIF} />
@@ -65,7 +60,7 @@ export function App() {
             <strong>{product.price}</strong>
           </li>
         ))}
-      </ul>
+      </Charpente>
     </main>
   )
 }

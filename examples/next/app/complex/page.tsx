@@ -1,9 +1,10 @@
-import { loadingAttributes, type SearchParams } from "../_lib/state"
+import { Charpente } from "charpente-react"
+import { isLoading, type SearchParams } from "../_lib/state"
 
 export default async function ComplexPage({ searchParams }: { searchParams: SearchParams }) {
-  const attributes = await loadingAttributes(searchParams)
+  const loading = await isLoading(searchParams)
   return (
-    <div data-testid="root" className="dash" {...attributes}>
+    <Charpente as="div" data-testid="root" className="dash" loading={loading}>
         <aside className="dash__side">
           <p className="dash__brand">Atelier</p>
           <nav aria-label="Principal">
@@ -131,6 +132,6 @@ export default async function ComplexPage({ searchParams }: { searchParams: Sear
             </div>
           </section>
         </div>
-      </div>
+      </Charpente>
   )
 }
