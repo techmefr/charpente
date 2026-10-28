@@ -7,77 +7,47 @@ export const tint = (token: string, percent: number): string =>
 
 export const scaled = (build: PaintBuilder): Partial<Record<PaintType, Paint>> => ({
   text: build(1),
-  control: build(1.5),
-  media: build(2.5),
-  block: build(3),
+  control: build(1),
+  media: build(1.15),
+  block: build(1.15),
 })
 
-const ghostEdge = (depth: number): string => {
-  const teeth = Array.from(
-    { length: 10 },
-    (_, index) => `${95 - index * 10}% ${index % 2 === 0 ? '100%' : `calc(100% - ${depth}px)`}`,
-  )
-  return `polygon(0 0, 100% 0, 100% calc(100% - ${depth}px), ${teeth.join(', ')}, 0 calc(100% - ${depth}px))`
+export const motif = (drawing: string, width = 48, height = 48): string => {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${drawing}</svg>`
+  return `url("data:image/svg+xml,${encodeURIComponent(svg).replace(/'/g, '%27')}")`
 }
 
+const seasonal = (accent: string, accent2: string, drawing: string): ThemeDef => ({
+  tokens: { accent, accent2 },
+  dark: { shine: 'rgba(255,255,255,0.16)' },
+  paint: {
+    text: {
+      fill: `linear-gradient(90deg, ${tint('accent', 28)}, ${tint('accent2', 16)})`,
+      style: { borderRadius: '4px' },
+    },
+    control: {
+      fill: `linear-gradient(135deg, ${tint('accent', 20)}, ${tint('accent2', 12)})`,
+      style: { borderRadius: '6px', boxShadow: `inset 0 0 0 1px ${tint('accent', 45)}` },
+    },
+    media: {
+      fill: `${motif(drawing)}, linear-gradient(135deg, ${tint('accent', 12)}, ${tint('accent2', 8)})`,
+      size: '48px 48px, auto',
+      style: { borderRadius: '8px', boxShadow: `inset 0 0 0 1px ${tint('accent', 24)}` },
+    },
+    block: {
+      fill: `${motif(drawing)}, linear-gradient(135deg, ${tint('accent', 12)}, ${tint('accent2', 8)})`,
+      size: '48px 48px, auto',
+      style: { borderRadius: '8px' },
+    },
+  },
+})
+
 export const seasonalThemes: Record<string, ThemeDef> = {
-  halloween: {
-    tokens: { accent: '#f97316', accent2: '#7c3aed', shine: 'rgba(249, 115, 22, 0.4)' },
-    paint: scaled((step) => ({
-      fill: `radial-gradient(circle at 18% 50%, ${tint('accent', 60)} 0 ${3 * step}px, transparent ${3 * step + 0.5}px), linear-gradient(90deg, ${tint('accent2', 26)}, ${tint('accent', 32)})`,
-      size: 'auto, auto',
-      style: { clipPath: ghostEdge(4 * step) },
-    })),
-  },
-  christmas: {
-    tokens: { accent: '#dc2626', accent2: '#16a34a', shine: 'rgba(255, 255, 255, 0.7)' },
-    paint: scaled((step) => ({
-      fill: `radial-gradient(circle, rgba(255, 255, 255, 0.95) ${1.2 * step}px, transparent ${1.2 * step + 0.5}px), repeating-linear-gradient(45deg, ${tint('accent', 30)} 0 ${8 * step}px, ${tint('accent2', 30)} ${8 * step}px ${16 * step}px)`,
-      size: `${12 * step}px ${12 * step}px, auto`,
-      style: { borderRadius: `${3 * step}px` },
-    })),
-  },
-  winter: {
-    tokens: { accent: '#38bdf8', accent2: '#818cf8', shine: 'rgba(255, 255, 255, 0.85)' },
-    dark: { shine: 'rgba(186, 230, 253, 0.25)' },
-    paint: scaled((step) => ({
-      fill: `repeating-conic-gradient(from 0deg at 50% 50%, ${tint('shine', 65)} 0 15deg, transparent 15deg 30deg), linear-gradient(135deg, ${tint('accent', 32)}, ${tint('accent2', 20)})`,
-      size: `${12 * step}px ${12 * step}px, auto`,
-      style: {
-        borderRadius: `${2 * step}px`,
-        boxShadow: `inset 0 0 0 1px ${tint('accent', 70)}`,
-      },
-    })),
-  },
-  summer: {
-    tokens: { accent: '#f59e0b', accent2: '#06b6d4', shine: 'rgba(255, 255, 255, 0.75)' },
-    paint: scaled((step) => ({
-      fill: `repeating-radial-gradient(circle at 50% 120%, transparent 0 ${5 * step}px, rgba(255, 255, 255, 0.5) ${5 * step}px ${7 * step}px), linear-gradient(90deg, ${tint('accent', 45)}, ${tint('accent2', 28)})`,
-      size: 'auto, auto',
-      style: { borderRadius: step === 1 ? '999px' : `${4 * step}px` },
-    })),
-  },
-  spring: {
-    tokens: { accent: '#22c55e', accent2: '#f472b6', shine: 'rgba(255, 255, 255, 0.8)' },
-    paint: scaled((step) => ({
-      fill: `radial-gradient(circle at 25% 30%, rgba(244, 114, 182, 0.75) 0 ${2.5 * step}px, transparent ${2.5 * step + 0.5}px), radial-gradient(circle at 75% 70%, rgba(250, 204, 21, 0.8) 0 ${2 * step}px, transparent ${2 * step + 0.5}px), linear-gradient(90deg, ${tint('accent', 24)}, ${tint('accent2', 24)})`,
-      size: `${16 * step}px ${16 * step}px, ${16 * step}px ${16 * step}px, auto`,
-      style: { borderRadius: `${3 * step}px` },
-    })),
-  },
-  'new-year': {
-    tokens: { accent: '#eab308', accent2: '#a855f7', shine: 'rgba(255, 244, 200, 0.85)' },
-    paint: scaled((step) => ({
-      fill: `radial-gradient(circle at 20% 35%, ${tint('accent2', 80)} 0 ${1.5 * step}px, transparent ${1.5 * step + 0.5}px), radial-gradient(circle at 70% 65%, rgba(255, 255, 255, 0.9) 0 ${1.2 * step}px, transparent ${1.2 * step + 0.5}px), linear-gradient(90deg, ${tint('accent', 55)}, rgba(250, 204, 21, 0.3), ${tint('accent', 55)})`,
-      size: `${14 * step}px ${14 * step}px, ${10 * step}px ${10 * step}px, auto`,
-      style: { borderRadius: `${3 * step}px` },
-    })),
-  },
-  autumn: {
-    tokens: { accent: '#b45309', accent2: '#dc2626', shine: 'rgba(255, 237, 213, 0.75)' },
-    paint: scaled((step) => ({
-      fill: `repeating-linear-gradient(-30deg, ${tint('accent', 38)} 0 ${6 * step}px, ${tint('accent2', 30)} ${6 * step}px ${12 * step}px, rgba(202, 138, 4, 0.34) ${12 * step}px ${18 * step}px)`,
-      style: { borderRadius: `${step}px ${5 * step}px` },
-    })),
-  },
+  halloween: seasonal('#f97316', '#8b5cf6', `<g fill="none" stroke="#a78bfa" stroke-width=".7" opacity=".7"><path d="M0 0L48 48M0 0L48 16M0 0L16 48M0 12Q10 10 12 0M0 25Q21 21 25 0M0 40Q34 34 40 0"/></g><path d="M34 32q0-6 5-6t5 6v7l-2-2-3 2-3-2-2 2z" fill="#fb923c" opacity=".6"/><path d="M37 31v2m4-2v2" stroke="#432465"/>`),
+  christmas: seasonal('#b91c1c', '#15803d', `<path d="M-4 6Q12 20 28 6T60 6" fill="none" stroke="#6b9276" stroke-width="1"/><g fill="#eab308"><circle cx="8" cy="12" r="2"/><circle cx="32" cy="4" r="2"/></g><circle cx="20" cy="10" r="2" fill="#ef4444"/><circle cx="43" cy="2" r="2" fill="#4ade80"/><path d="M21 25v12m-6-6h12m-10-4 8 8m0-8-8 8" stroke="#94a3b8" stroke-width=".8" opacity=".6"/>`),
+  winter: seasonal('#38bdf8', '#818cf8', `<g fill="none" stroke="#7db7dd" stroke-width=".8" opacity=".7"><path d="M14 5v18M6 9l16 10M6 19 22 9M11 7l3 3 3-3M7 12l4 1-1 4M17 21l-3-3-3 3M21 16l-4-1 1-4"/><path d="M36 30v10m-4-8 8 6m-8 0 8-6"/></g><g fill="#9bc9e4"><circle cx="35" cy="12" r="1"/><circle cx="9" cy="37" r=".8"/></g>`),
+  spring: seasonal('#65a779', '#e6a0b9', `<g fill="#8ab99a" opacity=".65"><path d="M8 31Q4 19 17 20Q18 30 8 31M31 9Q30 0 40 3Q40 11 31 9"/></g><g fill="#e8a2bb" opacity=".75"><circle cx="29" cy="30" r="3"/><circle cx="35" cy="30" r="3"/><circle cx="32" cy="25" r="3"/><circle cx="32" cy="35" r="3"/></g><circle cx="32" cy="30" r="2" fill="#d9b863"/>`),
+  summer: seasonal('#d9a441', '#38aab7', `<g fill="none" stroke="#ddae56" stroke-width="1" opacity=".65"><circle cx="13" cy="13" r="4"/><path d="M13 4V1m0 24v-3M4 13H1m24 0h-3M7 7 5 5m14 14 2 2M7 19l-2 2M19 7l2-2"/></g><path d="M20 35q6-5 12 0t12 0" fill="none" stroke="#66b6be" stroke-width="1" opacity=".6"/>`),
+  autumn: seasonal('#bd7f42', '#a85e53', `<g fill="#c5935b" opacity=".6"><path d="M7 24Q2 7 22 7Q25 23 7 24"/><path d="M29 40Q25 25 43 24Q46 39 29 40" fill="#b57260"/></g><path d="M5 28 18 12m-8 9 0-6m3 3 6-1M27 44l12-15" fill="none" stroke="#8c6545" stroke-width=".8" opacity=".65"/>`),
+  'new-year': seasonal('#c6a04b', '#a78bfa', `<g fill="none" stroke="#c6a04b" stroke-width="1"><path d="M13 4v14m-7-7h14M8 6l10 10M8 16 18 6M35 29v10m-5-5h10"/></g><path d="m27 9 2 4m-21 22 3-2m29-14-2 3" stroke="#a78bfa" stroke-width="2"/><circle cx="23" cy="42" r="1" fill="#c6a04b"/>`),
 }

@@ -32,33 +32,33 @@ const coreThemes: Record<string, ThemeDef> = {
   outline: {
     paint: {
       text: {
-        fill: flat('transparent'),
+        fill: flat('color-mix(in srgb, var(--charpente-base) 12%, transparent)'),
         style: {
-          outline: '1.5px dashed var(--charpente-strong)',
+          outline: '1px dashed var(--charpente-strong)',
           outlineOffset: '-1.5px',
           borderRadius: 'var(--charpente-radius)',
         },
       },
       media: {
-        fill: flat('transparent'),
+        fill: flat('color-mix(in srgb, var(--charpente-base) 12%, transparent)'),
         style: {
-          outline: '1.5px dashed var(--charpente-strong)',
+          outline: '1px dashed var(--charpente-strong)',
           outlineOffset: '-1.5px',
           borderRadius: 'var(--charpente-radius)',
         },
       },
       control: {
-        fill: flat('transparent'),
+        fill: flat('color-mix(in srgb, var(--charpente-base) 12%, transparent)'),
         style: {
-          outline: '1.5px dashed var(--charpente-strong)',
+          outline: '1px dashed var(--charpente-strong)',
           outlineOffset: '-1.5px',
           borderRadius: 'var(--charpente-radius)',
         },
       },
       block: {
-        fill: flat('transparent'),
+        fill: flat('color-mix(in srgb, var(--charpente-base) 12%, transparent)'),
         style: {
-          outline: '1.5px dashed var(--charpente-strong)',
+          outline: '1px dashed var(--charpente-strong)',
           outlineOffset: '-1.5px',
           borderRadius: 'var(--charpente-radius)',
         },
@@ -68,86 +68,40 @@ const coreThemes: Record<string, ThemeDef> = {
   dots: {
     paint: {
       text: {
-        fill: 'radial-gradient(circle, var(--charpente-strong) 1.2px, transparent 1.7px)',
-        size: '6px 6px',
+        fill: 'radial-gradient(circle, var(--charpente-strong) 0.9px, transparent 1.2px)',
+        size: '5px 5px',
       },
       media: {
-        fill: 'radial-gradient(circle, var(--charpente-strong) 1.4px, transparent 2px)',
-        size: '8px 8px',
+        fill: 'radial-gradient(circle, var(--charpente-strong) 0.9px, transparent 1.2px)',
+        size: '5px 5px',
       },
       control: {
-        fill: 'radial-gradient(circle, var(--charpente-strong) 1.2px, transparent 1.7px)',
-        size: '6px 6px',
+        fill: 'radial-gradient(circle, var(--charpente-strong) 0.9px, transparent 1.2px)',
+        size: '5px 5px',
       },
       block: {
-        fill: 'radial-gradient(circle, var(--charpente-strong) 1.4px, transparent 2px)',
-        size: '8px 8px',
+        fill: 'radial-gradient(circle, var(--charpente-strong) 0.9px, transparent 1.2px)',
+        size: '5px 5px',
       },
     },
   },
   cyberpunk: {
-    tokens: {
-      accent: '#22d3ee',
-      accent2: '#e879f9',
-      shine: 'rgba(34, 211, 238, 0.35)',
-    },
-    paint: {
-      text: {
-        fill: `repeating-linear-gradient(0deg, transparent 0 2px, rgba(0, 0, 0, 0.25) 2px 3px), linear-gradient(135deg, color-mix(in srgb, var(--charpente-accent) 35%, transparent), color-mix(in srgb, var(--charpente-accent2) 35%, transparent))`,
-        size: 'auto, auto',
-        style: {
-          clipPath:
-            'polygon(0 4px, 4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%)',
-        },
+    tokens: { base: '#0b1426', strong: '#16435a', accent: '#22d3ee', accent2: '#e879f9', shine: 'rgba(34,211,238,.18)' },
+    paint: Object.fromEntries(['text', 'media', 'control', 'block'].map((type) => [type, {
+      fill: 'repeating-linear-gradient(0deg, transparent 0 3px, rgba(34,211,238,.07) 3px 4px), linear-gradient(125deg, var(--charpente-base) 45%, #251332)',
+      size: 'auto, auto',
+      style: {
+        borderRadius: type === 'text' ? '3px' : '6px',
+        boxShadow: 'inset 0 0 0 1px rgba(34,211,238,.55), inset -2px 0 0 var(--charpente-accent2), 0 0 8px rgba(34,211,238,.1)',
       },
-      media: {
-        fill: `repeating-linear-gradient(0deg, transparent 0 2px, rgba(0, 0, 0, 0.25) 2px 3px), linear-gradient(135deg, color-mix(in srgb, var(--charpente-accent) 30%, transparent), color-mix(in srgb, var(--charpente-accent2) 30%, transparent))`,
-        size: 'auto, auto',
-        style: {
-          clipPath:
-            'polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
-        },
-      },
-      control: {
-        fill: `linear-gradient(135deg, color-mix(in srgb, var(--charpente-accent) 35%, transparent), color-mix(in srgb, var(--charpente-accent2) 35%, transparent))`,
-        style: {
-          clipPath:
-            'polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
-        },
-      },
-      block: {
-        fill: `repeating-linear-gradient(0deg, transparent 0 2px, rgba(0, 0, 0, 0.25) 2px 3px), linear-gradient(135deg, color-mix(in srgb, var(--charpente-accent) 25%, transparent), color-mix(in srgb, var(--charpente-accent2) 25%, transparent))`,
-        size: 'auto, auto',
-        style: {
-          clipPath:
-            'polygon(0 16px, 16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)',
-        },
-      },
-    },
+    }])),
   },
   web: {
-    paint: {
-      text: {
-        fill: `repeating-linear-gradient(45deg, var(--charpente-strong) 0 1px, transparent 1px 7px), repeating-linear-gradient(-45deg, var(--charpente-strong) 0 1px, transparent 1px 7px)`,
-        size: 'auto, auto',
-        style: { borderRadius: '3px' },
-      },
-      media: {
-        fill: `repeating-radial-gradient(circle at 50% 50%, transparent 0 14px, var(--charpente-strong) 14px 15px), repeating-conic-gradient(from 0deg at 50% 50%, transparent 0 29deg, var(--charpente-strong) 29deg 30deg)`,
-        size: 'auto, auto',
-        style: { borderRadius: '4px' },
-      },
-      control: {
-        fill: `repeating-linear-gradient(45deg, var(--charpente-strong) 0 1px, transparent 1px 6px), repeating-linear-gradient(-45deg, var(--charpente-strong) 0 1px, transparent 1px 6px)`,
-        size: 'auto, auto',
-        style: { borderRadius: '4px' },
-      },
-      block: {
-        fill: `repeating-radial-gradient(circle at 50% 50%, transparent 0 18px, var(--charpente-strong) 18px 19px), repeating-conic-gradient(from 0deg at 50% 50%, transparent 0 29deg, var(--charpente-strong) 29deg 30deg)`,
-        size: 'auto, auto',
-        style: { borderRadius: '6px' },
-      },
-    },
+    paint: Object.fromEntries(['text', 'media', 'control', 'block'].map((type) => [type, {
+      fill: 'repeating-radial-gradient(ellipse at 22% 65%, transparent 0 9px, color-mix(in srgb, var(--charpente-strong) 65%, transparent) 9px 9.7px, transparent 9.7px 10px), repeating-conic-gradient(from 12deg at 22% 65%, transparent 0 23.5deg, color-mix(in srgb, var(--charpente-strong) 80%, transparent) 23.5deg 24deg), linear-gradient(var(--charpente-base), var(--charpente-base))',
+      size: '96px 72px, 96px 72px, auto',
+      style: { borderRadius: type === 'text' ? '4px' : '8px' },
+    }])),
   },
 }
 

@@ -169,3 +169,19 @@ describe('compile', () => {
     expect(compile().css).toContain('[data-charpente-block] > *')
   })
 })
+
+describe('ui library resilience', () => {
+  it('hides text decorations such as link underlines', () => {
+    expect(compile().css).toContain('text-decoration-color: transparent !important')
+  })
+
+  it('removes frames from table cells and rows', () => {
+    const { css } = compile()
+    expect(css).toMatch(/\[data-charpente-loading\] :is\(td, th\) \{\s*box-shadow: none !important/)
+    expect(css).toMatch(/:is\(tr, thead, tbody, tfoot, table\) \{\s*border-color: transparent !important/)
+  })
+
+  it('keeps the inner parts of controls out of the text paint', () => {
+    expect(compile().css).toContain(':not(:is(button, [role="button"], select, fieldset, legend, [role="combobox"]) *)')
+  })
+})

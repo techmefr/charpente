@@ -95,6 +95,7 @@ const paintProblems = (page: Page): Promise<string[]> =>
       const tag = element.tagName.toLowerCase()
       if (element.children.length > 0 || skipped.includes(tag)) continue
       if (tag !== 'svg' && element.closest('svg')) continue
+      if (element.parentElement?.closest('button, [role="button"], select, fieldset, legend, [role="combobox"]')) continue
       if (element instanceof HTMLInputElement && ['checkbox', 'radio'].includes(element.type)) continue
       const rect = element.getBoundingClientRect()
       if (rect.width === 0 || rect.height === 0) continue

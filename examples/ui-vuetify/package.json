@@ -1,0 +1,22 @@
+{
+  "name": "example-ui-vuetify",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host --port 5211 --strictPort",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "charpente": "link:../../packages/charpente",
+    "vue": "^3.5.0",
+    "vue-router": "^4.5.0",
+    "vuetify": "^3.8.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "vite-plugin-vuetify": "^2.1.0"
+  }
+}

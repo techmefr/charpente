@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bootstrap</title>
+<script>
+  if (location.search.includes('state=loading')) {
+    document.addEventListener('DOMContentLoaded', function () {
+      var root = document.querySelector('[data-testid=root]')
+      root.setAttribute('data-charpente-loading', '')
+      root.setAttribute('aria-busy', 'true')
+      root.setAttribute('inert', '')
+    })
+  }
+</script>
+<script type="module" src="/src/main.js"></script>
+</head>
+<body>
+<main data-testid="root" class="container py-4">
+  <header class="mb-4">
+    <h1 class="h2">Équipe</h1>
+    <p class="text-body-secondary mb-0">Quatre collaborateurs</p>
+  </header>
+  <ul class="list-group">
+    <li class="list-group-item d-flex align-items-center gap-3">
+      <img class="rounded-circle" width="48" height="48" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+      <div class="flex-grow-1">
+        <h2 class="h6 mb-1">Camille Durand</h2>
+        <p class="mb-0 text-body-secondary">Cheffe de projet</p>
+      </div>
+      <a href="mailto:camille@exemple.fr">camille@exemple.fr</a>
+    </li>
+    <li class="list-group-item d-flex align-items-center gap-3">
+      <img class="rounded-circle" width="48" height="48" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+      <div class="flex-grow-1">
+        <h2 class="h6 mb-1">Mehdi Lambert</h2>
+        <p class="mb-0 text-body-secondary">Développeur front</p>
+      </div>
+      <a href="mailto:mehdi@exemple.fr">mehdi@exemple.fr</a>
+    </li>
+    <li class="list-group-item d-flex align-items-center gap-3">
+      <img class="rounded-circle" width="48" height="48" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+      <div class="flex-grow-1">
+        <h2 class="h6 mb-1">Inès Morel</h2>
+        <p class="mb-0 text-body-secondary">Designeuse</p>
+      </div>
+      <a href="mailto:ines@exemple.fr">ines@exemple.fr</a>
+    </li>
+    <li class="list-group-item d-flex align-items-center gap-3">
+      <img class="rounded-circle" width="48" height="48" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+      <div class="flex-grow-1">
+        <h2 class="h6 mb-1">Hugo Perrin</h2>
+        <p class="mb-0 text-body-secondary">Développeur back</p>
+      </div>
+      <a href="mailto:hugo@exemple.fr">hugo@exemple.fr</a>
+    </li>
+  </ul>
+</main>
+</body>
+</html>

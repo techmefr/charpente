@@ -1,4 +1,4 @@
-import { scaled, tint } from './seasons'
+import { motif, scaled, tint } from './seasons'
 import type { ThemeDef } from './types'
 
 const flat = (color: string): string => `linear-gradient(${color}, ${color})`
@@ -48,7 +48,7 @@ export const extraThemes: Record<string, ThemeDef> = {
   },
   stripes: {
     paint: scaled((step) => ({
-      fill: `repeating-linear-gradient(45deg, var(--charpente-base) 0 ${7 * step}px, var(--charpente-strong) ${7 * step}px ${14 * step}px)`,
+      fill: `repeating-linear-gradient(45deg, var(--charpente-base) 0 ${3 * step}px, var(--charpente-strong) ${3 * step}px ${6 * step}px)`,
       style: { borderRadius: `${2 * step}px` },
     })),
   },
@@ -82,7 +82,7 @@ export const extraThemes: Record<string, ThemeDef> = {
     tokens: { accent: '#111111', shine: 'rgba(255, 255, 255, 0.5)' },
     dark: { accent: '#f5f5f5' },
     paint: scaled((step) => ({
-      fill: flat('var(--charpente-strong)'),
+      fill: flat('var(--charpente-accent)'),
       style: {
         borderRadius: '0',
         outline: '2px solid var(--charpente-accent)',
@@ -110,10 +110,10 @@ export const extraThemes: Record<string, ThemeDef> = {
   },
   waves: {
     tokens: { accent: '#38bdf8' },
-    paint: scaled((step) => ({
-      fill: `repeating-radial-gradient(circle at 50% 0, transparent 0 ${5 * step}px, ${tint('accent', 40)} ${5 * step}px ${6.5 * step}px), ${flat(tint('base', 70))}`,
-      size: 'auto, auto',
-      style: { borderRadius: `${3 * step}px` },
+    paint: scaled(() => ({
+      fill: `${motif('<path d="M-12 6q12-10 24 0t24 0t24 0M-12 16q12-10 24 0t24 0t24 0M-12 26q12-10 24 0t24 0t24 0M-12 36q12-10 24 0t24 0t24 0M-12 46q12-10 24 0t24 0t24 0" fill="none" stroke="#67b5dc" stroke-width=".8"/>')}, ${flat(tint('accent', 8))}`,
+      size: '48px 48px, auto',
+      style: { borderRadius: '6px' },
     })),
   },
 }

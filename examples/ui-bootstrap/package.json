@@ -1,0 +1,16 @@
+{
+  "name": "example-ui-bootstrap",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "charpente": "link:../../packages/charpente"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

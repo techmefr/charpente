@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bootstrap</title>
+<script>
+  if (location.search.includes('state=loading')) {
+    document.addEventListener('DOMContentLoaded', function () {
+      var root = document.querySelector('[data-testid=root]')
+      root.setAttribute('data-charpente-loading', '')
+      root.setAttribute('aria-busy', 'true')
+      root.setAttribute('inert', '')
+    })
+  }
+</script>
+<script type="module" src="/src/main.js"></script>
+</head>
+<body>
+<div data-testid="root" class="container-fluid">
+  <div class="row">
+    <aside class="col-md-3 col-lg-2 bg-body-tertiary border-end min-vh-100 p-3">
+      <p class="fs-5 fw-bold">Atelier</p>
+      <nav aria-label="Principal">
+        <ul class="nav flex-column">
+          <li class="nav-item"><a class="nav-link" href="#">Tableau de bord</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Commandes</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Clients</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Catalogue</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Réglages</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <div class="col-md-9 col-lg-10 p-4">
+      <header class="d-flex align-items-center gap-3 mb-4">
+        <h1 class="h3 mb-0 me-auto">Tableau de bord</h1>
+        <input type="search" class="form-control w-auto" placeholder="Rechercher" aria-label="Rechercher" />
+        <button type="button" class="btn btn-outline-primary">Exporter</button>
+      </header>
+
+      <section class="row g-3 mb-4" aria-label="Indicateurs">
+        <div class="col-6 col-lg-3">
+          <article class="card h-100"><div class="card-body">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="currentColor" /></svg>
+            <p class="mb-1 text-body-secondary">Chiffre d'affaires</p>
+            <strong class="fs-4 d-block">48 210 €</strong>
+            <span class="badge text-bg-success">+12 %</span>
+          </div></article>
+        </div>
+        <div class="col-6 col-lg-3">
+          <article class="card h-100"><div class="card-body">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2" width="16" height="16" fill="currentColor" /></svg>
+            <p class="mb-1 text-body-secondary">Commandes</p>
+            <strong class="fs-4 d-block">1 204</strong>
+            <span class="badge text-bg-success">+4 %</span>
+          </div></article>
+        </div>
+        <div class="col-6 col-lg-3">
+          <article class="card h-100"><div class="card-body">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,2 18,18 2,18" fill="currentColor" /></svg>
+            <p class="mb-1 text-body-secondary">Panier moyen</p>
+            <strong class="fs-4 d-block">40,05 €</strong>
+            <span class="badge text-bg-danger">-1 %</span>
+          </div></article>
+        </div>
+        <div class="col-6 col-lg-3">
+          <article class="card h-100"><div class="card-body">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="3" /></svg>
+            <p class="mb-1 text-body-secondary">Retours</p>
+            <strong class="fs-4 d-block">2,3 %</strong>
+            <span class="badge text-bg-secondary">stable</span>
+          </div></article>
+        </div>
+      </section>
+
+      <section class="card mb-4"><div class="card-body">
+        <h2 class="h5">Ventes sur 12 mois</h2>
+        <svg class="chart" width="600" height="140" viewBox="0 0 600 140" role="img" aria-label="Courbe des ventes">
+          <polyline points="0,110 50,90 100,100 150,60 200,70 250,40 300,55 350,30 400,45 450,20 500,35 550,15 600,25" fill="none" stroke="currentColor" stroke-width="3" />
+        </svg>
+      </div></section>
+
+      <section class="card mb-4"><div class="card-body">
+        <h2 class="h5">Commandes récentes</h2>
+        <table class="table table-striped align-middle mb-0">
+          <thead>
+            <tr><th>N°</th><th>Client</th><th>Date</th><th>Total</th><th>Statut</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1001</td><td>Atelier Lumière</td><td>12/10/2026</td><td>1 240,00 €</td><td><span class="badge text-bg-success">Payée</span></td></tr>
+            <tr><td>1002</td><td>Maison Verdier</td><td>12/10/2026</td><td>389,90 €</td><td><span class="badge text-bg-warning">En cours</span></td></tr>
+            <tr><td>1003</td><td>Studio Pivoine</td><td>11/10/2026</td><td>2 075,50 €</td><td><span class="badge text-bg-success">Payée</span></td></tr>
+            <tr><td>1004</td><td>Café du Port</td><td>11/10/2026</td><td>96,00 €</td><td><span class="badge text-bg-secondary">Remboursée</span></td></tr>
+            <tr><td>1005</td><td>Librairie Nord</td><td>10/10/2026</td><td>512,30 €</td><td><span class="badge text-bg-success">Payée</span></td></tr>
+            <tr><td>1006</td><td>Fleuriste Rose</td><td>10/10/2026</td><td>148,00 €</td><td><span class="badge text-bg-warning">En cours</span></td></tr>
+            <tr><td>1007</td><td>Garage Moreau</td><td>09/10/2026</td><td>3 410,00 €</td><td><span class="badge text-bg-success">Payée</span></td></tr>
+            <tr><td>1008</td><td>Boulangerie Alba</td><td>09/10/2026</td><td>74,20 €</td><td><span class="badge text-bg-success">Payée</span></td></tr>
+          </tbody>
+        </table>
+      </div></section>
+
+      <section class="row g-3 mb-4">
+        <div class="col-md-6"><div class="card h-100"><div class="card-body">
+          <form aria-label="Filtres">
+            <h2 class="h5">Filtres</h2>
+            <label class="form-label w-100">Client <input type="text" class="form-control" name="customer" placeholder="Nom du client" /></label>
+            <label class="form-label w-100">Statut
+              <select class="form-select" name="status">
+                <option>Tous</option>
+                <option>Payée</option>
+                <option>En cours</option>
+              </select>
+            </label>
+            <label class="form-label w-100">Note <textarea class="form-control" name="note" rows="3" placeholder="Remarque"></textarea></label>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" name="late" id="late" />
+              <label class="form-check-label" for="late">Retards seulement</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Appliquer</button>
+          </form>
+        </div></div></div>
+        <div class="col-md-6"><div class="card h-100"><div class="card-body">
+          <h2 class="h5">Activité</h2>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex gap-3">
+              <img class="rounded-circle" width="32" height="32" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+              <p class="mb-0"><strong>Camille</strong> a validé la commande <a href="#">#1042</a> hier à 16 h.</p>
+            </li>
+            <li class="list-group-item d-flex gap-3">
+              <img class="rounded-circle" width="32" height="32" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+              <p class="mb-0"><strong>Mehdi</strong> a ajouté une note sur <a href="#">Atelier Lumière</a>.</p>
+            </li>
+            <li class="list-group-item d-flex gap-3">
+              <img class="rounded-circle" width="32" height="32" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+              <p class="mb-0"><strong>Inès</strong> a publié la fiche <a href="#">Lampe de bureau</a>.</p>
+            </li>
+          </ul>
+        </div></div></div>
+      </section>
+
+      <section class="card"><div class="card-body">
+        <div class="nav nav-tabs mb-3" role="tablist">
+          <button type="button" class="nav-link active" role="tab" aria-selected="true">Populaires</button>
+          <button type="button" class="nav-link" role="tab" aria-selected="false">Nouveautés</button>
+          <button type="button" class="nav-link" role="tab" aria-selected="false">Promotions</button>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <article class="card h-100">
+              <img class="card-img-top" width="320" height="120" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+              <div class="card-body">
+                <h3 class="h5 card-title">Carnet à spirale</h3>
+                <p class="card-text">Papier recyclé, 120 pages.</p>
+                <button type="button" class="btn btn-primary">Ajouter</button>
+              </div>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="card h-100">
+              <img class="card-img-top" width="320" height="120" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+              <div class="card-body">
+                <h3 class="h5 card-title">Stylo plume bleu</h3>
+                <p class="card-text">Plume fine, encre incluse.</p>
+                <button type="button" class="btn btn-primary">Ajouter</button>
+              </div>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="card h-100">
+              <img class="card-img-top" width="320" height="120" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+              <div class="card-body">
+                <h3 class="h5 card-title">Lampe de bureau</h3>
+                <p class="card-text">Bras articulé, LED chaude.</p>
+                <button type="button" class="btn btn-primary">Ajouter</button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div></section>
+    </div>
+  </div>
+</div>
+</body>
+</html>

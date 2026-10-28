@@ -16,12 +16,13 @@ const MEDIA = 'img, svg, video, canvas, picture, iframe'
 const CONTROL = 'button, input, select, textarea'
 const LOADING = '[data-charpente-loading]'
 const OUTSIDE_BLOCK = ':not([data-charpente-block] *)'
+const CONTROL_PARTS = ':not(:is(button, [role="button"], select, fieldset, legend, [role="combobox"]) *)'
 const MAX_STAGGER_INDEX = 16
 const MAX_COMBINED_MOTIONS = 6
 const PAINT_TYPES: PaintType[] = ['text', 'media', 'control', 'block']
 
 const TYPE_SELECTORS: Record<PaintType, string> = {
-  text: `:not(:has(*)):not(:is(${MEDIA}, ${CONTROL})):not(:is(${MEDIA}) *)${OUTSIDE_BLOCK}`,
+  text: `:not(:has(*)):not([data-charpente-block]):not(:is(${MEDIA}, ${CONTROL})):not(:is(${MEDIA}) *)${CONTROL_PARTS}${OUTSIDE_BLOCK}`,
   media: `:is(${MEDIA})${OUTSIDE_BLOCK}`,
   control: `:is(${CONTROL})${OUTSIDE_BLOCK}`,
   block: '[data-charpente-block]',
@@ -281,7 +282,10 @@ const baseCss = (): string => {
     (_, index) => `${LOADING} :nth-child(${index + 1}) { --charpente-i: ${index + 1}; }`,
   ).join('\n')
   return [
-    `${LOADING} * {\n  -webkit-text-fill-color: transparent;\n  text-shadow: none;\n}`,
+    `${LOADING} * {\n  -webkit-text-fill-color: transparent;\n  text-shadow: none;\n  text-decoration-color: transparent !important;\n}`,
+    `${LOADING} :is(td, th) {\n  box-shadow: none !important;\n  border-color: transparent !important;\n}`,
+    `${LOADING} :is(tr, thead, tbody, tfoot, table) {\n  border-color: transparent !important;\n  box-shadow: none !important;\n}`,
+    `${LOADING} :is(button, [role="button"], input, select, textarea, fieldset) {\n  border-color: transparent !important;\n}`,
     `${allLeaves(LOADING)} {\n  ${hidden};\n}`,
     `${LOADING} [data-charpente-block] > *,\n${LOADING} svg * {\n  visibility: hidden;\n}`,
     `${LOADING} img {\n  content: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");\n}`,

@@ -1,4 +1,4 @@
-import { scaled, tint } from './seasons'
+import { motif, scaled, tint } from './seasons'
 import type { ThemeDef } from './types'
 
 const flat = (color: string): string => `linear-gradient(${color}, ${color})`
@@ -96,11 +96,11 @@ export const usageThemes: Record<string, ThemeDef> = {
     })),
   },
   music: {
-    tokens: { accent: '#a855f7', accent2: '#22d3ee', shine: 'rgba(255, 255, 255, 0.5)' },
-    paint: scaled((step) => ({
-      fill: `repeating-linear-gradient(90deg, ${tint('accent', 55)} 0 ${3 * step}px, transparent ${3 * step}px ${6 * step}px), linear-gradient(0deg, ${tint('accent2', 40)}, ${tint('accent', 12)})`,
-      size: 'auto, auto',
-      style: { borderRadius: `${2 * step}px` },
+    tokens: { accent: '#a855f7', accent2: '#22d3ee' },
+    paint: scaled(() => ({
+      fill: `${motif('<g fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"><path d="M4 21v6m5-12v18m5-23v28m5-19v10m5-24v38m5-29v20m5-14v8m5-18v28m5-20v12"/></g>')}, ${flat(tint('accent', 8))}`,
+      size: '48px 48px, auto',
+      style: { borderRadius: '4px' },
     })),
   },
   developer: {
