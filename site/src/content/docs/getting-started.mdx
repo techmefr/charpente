@@ -1,6 +1,6 @@
 ---
 title: Getting started
-description: Install charpente, set the loading attributes and wire the CSS into Vite, Nuxt, React, Next, SvelteKit, Astro, Livewire or plain HTML.
+description: Install charpente, wrap the loading area with your framework wrapper and wire the CSS into Vite, Nuxt, React, Next, SvelteKit, Solid, Angular, Astro, Livewire or plain HTML.
 ---
 
 import { Code } from '@astrojs/starlight/components'
@@ -17,7 +17,6 @@ import nextPackage from '../../../../examples/next/package.json'
 import nextState from '../../../../examples/next/app/_lib/state.ts?raw'
 import nuxtConfig from '../../../../examples/nuxt/nuxt.config.ts?raw'
 import nuxtPage from '../../../../examples/nuxt/app/pages/simple.vue?raw'
-import reactFixture from '../../../../examples/react/src/Fixture.tsx?raw'
 import reactVite from '../../../../examples/react/vite.config.ts?raw'
 import svelteLayout from '../../../../examples/svelte/src/routes/+layout.svelte?raw'
 import svelteLoad from '../../../../examples/svelte/src/routes/simple/+page.server.ts?raw'
@@ -35,7 +34,7 @@ export default defineCharpente({
   timing: { delay: 120, stagger: 40 },
 })`
 
-Three steps: install the package, declare a theme, then mark the area that is loading.
+Three steps: install the package, declare a theme, then wrap the area that is loading.
 
 ## 1. Install
 
@@ -58,9 +57,28 @@ export default defineCharpente({
 })
 ```
 
-## 3. Mark the area that is loading
+## 3. Wrap the area that is loading
 
-Three attributes are enough, set together on the container:
+Use the wrapper of your framework. It sets the attributes, announces the loading state to screen readers and handles the fade-in, so you never write `data-charpente-*` yourself.
+
+| Framework | Package | Usage |
+| --- | --- | --- |
+| Vue, Nuxt | `charpente-vue` | `<Charpente :loading="pending">` |
+| React, Next | `charpente-react` | `<Charpente as="ul" loading={pending}>` |
+| Svelte | `charpente-svelte` | `<Charpente tag="main" loading={pending}>` |
+| Solid | `charpente-solid` | `<Charpente tag="main" loading={pending()}>` |
+| Angular | `charpente-angular` | `<main [charpente]="pending">` |
+| Astro | `charpente-astro` | `<Charpente as="main" loading={pending}>` |
+| Laravel, Livewire | `charpente-blade` | `<x-charpente :loading="$pending" tag="main">` |
+| Vanilla | `charpente/dom` | `setLoading(element, { loading: true })` |
+
+All of them take `loading`, `theme`, `motion`, `delay`, `stagger` and `label`. The wrapper renders the container itself (`tag` or `as`), so it adds no extra element when you point it at the root you already have.
+
+When the data arrives, set `loading` to `false`: the real content is already there, in the same place, with no layout shift.
+
+### What the wrappers set
+
+In plain HTML, with no wrapper, set the same attributes by hand on the container:
 
 - `data-charpente-loading` enables the skeleton on the whole subtree.
 - `aria-busy="true"` tells screen readers that the area is being updated.
@@ -74,8 +92,6 @@ Three attributes are enough, set together on the container:
   <button type="button">Invite</button>
 </section>
 ```
-
-When the data arrives, remove the three attributes: the real content is already there, in the same place, with no layout shift.
 
 | Name | Where | Role |
 | --- | --- | --- |
@@ -167,11 +183,19 @@ import { Charpente } from 'charpente-vue'
 
 ### React
 
-Same Vite plugin, then the attributes in JSX.
+Same Vite plugin, then the wrapper in JSX.
 
 <Code title="examples/react/vite.config.ts" lang="ts" code={reactVite} />
 
-<Code title="examples/react/src/Fixture.tsx" lang="tsx" code={reactFixture} />
+```tsx
+import { Charpente } from 'charpente-react'
+
+export const Products = ({ items, pending }: Props) => (
+  <Charpente as="ul" className="grid" loading={pending} label="Loading products">
+    {items.map((item) => <ProductTile key={item.id} product={item} />)}
+  </Charpente>
+)
+```
 
 ### Next
 
@@ -193,7 +217,7 @@ Next does not use Vite: the CLI writes the CSS before startup and build, then th
 
 <Code title="examples/svelte/src/routes/simple/+page.server.ts" lang="ts" code={svelteLoad} />
 
-<Code title="examples/svelte/src/routes/simple/+page.svelte" lang="svelte" code={openingTag(sveltePage, '<main')} />
+<Code title="examples/svelte/src/routes/simple/+page.svelte" lang="svelte" code={openingTag(sveltePage, '<Charpente')} />
 
 ### Astro
 
@@ -203,11 +227,11 @@ This site is itself built this way. The repository's example renders the page on
 
 <Code title="examples/astro/src/layouts/Layout.astro" lang="astro" code={astroLayout} />
 
-<Code title="examples/astro/src/pages/simple.astro" lang="astro" code={throughLine(astroPage, '<main')} />
+<Code title="examples/astro/src/pages/simple.astro" lang="astro" code={throughLine(astroPage, '<Charpente')} />
 
 ### Livewire and Laravel
 
-The Vite plugin sits next to `laravel-vite-plugin`. The loading state comes from a component property, the Blade template sets the attributes.
+The Vite plugin sits next to `laravel-vite-plugin`. The loading state comes from a component property, the Blade template uses the `<x-charpente>` component from `charpente-blade`.
 
 <Code title="examples/livewire/vite.config.js" lang="js" code={livewireVite} />
 
@@ -216,6 +240,24 @@ The Vite plugin sits next to `laravel-vite-plugin`. The loading state comes from
 <Code title="examples/livewire/app/Livewire/Simple.php" lang="php" code={livewireComponent} />
 
 <Code title="examples/livewire/resources/views/livewire/simple.blade.php" lang="blade" code={firstLine(livewireBlade)} />
+
+### Solid, Angular and vanilla
+
+```tsx
+import { Charpente } from 'charpente-solid'
+
+<Charpente tag="main" loading={pending()}>{children}</Charpente>
+```
+
+```html
+<main [charpente]="pending">...</main>
+```
+
+```ts
+import { setLoading } from 'charpente/dom'
+
+setLoading(document.querySelector('main')!, { loading: true, theme: 'vegas' })
+```
 
 ### Plain HTML
 

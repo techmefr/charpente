@@ -143,6 +143,7 @@ await playground.click('#pg-toggle')
 expect((await root.getAttribute('data-charpente-loading')) !== null && (await root.getAttribute('inert')) !== null, 'playground: back to loading')
 expect((await style('backgroundImage')) !== 'none', 'playground: paint is back')
 
+await playground.selectOption('#pg-theme', 'solid')
 const baseLight = await root.evaluate((e) => getComputedStyle(e).getPropertyValue('--charpente-base').trim())
 for (let attempt = 0; attempt < 3 && (await playground.evaluate(() => document.documentElement.dataset.theme)) !== 'dark'; attempt++) {
   await playground.click('starlight-rapide-theme-select button:visible')
@@ -156,12 +157,12 @@ await playground.close()
 const gallery = await context.newPage()
 await gallery.goto(urlOf('themes'), { waitUntil: 'networkidle' })
 const roots = gallery.locator('#gallery .sample')
-expect((await roots.count()) === 36, "themes: 36 themes rendered")
+expect((await roots.count()) === 38, "themes: 38 themes rendered")
 const images = new Set()
-for (let index = 0; index < 36; index++) {
+for (let index = 0; index < 38; index++) {
   images.add(await roots.nth(index).locator('.sample__name').evaluate((e) => getComputedStyle(e).backgroundImage))
 }
-expect(images.size === 36, `themes: 36 distinct text paints (${images.size})`)
+expect(images.size === 38, `themes: 38 distinct text paints (${images.size})`)
 await gallery.selectOption('#gallery-motion', 'glitch')
 expect((await roots.first().locator('.sample__name').evaluate((e) => getComputedStyle(e).animationName)).includes('charpente-glitch'), 'themes: global motion selector')
 await gallery.close()

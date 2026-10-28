@@ -27,6 +27,8 @@ Each one is a CSS animation applied to every leaf of the area. Without an attrib
 </div>
 ```
 
+The wrappers sort the names for you: `<Charpente :motion="['shimmer', 'pulse']">` produces the attribute above.
+
 Two motions that animate the same property conflict: the last one in the list wins. In the configuration, the compiler reports it with a warning; on an attribute, nothing is reported.
 
 ```ts title="charpente.config.ts"
