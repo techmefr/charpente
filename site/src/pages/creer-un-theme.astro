@@ -1,0 +1,160 @@
+---
+import CodeBlock from '../components/CodeBlock.astro'
+import Sample from '../components/Sample.astro'
+import Base from '../layouts/Base.astro'
+import { href } from '../lib/site'
+
+const step1 = `
+import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  themes: {
+    brume: {
+      extends: 'solid',
+      tokens: {
+        base: 'rgba(96, 165, 250, 0.3)',
+        strong: 'rgba(59, 130, 246, 0.55)',
+        shine: 'rgba(255, 255, 255, 0.6)',
+      },
+    },
+  },
+})`
+
+const step2 = `
+themes: {
+  'brume-ronde': {
+    extends: 'brume',
+    paint: {
+      media: { style: { borderRadius: '50%' } },
+      control: { style: { borderRadius: '999px' } },
+      block: {
+        fill: 'repeating-linear-gradient(45deg, var(--charpente-base) 0 10px, var(--charpente-strong) 10px 20px)',
+      },
+    },
+  },
+}`
+
+const step3 = `
+motions: {
+  rebond: {
+    duration: '1.2s',
+    staggered: true,
+    keyframes: {
+      '0%, 100%': { transform: 'translateY(0)' },
+      '50%': { transform: 'translateY(-3px)' },
+    },
+  },
+}`
+
+const markup3 = `
+<div
+  data-charpente-loading
+  data-charpente-theme="brume-ronde"
+  data-charpente-motion="rebond"
+  aria-busy="true"
+  inert
+>
+  ...
+</div>`
+
+const step4 = `
+export default defineCharpente({
+  defaultTheme: 'brume-ronde',
+  motion: 'rebond',
+})`
+---
+
+<Base
+  title="Créer un thème"
+  description="Tutoriel pas à pas : partir d'un thème existant avec extends, changer les tokens, ajouter une peinture, écrire une motion et voir le résultat en direct."
+>
+  <div class="wide">
+    <div class="prose">
+      <h1>Créer un thème</h1>
+      <p class="lead">
+        On part de <code>solid</code>, on change les couleurs, on ajoute une peinture, puis une
+        motion. Chaque étape est rendue à côté de son code, avec le vrai CSS généré à partir du
+        fichier de configuration de ce site.
+      </p>
+      <p>
+        Le principe : un thème n'a besoin de décrire que ce qui change.
+        <code>extends</code> hérite du reste. Les options sont détaillées dans la
+        <a href={href('configuration')}>référence</a>.
+      </p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <h3>Recolorer avec les tokens</h3>
+        <div class="prose">
+          <p>
+            Le plus court des thèmes : il étend <code>solid</code> et ne change que ses tokens.
+            Les couleurs sont semi-transparentes pour rester lisibles en clair comme en sombre.
+          </p>
+        </div>
+        <div class="split">
+          <CodeBlock title="charpente.config.ts" code={step1} />
+          <div class="stage">
+            <div class="stage__bar"><span class="stage__label">Thème brume</span></div>
+            <Sample theme="brume" />
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <h3>Ajouter une peinture</h3>
+        <div class="prose">
+          <p>
+            Un second thème étend le premier et redéfinit la peinture de trois types de feuille.
+            Seuls les champs donnés sont remplacés : ici, le rayon des médias et des contrôles et le
+            fond des blocs.
+          </p>
+        </div>
+        <div class="split">
+          <CodeBlock title="charpente.config.ts" code={step2} />
+          <div class="stage">
+            <div class="stage__bar"><span class="stage__label">Thème brume-ronde</span></div>
+            <Sample theme="brume-ronde" />
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <h3>Écrire une motion</h3>
+        <div class="prose">
+          <p>
+            Une motion est une animation CSS appliquée à toutes les feuilles. Avec
+            <code>staggered</code>, elle démarre en cascade selon le <code>stagger</code> du site.
+            Les propriétés animées sont libres.
+          </p>
+        </div>
+        <div class="split">
+          <div class="prose">
+            <CodeBlock title="charpente.config.ts" code={step3} />
+            <CodeBlock lang="html" code={markup3} />
+          </div>
+          <div class="stage">
+            <div class="stage__bar"><span class="stage__label">brume-ronde + rebond</span></div>
+            <Sample theme="brume-ronde" motion="rebond" />
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <h3>L'activer partout</h3>
+        <div class="prose">
+          <p>
+            Faites-en le thème par défaut, ou donnez-le à une période de l'année avec le
+            <a href={href('calendrier')}>calendrier saisonnier</a>.
+          </p>
+          <CodeBlock title="charpente.config.ts" code={step4} />
+          <p class="note">
+            <span>Astuce</span><br />
+            Vous pouvez essayer ces thèmes dans le <a href={href('terrain-de-jeu')}>terrain de jeu</a>,
+            où <code>brume</code> et <code>brume-ronde</code> sont proposés dans la liste.
+          </p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</Base>

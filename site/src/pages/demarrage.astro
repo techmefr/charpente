@@ -1,0 +1,327 @@
+---
+import CodeBlock from '../components/CodeBlock.astro'
+import Base from '../layouts/Base.astro'
+import { href } from '../lib/site'
+import astroConfig from '../../../examples/astro/astro.config.mjs?raw'
+import astroLayout from '../../../examples/astro/src/layouts/Layout.astro?raw'
+import astroPage from '../../../examples/astro/src/pages/simple.astro?raw'
+import livewireApp from '../../../examples/livewire/resources/js/app.js?raw'
+import livewireBlade from '../../../examples/livewire/resources/views/livewire/simple.blade.php?raw'
+import livewireComponent from '../../../examples/livewire/app/Livewire/Simple.php?raw'
+import livewireVite from '../../../examples/livewire/vite.config.js?raw'
+import nextLayout from '../../../examples/next/app/layout.tsx?raw'
+import nextPackage from '../../../examples/next/package.json'
+import nextState from '../../../examples/next/app/_lib/state.ts?raw'
+import nuxtConfig from '../../../examples/nuxt/nuxt.config.ts?raw'
+import nuxtPage from '../../../examples/nuxt/app/pages/simple.vue?raw'
+import reactFixture from '../../../examples/react/src/Fixture.tsx?raw'
+import reactVite from '../../../examples/react/vite.config.ts?raw'
+import svelteLayout from '../../../examples/svelte/src/routes/+layout.svelte?raw'
+import svelteLoad from '../../../examples/svelte/src/routes/simple/+page.server.ts?raw'
+import sveltePage from '../../../examples/svelte/src/routes/simple/+page.svelte?raw'
+import svelteVite from '../../../examples/svelte/vite.config.ts?raw'
+import vanillaFixture from '../../../examples/vanilla/src/fixture.js?raw'
+import simpleHtml from '../../../fixtures/simple.html?raw'
+
+const openingTag = (raw: string, marker: string): string => {
+  const start = raw.indexOf(marker)
+  const end = raw.indexOf('\n>', start)
+  return raw.slice(start, end < 0 ? raw.indexOf('\n', start) : end + 2)
+}
+
+const throughLine = (raw: string, marker: string): string => {
+  const at = raw.indexOf(marker)
+  return raw.slice(0, raw.indexOf('\n', at))
+}
+
+const nextScripts = JSON.stringify({ scripts: nextPackage.scripts }, null, 2)
+const nextConfig = `import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  defaultTheme: 'solid',
+  motion: 'shimmer',
+  timing: { delay: 120, stagger: 40 },
+})`
+
+const sections = [
+  { id: 'vite', label: 'Vite' },
+  { id: 'nuxt', label: 'Nuxt et Vue' },
+  { id: 'react', label: 'React' },
+  { id: 'next', label: 'Next' },
+  { id: 'sveltekit', label: 'SvelteKit' },
+  { id: 'astro', label: 'Astro' },
+  { id: 'livewire', label: 'Livewire et Laravel' },
+  { id: 'html', label: 'HTML simple' },
+]
+
+const install = `
+pnpm add charpente
+# ou : npm install charpente / yarn add charpente`
+
+const minimalConfig = `
+import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  defaultTheme: 'solid',
+  motion: 'shimmer',
+  timing: { delay: 120 },
+})`
+
+const minimalHtml = `
+<section data-charpente-loading aria-busy="true" inert>
+  <h2>Équipe</h2>
+  <p>Quatre collaborateurs</p>
+  <img src="/photo.jpg" alt="Photo de l'équipe" width="320" height="120" />
+  <button type="button">Inviter</button>
+</section>`
+
+const viteConfig = `
+import { charpente } from 'charpente/vite'
+
+export default { plugins: [charpente()] }`
+
+const cssImport = `
+import 'virtual:charpente.css'`
+
+const themeModule = `
+import { activeTheme } from 'virtual:charpente.theme'
+
+document.documentElement.dataset.charpenteTheme = activeTheme()`
+
+const cli = `
+charpente build --config charpente.config.ts --out charpente.css
+charpente theme --date 2026-10-31`
+
+const vueWrapper = `
+<script setup lang="ts">
+import { Charpente } from 'charpente-vue'
+</script>
+
+<template>
+  <Charpente :loading="pending" label="Chargement du profil" :motion="['pulse', 'shimmer']" :delay="200">
+    <UserCard :user="user ?? placeholder" />
+  </Charpente>
+</template>`
+
+const vanillaHead = `
+<link rel="stylesheet" href="/charpente.css" />`
+---
+
+<Base
+  title="Démarrage"
+  description="Installer charpente, poser les attributs de chargement et brancher le CSS dans Vite, Nuxt, React, Next, SvelteKit, Astro, Livewire ou du HTML simple."
+>
+  <div class="prose">
+    <h1>Démarrage</h1>
+    <p class="lead">
+      Trois étapes : installer le paquet, déclarer un thème, puis marquer la zone qui charge.
+    </p>
+
+    <h2 id="installation">1. Installer</h2>
+    <CodeBlock lang="bash" code={install} />
+
+    <h2 id="config">2. Déclarer la configuration</h2>
+    <p>
+      Un fichier <code>charpente.config.ts</code> à la racine du projet. Tout est optionnel : sans
+      configuration, vous obtenez le thème <code>solid</code> et la motion <code>shimmer</code>.
+    </p>
+    <CodeBlock title="charpente.config.ts" code={minimalConfig} />
+
+    <h2 id="usage">3. Marquer la zone qui charge</h2>
+    <p>Trois attributs suffisent, posés ensemble sur le conteneur :</p>
+    <ul>
+      <li>
+        <code>data-charpente-loading</code> active le squelette sur tout le sous-arbre.
+      </li>
+      <li>
+        <code>aria-busy="true"</code> signale aux lecteurs d'écran que la zone est en cours de
+        mise à jour.
+      </li>
+      <li>
+        <code>inert</code> sort la zone du parcours clavier et de l'arbre d'accessibilité, pour
+        qu'on ne puisse pas cliquer sur un faux bouton.
+      </li>
+    </ul>
+    <CodeBlock lang="html" code={minimalHtml} />
+    <p>
+      Quand les données arrivent, retirez les trois attributs : le contenu réel est déjà là, au
+      même endroit, sans saut de mise en page.
+    </p>
+
+    <div class="table-wrap">
+      <table class="ref">
+        <caption>Attributs et variables CSS reconnus</caption>
+        <thead>
+          <tr><th scope="col">Nom</th><th scope="col">Où</th><th scope="col">Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>data-charpente-loading</code></td><td>conteneur</td><td>Active le squelette.</td></tr>
+          <tr><td><code>data-charpente-theme</code></td><td>conteneur</td><td>Choisit un thème, sinon <code>defaultTheme</code>.</td></tr>
+          <tr><td><code>data-charpente-motion</code></td><td>conteneur</td><td>Noms triés par ordre alphabétique, séparés par une espace, ou <code>none</code>.</td></tr>
+          <tr><td><code>data-charpente-block</code></td><td>un élément</td><td>Peint l'élément d'un seul bloc et masque ses enfants.</td></tr>
+          <tr><td><code>data-charpente-ready</code></td><td>conteneur</td><td>Posé quelques instants après le chargement pour un fondu d'apparition.</td></tr>
+          <tr><td><code>--charpente-delay</code></td><td>style</td><td>Délai avant apparition du squelette, en <code>ms</code>.</td></tr>
+          <tr><td><code>--charpente-stagger</code></td><td>style</td><td>Décalage entre frères, en <code>ms</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="plugin">Plugin Vite et CLI</h2>
+    <p>
+      Le plugin Vite compile la configuration à la volée et expose deux modules virtuels. Il
+      relit le fichier à chaque modification.
+    </p>
+    <CodeBlock title="vite.config.ts" code={viteConfig} />
+    <CodeBlock title="main.ts" code={cssImport} />
+    <p>
+      <code>virtual:charpente.theme</code> donne le thème du jour selon le
+      <a href={href('calendrier')}>calendrier saisonnier</a> :
+    </p>
+    <CodeBlock code={themeModule} />
+    <p>
+      Sans Vite, la commande <code>charpente build</code> écrit le CSS dans un fichier. La
+      commande <code>charpente theme</code> affiche le thème actif pour une date.
+    </p>
+    <CodeBlock lang="bash" code={cli} />
+
+    <h2 id="integrations">Intégrations</h2>
+    <p>
+      Chaque extrait ci-dessous provient du dossier <code>examples/</code> du dépôt. Les exemples
+      pilotent l'état de chargement avec <code>?state=loading</code> dans l'URL, pour les tests.
+    </p>
+    <ul class="subnav" aria-label="Intégrations">
+      {sections.map((section) => <li><a href={`#${section.id}`}>{section.label}</a></li>)}
+    </ul>
+
+    <section aria-labelledby="vite">
+      <div class="prose">
+        <h3 id="vite">Vite</h3>
+        <p>
+          Branchez le plugin, importez le CSS une fois dans le point d'entrée, puis posez les
+          attributs.
+        </p>
+        <CodeBlock title="vite.config.ts" code={viteConfig} />
+        <CodeBlock title="examples/vanilla/src/fixture.js" lang="js" code={vanillaFixture} />
+      </div>
+    </section>
+
+    <section aria-labelledby="nuxt">
+      <div class="prose">
+        <h3 id="nuxt">Nuxt et Vue</h3>
+        <p>
+          Ajoutez le plugin dans <code>vite.plugins</code> et le CSS virtuel dans <code>css</code>.
+        </p>
+        <CodeBlock title="examples/nuxt/nuxt.config.ts" code={nuxtConfig} />
+        <CodeBlock title="examples/nuxt/app/pages/simple.vue" lang="vue" code={nuxtPage} />
+        <p>
+          Le paquet <code>charpente-vue</code> fournit un composant <code>&lt;Charpente&gt;</code>
+          qui pose les attributs, annonce le chargement et gère le fondu de sortie.
+        </p>
+        <CodeBlock lang="vue" code={vueWrapper} />
+        <div class="table-wrap">
+          <table class="ref">
+            <caption>Props de &lt;Charpente&gt;</caption>
+            <thead>
+              <tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">Défaut</th><th scope="col">Rôle</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>loading</code></td><td>boolean</td><td><code>false</code></td><td>Active le squelette, pose <code>aria-busy</code> et <code>inert</code>.</td></tr>
+              <tr><td><code>tag</code></td><td>string</td><td><code>div</code></td><td>Élément racine rendu.</td></tr>
+              <tr><td><code>theme</code></td><td>string</td><td>aucun</td><td>Thème local.</td></tr>
+              <tr><td><code>motion</code></td><td>string ou string[]</td><td>aucun</td><td>Motions locales, triées automatiquement.</td></tr>
+              <tr><td><code>delay</code></td><td>number</td><td>aucun</td><td>Délai en ms.</td></tr>
+              <tr><td><code>stagger</code></td><td>number</td><td>aucun</td><td>Décalage en ms.</td></tr>
+              <tr><td><code>label</code></td><td>string</td><td>vide</td><td>Texte d'une zone <code>role="status"</code> lue pendant le chargement.</td></tr>
+              <tr><td><code>revealMs</code></td><td>number</td><td><code>260</code></td><td>Durée de <code>data-charpente-ready</code> après le chargement.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="react">
+      <div class="prose">
+        <h3 id="react">React</h3>
+        <p>Même plugin Vite, puis les attributs en JSX.</p>
+        <CodeBlock title="examples/react/vite.config.ts" code={reactVite} />
+        <CodeBlock title="examples/react/src/Fixture.tsx" lang="tsx" code={reactFixture} />
+      </div>
+    </section>
+
+    <section aria-labelledby="next">
+      <div class="prose">
+        <h3 id="next">Next</h3>
+        <p>
+          Next n'utilise pas Vite : la CLI écrit le CSS avant le démarrage et le build, puis le
+          layout l'importe.
+        </p>
+        <CodeBlock title="examples/next/package.json" lang="json" code={nextScripts} />
+        <CodeBlock title="examples/next/charpente.config.ts" code={nextConfig} />
+        <CodeBlock title="examples/next/app/layout.tsx" lang="tsx" code={nextLayout} />
+        <CodeBlock title="examples/next/app/_lib/state.ts" code={nextState} />
+      </div>
+    </section>
+
+    <section aria-labelledby="sveltekit">
+      <div class="prose">
+        <h3 id="sveltekit">SvelteKit</h3>
+        <CodeBlock title="examples/svelte/vite.config.ts" code={svelteVite} />
+        <CodeBlock title="examples/svelte/src/routes/+layout.svelte" lang="svelte" code={svelteLayout} />
+        <CodeBlock title="examples/svelte/src/routes/simple/+page.server.ts" code={svelteLoad} />
+        <CodeBlock
+          title="examples/svelte/src/routes/simple/+page.svelte"
+          lang="svelte"
+          code={openingTag(sveltePage, '<main')}
+        />
+      </div>
+    </section>
+
+    <section aria-labelledby="astro">
+      <div class="prose">
+        <h3 id="astro">Astro</h3>
+        <p>
+          Ce site est lui-même construit ainsi. L'exemple du dépôt rend la page côté serveur, le
+          présent site la génère en statique : le plugin est identique.
+        </p>
+        <CodeBlock title="examples/astro/astro.config.mjs" lang="js" code={astroConfig} />
+        <CodeBlock title="examples/astro/src/layouts/Layout.astro" lang="astro" code={astroLayout} />
+        <CodeBlock
+          title="examples/astro/src/pages/simple.astro"
+          lang="astro"
+          code={throughLine(astroPage, '<main')}
+        />
+      </div>
+    </section>
+
+    <section aria-labelledby="livewire">
+      <div class="prose">
+        <h3 id="livewire">Livewire et Laravel</h3>
+        <p>
+          Le plugin Vite se place à côté de <code>laravel-vite-plugin</code>. L'état de chargement
+          vient d'une propriété du composant, le gabarit Blade pose les attributs.
+        </p>
+        <CodeBlock title="examples/livewire/vite.config.js" lang="js" code={livewireVite} />
+        <CodeBlock title="examples/livewire/resources/js/app.js" lang="js" code={livewireApp} />
+        <CodeBlock title="examples/livewire/app/Livewire/Simple.php" lang="php" code={livewireComponent} />
+        <CodeBlock
+          title="examples/livewire/resources/views/livewire/simple.blade.php"
+          lang="blade"
+          code={livewireBlade.split('\n')[0] ?? ''}
+        />
+      </div>
+    </section>
+
+    <section aria-labelledby="html">
+      <div class="prose">
+        <h3 id="html">HTML simple</h3>
+        <p>
+          Sans bundler, générez le fichier avec la CLI et liez-le. Voici le balisage de la page
+          d'exemple de <code>fixtures/simple.html</code>.
+        </p>
+        <CodeBlock lang="bash" code="charpente build --out public/charpente.css" />
+        <CodeBlock lang="html" code={vanillaHead} />
+        <CodeBlock title="fixtures/simple.html" lang="html" code={simpleHtml.split('\n').slice(0, 12).join('\n') + '\n  ...'} />
+      </div>
+    </section>
+  </div>
+</Base>

@@ -1,0 +1,75 @@
+---
+import CodeBlock from '../components/CodeBlock.astro'
+import Sample from '../components/Sample.astro'
+import Base from '../layouts/Base.astro'
+import { href, MOTIONS, THEMES } from '../lib/site'
+
+const usage = `
+<section data-charpente-loading data-charpente-theme="cyberpunk" aria-busy="true" inert>
+  ...
+</section>`
+
+const extra = `
+export default defineCharpente({
+  defaultTheme: 'cyberpunk',
+})`
+---
+
+<Base
+  title="Thèmes"
+  description="Les onze thèmes de charpente rendus avec de vrais éléments : solid, outline, dots, cyberpunk, web et six thèmes de saison."
+>
+  <div class="wide">
+    <div class="prose">
+      <h1>Thèmes</h1>
+      <p class="lead">
+        Un thème décrit comment peindre quatre familles d'éléments : le texte, les médias, les
+        contrôles et les blocs. Chaque carte ci-dessous est un vrai balisage en état de chargement.
+      </p>
+      <p>
+        Choisissez le thème d'une zone avec <code>data-charpente-theme</code>, ou d'un site entier
+        avec <code>defaultTheme</code>. Vous pouvez aussi{' '}
+        <a href={href('creer-un-theme')}>créer le vôtre</a>.
+      </p>
+      <CodeBlock lang="html" code={usage} />
+      <CodeBlock title="charpente.config.ts" code={extra} />
+    </div>
+
+    <div class="controls" role="group" aria-labelledby="gallery-controls">
+      <h2 id="gallery-controls" class="sr-only">Réglages de la galerie</h2>
+      <label class="field">
+        <span>Motion de toute la galerie</span>
+        <select id="gallery-motion">
+          <option value="">Défaut du site (shimmer)</option>
+          {MOTIONS.map((motion) => <option value={motion.name}>{motion.name}</option>)}
+          <option value="pulse shimmer">pulse + shimmer</option>
+          <option value="none">Aucune (none)</option>
+        </select>
+      </label>
+      <div class="field">
+        <span>Fond de la page</span>
+        <button type="button" class="btn btn--ghost" data-scheme-toggle aria-pressed="false">
+          Mode sombre
+        </button>
+      </div>
+    </div>
+
+    <ul class="themegrid" id="gallery">
+      {
+        THEMES.map((theme) => (
+          <li class="themecard">
+            <h3>
+              {theme.label} <code>{theme.name}</code>
+            </h3>
+            <p>{theme.note}</p>
+            <Sample theme={theme.name} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <script>
+    import '../scripts/gallery'
+  </script>
+</Base>

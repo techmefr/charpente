@@ -1,0 +1,266 @@
+---
+import CodeBlock from '../components/CodeBlock.astro'
+import Base from '../layouts/Base.astro'
+import { href } from '../lib/site'
+
+const full = `
+import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  defaultTheme: 'solid',
+  timeZone: 'Europe/Paris',
+  schedule: [{ theme: 'noel', from: '12-15', to: '12-31' }],
+  motion: ['pulse', 'shimmer'],
+  timing: { delay: 120, stagger: 40 },
+  colorScheme: {
+    dark: '[data-theme="dark"]',
+    tokens: {
+      light: { base: '#e5e7eb' },
+      dark: { base: '#2a2d34' },
+    },
+  },
+  themes: {
+    brume: {
+      extends: 'solid',
+      tokens: { base: 'rgba(96, 165, 250, 0.28)' },
+      paint: {
+        media: { style: { borderRadius: '50%' } },
+      },
+    },
+  },
+  motions: {
+    rebond: {
+      duration: '1.2s',
+      staggered: true,
+      keyframes: {
+        '0%, 100%': { transform: 'translateY(0)' },
+        '50%': { transform: 'translateY(-3px)' },
+      },
+    },
+  },
+})`
+
+const paintExample = `
+themes: {
+  rayures: {
+    extends: 'solid',
+    paint: {
+      text: {
+        fill: 'repeating-linear-gradient(to bottom, var(--charpente-base) 0 0.8lh, transparent 0.8lh 1lh)',
+        style: { borderRadius: '2px' },
+      },
+      media: {
+        fill: 'radial-gradient(circle, var(--charpente-strong) 1.4px, transparent 2px), linear-gradient(var(--charpente-base), var(--charpente-base))',
+        size: '8px 8px, auto',
+      },
+    },
+  },
+}`
+
+const motionExample = `
+motions: {
+  clignote: {
+    duration: '900ms',
+    easing: 'steps(2, end)',
+    iterations: 'infinite',
+    keyframes: {
+      from: { opacity: '1' },
+      to: { opacity: '0.4' },
+    },
+  },
+}`
+
+const schemeExample = `
+colorScheme: {
+  dark: '[data-theme="dark"]',
+  tokens: { dark: { base: '#1f2937', strong: '#374151' } },
+}`
+---
+
+<Base
+  title="Configuration"
+  description="Référence complète de charpente.config.ts : defaultTheme, schedule, timeZone, motion, timing, colorScheme, themes, motions, tokens et peintures."
+>
+  <div class="prose">
+    <h1>Configuration</h1>
+    <p class="lead">
+      Tout se règle dans <code>charpente.config.ts</code>. <code>defineCharpente</code> ne fait
+      que typer l'objet.
+    </p>
+    <CodeBlock title="charpente.config.ts" code={full} />
+
+    <h2 id="options">Options de premier niveau</h2>
+    <div class="table-wrap">
+      <table class="ref">
+        <caption>CharpenteConfig</caption>
+        <thead>
+          <tr><th scope="col">Option</th><th scope="col">Type</th><th scope="col">Défaut</th><th scope="col">Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>defaultTheme</code></td><td>string</td><td><code>'solid'</code></td><td>Thème des zones sans <code>data-charpente-theme</code>.</td></tr>
+          <tr><td><code>schedule</code></td><td>ScheduleEntry[]</td><td><code>[]</code></td><td>Créneaux saisonniers, voir <a href={href('calendrier')}>le calendrier</a>.</td></tr>
+          <tr><td><code>timeZone</code></td><td>string (IANA)</td><td>fuseau du runtime</td><td>Fuseau utilisé pour lire la date du jour dans <code>schedule</code>.</td></tr>
+          <tr><td><code>motion</code></td><td>string ou string[]</td><td><code>'shimmer'</code></td><td>Motion(s) par défaut. <code>'none'</code> désactive.</td></tr>
+          <tr><td><code>timing</code></td><td>Timing</td><td><code>{'{ delay: 120, stagger: 0 }'}</code></td><td>Délai et décalage par défaut.</td></tr>
+          <tr><td><code>colorScheme</code></td><td>ColorScheme</td><td>media query système</td><td>Mode sombre et tokens par mode.</td></tr>
+          <tr><td><code>themes</code></td><td>Record&lt;string, ThemeDef&gt;</td><td><code>{'{}'}</code></td><td>Ajoute des thèmes, ou remplace un thème fourni du même nom.</td></tr>
+          <tr><td><code>motions</code></td><td>Record&lt;string, MotionDef&gt;</td><td><code>{'{}'}</code></td><td>Ajoute des motions, ou remplace une motion fournie.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="timing">timing</h3>
+    <div class="table-wrap">
+      <table class="ref">
+        <caption>Timing</caption>
+        <thead>
+          <tr><th scope="col">Clé</th><th scope="col">Défaut</th><th scope="col">Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>delay</code></td><td><code>120</code> ms</td><td>Attente avant l'apparition du squelette. Surchargeable avec <code>--charpente-delay</code>.</td></tr>
+          <tr><td><code>stagger</code></td><td><code>0</code> ms</td><td>Retard ajouté par rang parmi les frères. Surchargeable avec <code>--charpente-stagger</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="colorscheme">colorScheme</h3>
+    <p>
+      Sans <code>dark</code>, les tokens sombres s'appliquent via
+      <code>@media (prefers-color-scheme: dark)</code>. Avec <code>dark</code>, ils s'appliquent à
+      l'élément qui correspond au sélecteur, par exemple l'élément <code>html</code> portant
+      <code>data-theme="dark"</code>.
+    </p>
+    <CodeBlock code={schemeExample} />
+    <div class="table-wrap">
+      <table class="ref">
+        <caption>ColorScheme</caption>
+        <thead>
+          <tr><th scope="col">Clé</th><th scope="col">Type</th><th scope="col">Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>dark</code></td><td>sélecteur CSS</td><td>Remplace la media query par un sélecteur.</td></tr>
+          <tr><td><code>tokens.light</code></td><td>Tokens</td><td>Surcharge les tokens du mode clair, posés sur <code>:root</code>.</td></tr>
+          <tr><td><code>tokens.dark</code></td><td>Tokens</td><td>Surcharge les tokens du mode sombre.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="themes">Thèmes</h2>
+    <p>
+      Un thème a trois champs, tous optionnels : <code>extends</code>, <code>tokens</code> et
+      <code>paint</code>. Avec <code>extends</code>, le thème hérite des tokens et des peintures du
+      parent : les tokens sont fusionnés, les peintures sont fusionnées type par type, et dans
+      <code>style</code> clé par clé. <code>fill</code> et <code>size</code> remplacent ceux du
+      parent.
+    </p>
+
+    <h3 id="tokens">Tokens</h3>
+    <p>
+      Des variables CSS <code>--charpente-*</code> utilisables dans <code>fill</code> et
+      <code>style</code>. Un token défini dans un thème s'applique aux zones de ce thème, quel que
+      soit le mode clair ou sombre.
+    </p>
+    <div class="table-wrap">
+      <table class="ref">
+        <caption>Tokens</caption>
+        <thead>
+          <tr><th scope="col">Token</th><th scope="col">Clair</th><th scope="col">Sombre</th><th scope="col">Usage</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>base</code></td><td><code>#e5e7eb</code></td><td><code>#2a2d34</code></td><td>Couleur principale du squelette.</td></tr>
+          <tr><td><code>strong</code></td><td><code>#c4c8d0</code></td><td><code>#454a55</code></td><td>Contours, motifs, accents discrets.</td></tr>
+          <tr><td><code>shine</code></td><td><code>rgba(255, 255, 255, 0.7)</code></td><td><code>rgba(255, 255, 255, 0.08)</code></td><td>Couleur du reflet de <code>shimmer</code>.</td></tr>
+          <tr><td><code>accent</code></td><td><code>#0891b2</code></td><td><code>#22d3ee</code></td><td>Première couleur de décor.</td></tr>
+          <tr><td><code>accent2</code></td><td><code>#c026d3</code></td><td><code>#e879f9</code></td><td>Seconde couleur de décor.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Une variable <code>--charpente-radius</code> (<code>0.35em</code>) est aussi posée sur
+      <code>:root</code>, utilisée par <code>solid</code> pour ses angles.
+    </p>
+
+    <h3 id="paint">Peinture par type de feuille</h3>
+    <p>
+      Une « feuille » est un élément qu'on peint d'un seul tenant. <code>paint</code> associe une
+      peinture à chacun des quatre types :
+    </p>
+    <div class="table-wrap">
+      <table class="ref">
+        <caption>Types de feuille</caption>
+        <thead>
+          <tr><th scope="col">Type</th><th scope="col">Éléments concernés</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>text</code></td><td>Tout élément sans élément enfant (un paragraphe, un titre, un lien, une cellule), sauf médias et contrôles.</td></tr>
+          <tr><td><code>media</code></td><td><code>img</code>, <code>svg</code>, <code>video</code>, <code>canvas</code>, <code>picture</code>, <code>iframe</code>.</td></tr>
+          <tr><td><code>control</code></td><td><code>button</code>, <code>input</code>, <code>select</code>, <code>textarea</code>.</td></tr>
+          <tr><td><code>block</code></td><td>Les éléments marqués <code>data-charpente-block</code> : l'élément est peint d'un bloc et ses enfants sont masqués.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-wrap">
+      <table class="ref">
+        <caption>Paint</caption>
+        <thead>
+          <tr><th scope="col">Clé</th><th scope="col">Type</th><th scope="col">Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>fill</code></td><td>string</td><td>Calques de fond séparés par des virgules (<code>background-image</code>). Défaut : un aplat <code>var(--charpente-base)</code>.</td></tr>
+          <tr><td><code>size</code></td><td>string</td><td>Taille de chaque calque, dans le même ordre (<code>background-size</code>). <code>auto</code> pour un calque non précisé.</td></tr>
+          <tr><td><code>style</code></td><td>Record&lt;string, string&gt;</td><td>Déclarations CSS ajoutées : <code>borderRadius</code>, <code>clipPath</code>, <code>outline</code>, ou une variable <code>--x</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <CodeBlock title="Peintures personnalisées" code={paintExample} />
+
+    <h2 id="motions">Motions</h2>
+    <div class="table-wrap">
+      <table class="ref">
+        <caption>MotionDef</caption>
+        <thead>
+          <tr><th scope="col">Clé</th><th scope="col">Défaut</th><th scope="col">Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>duration</code></td><td>obligatoire</td><td>Durée d'un cycle, par exemple <code>'1.4s'</code>.</td></tr>
+          <tr><td><code>easing</code></td><td><code>'ease-in-out'</code></td><td>Fonction de temps CSS.</td></tr>
+          <tr><td><code>iterations</code></td><td><code>'infinite'</code></td><td>Nombre de cycles.</td></tr>
+          <tr><td><code>staggered</code></td><td><code>false</code></td><td>Si vrai, démarre après <code>delay + rang × stagger</code>, comme <code>wave</code>.</td></tr>
+          <tr><td><code>layer</code></td><td>aucun</td><td>Calque de fond superposé aux feuilles, utilisé par <code>shimmer</code> pour son reflet.</td></tr>
+          <tr><td><code>keyframes</code></td><td>obligatoire</td><td>Étapes de l'animation : <code>from</code>, <code>to</code> ou des pourcentages, chacun avec ses déclarations.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <CodeBlock title="Une motion perso" code={motionExample} />
+
+    <h2 id="erreurs">Erreurs de configuration</h2>
+    <p>Le compilateur échoue avec un message explicite dans ces cas :</p>
+    <ul>
+      <li>un thème inconnu dans <code>defaultTheme</code>, <code>extends</code> ou <code>schedule</code> ;</li>
+      <li>un thème qui s'étend lui-même, directement ou en boucle ;</li>
+      <li>une motion inconnue dans <code>motion</code> ;</li>
+      <li>une date de <code>schedule</code> qui n'a pas la forme <code>MM-JJ</code> ;</li>
+      <li>un fuseau horaire inconnu dans <code>timeZone</code>.</li>
+    </ul>
+    <p>
+      Il avertit, sans échouer, quand deux motions par défaut animent la même propriété : la
+      dernière gagne.
+    </p>
+
+    <h2 id="variables">Variables CSS exposées</h2>
+    <div class="table-wrap">
+      <table class="ref">
+        <caption>Variables à surcharger en ligne ou en CSS</caption>
+        <thead>
+          <tr><th scope="col">Variable</th><th scope="col">Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--charpente-delay</code></td><td>Délai local, avec unité (<code>200ms</code>).</td></tr>
+          <tr><td><code>--charpente-stagger</code></td><td>Décalage local, avec unité.</td></tr>
+          <tr><td><code>--charpente-base</code>, <code>-strong</code>, <code>-shine</code>, <code>-accent</code>, <code>-accent2</code></td><td>Tokens, surchargeables sur n'importe quel élément de la zone.</td></tr>
+          <tr><td><code>--charpente-radius</code></td><td>Rayon de <code>solid</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,206 @@
+---
+import CodeBlock from '../components/CodeBlock.astro'
+import Sample from '../components/Sample.astro'
+import Base from '../layouts/Base.astro'
+import { href, MOTIONS } from '../lib/site'
+import { stateAttributes } from '../lib/state'
+
+const attributeExample = `
+<div data-charpente-loading data-charpente-motion="pulse shimmer" aria-busy="true" inert>
+  ...
+</div>`
+
+const timingExample = `
+<div
+  data-charpente-loading
+  data-charpente-motion="wave"
+  style="--charpente-delay: 600ms; --charpente-stagger: 150ms"
+  aria-busy="true"
+  inert
+>
+  ...
+</div>`
+
+const configExample = `
+export default defineCharpente({
+  motion: ['pulse', 'shimmer'],
+  timing: { delay: 120, stagger: 40 },
+})`
+
+const combos = [
+  {
+    motion: 'pulse shimmer',
+    title: 'pulse + shimmer',
+    note: 'Compatible : le reflet passe par un calque de fond, la respiration par l’opacité.',
+  },
+  {
+    motion: 'glitch shimmer',
+    title: 'glitch + shimmer',
+    note: 'Compatible : un déplacement et un calque de fond ne se gênent pas.',
+  },
+  {
+    motion: 'pulse wave',
+    title: 'pulse + wave (conflit)',
+    note: 'Les deux animent l’opacité. Les deux animations sont posées, la dernière de la liste l’emporte, et le décalage de wave disparaît.',
+  },
+  {
+    motion: 'shimmer pulse',
+    title: 'shimmer pulse (mal trié)',
+    note: 'Aucune règle ne correspond à cet ordre : le squelette reste figé. Triez toujours les noms par ordre alphabétique.',
+  },
+]
+
+const delays = [0, 600, 1500]
+const staggers = [0, 150]
+---
+
+<Base
+  title="Motions et timing"
+  description="Shimmer, pulse, wave et glitch : chaque motion rendue, le délai avant apparition, le décalage entre éléments, les combinaisons et leurs conflits."
+>
+  <div class="wide">
+    <div class="prose">
+      <h1>Motions et timing</h1>
+      <p class="lead">
+        La motion décrit le mouvement, le timing décrit le moment. Les deux se règlent
+        indépendamment du thème.
+      </p>
+      <div class="cta">
+        <button type="button" class="btn btn--ghost" data-loop-pause aria-pressed="false">
+          Mettre la boucle en pause
+        </button>
+      </div>
+    </div>
+
+    <section class="prose" aria-labelledby="motions-title">
+      <h2 id="motions-title">Les quatre motions</h2>
+      <p>
+        Chacune est une animation CSS appliquée à toutes les feuilles de la zone. Sans attribut,
+        c'est la motion de <code>motion</code> dans la configuration qui s'applique.
+      </p>
+    </section>
+    <ul class="motionlist">
+      {
+        MOTIONS.map((motion) => (
+          <li class="themecard">
+            <h3>
+              {motion.name} <code>{`data-charpente-motion="${motion.name}"`}</code>
+            </h3>
+            <p>{motion.note}</p>
+            <Sample motion={motion.name} />
+          </li>
+        ))
+      }
+    </ul>
+
+    <section class="prose" aria-labelledby="combo-title">
+      <h2 id="combo-title">Combiner et conflits</h2>
+      <p>
+        <code>data-charpente-motion</code> accepte plusieurs noms séparés par une espace, <strong
+          >triés par ordre alphabétique</strong
+        >. Le compilateur génère une règle par combinaison, jusqu'à six motions déclarées ; au-delà,
+        seules les motions seules sont générées.
+      </p>
+      <CodeBlock lang="html" code={attributeExample} />
+      <p>
+        Deux motions qui animent la même propriété entrent en conflit : la dernière de la liste
+        gagne. Dans la configuration, le compilateur le signale par un avertissement ; sur un
+        attribut, rien n'est signalé.
+      </p>
+      <CodeBlock title="charpente.config.ts" code={configExample} />
+    </section>
+    <ul class="combo">
+      {
+        combos.map((combo) => (
+          <li class="themecard">
+            <h3>
+              {combo.title}
+            </h3>
+            <p>{combo.note}</p>
+            <Sample motion={combo.motion} />
+            <p>
+              <code>{`data-charpente-motion="${combo.motion}"`}</code>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <section class="prose" aria-labelledby="delay-title">
+      <h2 id="delay-title">Le délai</h2>
+      <p>
+        <code>delay</code> retarde l'apparition du squelette. Pendant ce temps, les éléments sont
+        masqués : un chargement qui dure moins que le délai ne provoque aucun clignotement. Réglage
+        global dans <code>timing.delay</code>, réglage local avec <code>--charpente-delay</code>.
+      </p>
+    </section>
+    <ul class="combo">
+      {
+        delays.map((delay) => (
+          <li class="themecard">
+            <h3>
+              Délai <code>{`${delay} ms`}</code>
+            </h3>
+            <div
+              class="lines"
+              data-loop
+              data-loop-on="4200"
+              data-loop-off="1400"
+              {...stateAttributes({ loading: true, delay, motion: 'pulse' })}
+            >
+              <span class="lines__title">Titre de la carte</span>
+              <p class="lines__text">
+                Un texte qui tient sur deux lignes pour juger de l'apparition du squelette.
+              </p>
+              <button type="button" class="ui-btn">Action</button>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <section class="prose" aria-labelledby="stagger-title">
+      <h2 id="stagger-title">Le décalage entre éléments</h2>
+      <p>
+        <code>stagger</code> ajoute un retard proportionnel à la position de chaque élément parmi
+        ses frères (de 1 à 16) : le squelette apparaît en cascade, et la motion <code>wave</code>
+        ondule d'un élément à l'autre. Réglage global dans <code>timing.stagger</code>, local avec
+        <code>--charpente-stagger</code>.
+      </p>
+      <CodeBlock lang="html" code={timingExample} />
+    </section>
+    <ul class="combo">
+      {
+        staggers.map((stagger) => (
+          <li class="themecard">
+            <h3>
+              Stagger <code>{`${stagger} ms`}</code>
+            </h3>
+            <div
+              class="bars"
+              data-loop
+              data-loop-on="4200"
+              data-loop-off="1400"
+              {...stateAttributes({ loading: true, delay: 0, stagger, motion: 'wave' })}
+            >
+              {Array.from({ length: 8 }, () => <div class="bar" />)}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="prose">
+      <p class="note">
+        <span>Mouvement réduit</span><br />
+        Si le système demande moins d'animations (<code>prefers-reduced-motion</code>), toutes les
+        motions et le délai sont désactivés : le squelette s'affiche tout de suite, fixe. Voir la
+        page <a href={href('accessibilite')}>Accessibilité</a>.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    import '../scripts/loop'
+  </script>
+</Base>

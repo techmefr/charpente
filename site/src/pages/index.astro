@@ -1,0 +1,133 @@
+---
+import CodeBlock from '../components/CodeBlock.astro'
+import ProfileCard from '../components/ProfileCard.astro'
+import Base from '../layouts/Base.astro'
+import { href, NAV } from '../lib/site'
+import { stateAttributes } from '../lib/state'
+
+const links = NAV.filter((item) => item.path !== '')
+
+const markup = `
+<article data-charpente-loading aria-busy="true" inert>
+  <img src="/avatar.png" alt="" width="54" height="54" />
+  <div>
+    <span>Camille Durand</span>
+    <span>Cheffe de projet</span>
+  </div>
+  <button type="button">Suivre</button>
+</article>`
+
+const config = `
+import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  defaultTheme: 'cyberpunk',
+  motion: ['shimmer', 'glitch'],
+  timing: { delay: 120, stagger: 40 },
+  colorScheme: { dark: '[data-theme="dark"]' },
+})`
+---
+
+<Base
+  title="Accueil"
+  description="charpente génère des skeleton loaders en CSS pur à partir d'un seul fichier de configuration : thème, motion et timing sont trois axes indépendants."
+>
+  <div class="hero">
+    <h1>Des squelettes de chargement en CSS pur</h1>
+    <p class="lead">
+      Vous posez un attribut sur la zone qui charge. <code>charpente</code> peint les textes, les
+      images, les boutons et les blocs avec le thème et l'animation de votre choix, sans une ligne
+      de JavaScript au runtime.
+    </p>
+    <div class="cta">
+      <a class="btn" href={href('demarrage')}>Démarrer</a>
+      <a class="btn btn--ghost" href={href('terrain-de-jeu')}>Ouvrir le terrain de jeu</a>
+    </div>
+  </div>
+
+  <section class="prose" aria-labelledby="demo-title">
+    <h2 id="demo-title">La démo, en vrai</h2>
+    <p>
+      Cette carte alterne toute seule entre l'état de chargement et le contenu. C'est le même
+      balisage : seuls trois attributs changent.
+    </p>
+    <div class="split">
+      <div class="stage">
+        <div class="stage__bar">
+          <span class="stage__label">Carte de profil</span>
+          <button type="button" class="btn btn--ghost" data-loop-pause aria-pressed="false">
+            Mettre la boucle en pause
+          </button>
+        </div>
+        <div
+          class="demo-profile"
+          data-loop
+          data-loop-on="2800"
+          data-loop-off="2400"
+          data-loop-status="#demo-status"
+          {...stateAttributes({ loading: true, theme: 'solid' })}
+        >
+          <ProfileCard loading={false} />
+          <p class="lines__text">
+            Camille pilote la refonte du site depuis trois ans. Elle aime les projets où le design
+            et le code avancent ensemble.
+          </p>
+          <div class="chips">
+            <span class="badge">12 projets</span>
+            <span class="badge">Lyon</span>
+            <span class="badge">Équipe produit</span>
+          </div>
+        </div>
+        <p id="demo-status" class="sr-only" role="status"></p>
+      </div>
+      <CodeBlock lang="html" title="Ce que charpente attend" code={markup} />
+    </div>
+  </section>
+
+  <section class="prose" aria-labelledby="axes-title">
+    <h2 id="axes-title">Trois axes indépendants</h2>
+    <ul>
+      <li>
+        <strong>Le thème</strong> dit à quoi ressemble un squelette : <code>solid</code>,
+        <code>outline</code>, <code>dots</code>, <code>cyberpunk</code>, <code>web</code> et six
+        thèmes de saison.
+      </li>
+      <li>
+        <strong>La motion</strong> dit comment il bouge : <code>shimmer</code>, <code>pulse</code>,
+        <code>wave</code>, <code>glitch</code>, seules ou combinées.
+      </li>
+      <li>
+        <strong>Le timing</strong> dit quand : un délai avant l'apparition, pour éviter les
+        clignotements sur les chargements rapides, et un décalage entre les éléments.
+      </li>
+    </ul>
+    <CodeBlock title="charpente.config.ts" code={config} />
+  </section>
+
+  <section class="prose" aria-labelledby="suite-title">
+    <h2 id="suite-title">Explorer la documentation</h2>
+    <ul class="linkgrid">
+      {
+        links.map((item) => (
+          <li>
+            <a href={href(item.path)}>
+              <strong>{item.label}</strong>
+              <span>{item.summary}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <script>
+    import '../scripts/loop'
+  </script>
+</Base>
+
+<style is:global>
+  .demo-profile {
+    display: grid;
+    gap: 0.8rem;
+  }
+</style>

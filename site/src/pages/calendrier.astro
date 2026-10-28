@@ -1,0 +1,145 @@
+---
+import { themeAt } from 'charpente'
+import CodeBlock from '../components/CodeBlock.astro'
+import Sample from '../components/Sample.astro'
+import Base from '../layouts/Base.astro'
+import config from '../../charpente.config'
+
+const entries = config.schedule ?? []
+const sampleDates = ['2026-03-01', '2026-10-31', '2026-12-25', '2026-06-15']
+const transcripts = sampleDates
+  .map((date) => `$ charpente theme --date ${date}\n${themeAt(config, new Date(`${date}T12:00:00Z`))}`)
+  .join('\n\n')
+
+const scheduleExample = `
+import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  defaultTheme: 'solid',
+  timeZone: 'Europe/Paris',
+  schedule: [
+    { theme: 'halloween', from: '10-24', to: '11-02' },
+    { theme: 'noel', from: '12-15', to: '12-31' },
+    { theme: 'hiver', from: '12-01', to: '02-15' },
+  ],
+})`
+
+const themeAtExample = `
+import { themeAt } from 'charpente'
+import config from './charpente.config'
+
+themeAt(config, new Date('2026-10-31T12:00:00Z'))
+themeAt(config)`
+
+const virtualExample = `
+import { activeTheme } from 'virtual:charpente.theme'
+
+const root = document.documentElement
+root.dataset.charpenteTheme = activeTheme()
+root.dataset.charpenteTheme = activeTheme(new Date('2026-12-25T12:00:00Z'))`
+
+const typesExample = `
+declare module 'virtual:charpente.theme' {
+  export const activeTheme: (date?: Date) => string
+}`
+---
+
+<Base
+  title="Calendrier saisonnier"
+  description="Choisir automatiquement un thème selon la date avec schedule, themeAt, le module virtuel virtual:charpente.theme et la commande charpente theme."
+>
+  <div class="wide">
+    <div class="prose">
+      <h1>Calendrier saisonnier</h1>
+      <p class="lead">
+        <code>schedule</code> associe des périodes de l'année à des thèmes. Halloween en octobre,
+        Noël en décembre, et le thème par défaut le reste du temps.
+      </p>
+
+      <h2 id="schedule">Déclarer les créneaux</h2>
+      <p>
+        Chaque créneau a un <code>theme</code>, une date de début <code>from</code> et une date de
+        fin <code>to</code>, au format <code>MM-JJ</code>, bornes incluses. Le <strong>premier
+        créneau qui correspond gagne</strong>. Si <code>to</code> précède <code>from</code>, le
+        créneau passe le Nouvel An (<code>12-01</code> à <code>02-15</code>). Sans correspondance,
+        <code>defaultTheme</code> s'applique.
+      </p>
+      <p>
+        La date est lue dans <code>timeZone</code> (par exemple <code>Europe/Paris</code>), pas dans
+        celui du visiteur, pour que le thème change au même instant pour tout le monde.
+      </p>
+      <CodeBlock title="charpente.config.ts" code={scheduleExample} />
+      <p class="warn">
+        <span>Ordre des créneaux</span><br />
+        Dans l'exemple, <code>hiver</code> est déclaré après <code>noel</code> : du 15 au 31
+        décembre, c'est <code>noel</code> qui gagne, comme attendu.
+      </p>
+
+      <h2 id="site">Le calendrier de ce site</h2>
+      <div class="table-wrap">
+        <table class="ref">
+          <caption>schedule de site/charpente.config.ts</caption>
+          <thead>
+            <tr><th scope="col">Thème</th><th scope="col">Du</th><th scope="col">Au</th></tr>
+          </thead>
+          <tbody>
+            {entries.map((entry) => <tr><td><code>{entry.theme}</code></td><td>{entry.from}</td><td>{entry.to}</td></tr>)}
+            <tr><td><code>{config.defaultTheme}</code></td><td colspan="2">le reste de l'année (<code>defaultTheme</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <section class="stage" aria-labelledby="calc-title">
+      <div class="stage__bar">
+        <h2 id="calc-title" class="stage__label">Quel thème ce jour-là ?</h2>
+      </div>
+      <div class="split">
+        <div class="pg__controls">
+          <label class="field">
+            <span>Date</span>
+            <input type="date" id="calendar-date" />
+          </label>
+          <p>
+            Thème actif : <strong id="calendar-theme" aria-live="polite">solid</strong>
+          </p>
+          <p class="pg__readout"><code id="calendar-call">activeTheme()</code></p>
+        </div>
+        <div id="calendar-sample">
+          <Sample theme="solid" />
+        </div>
+      </div>
+    </section>
+
+    <div class="prose">
+      <h2 id="theme-at">themeAt</h2>
+      <p>
+        <code>themeAt(config, date)</code> est la fonction pure derrière tout le reste. La date vaut
+        « maintenant » si on l'omet.
+      </p>
+      <CodeBlock code={themeAtExample} />
+
+      <h2 id="virtual">virtual:charpente.theme</h2>
+      <p>
+        Le plugin Vite fournit un module virtuel avec <code>defaultTheme</code>,
+        <code>timeZone</code> et <code>schedule</code> déjà embarqués. Il exporte
+        <code>activeTheme(date?)</code>.
+      </p>
+      <CodeBlock code={virtualExample} />
+      <p>Pour TypeScript, déclarez le module dans un fichier <code>env.d.ts</code> :</p>
+      <CodeBlock code={typesExample} />
+
+      <h2 id="cli">charpente theme --date</h2>
+      <p>
+        La commande affiche le thème actif, utile dans un script de déploiement ou pour vérifier un
+        calendrier. Sans <code>--date</code>, elle prend le jour même. Voici les résultats pour la
+        configuration de ce site :
+      </p>
+      <CodeBlock lang="bash" code={transcripts} />
+    </div>
+  </div>
+
+  <script>
+    import '../scripts/calendar'
+  </script>
+</Base>

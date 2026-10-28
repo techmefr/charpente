@@ -1,0 +1,165 @@
+---
+import CodeBlock from '../components/CodeBlock.astro'
+import Base from '../layouts/Base.astro'
+import { stateAttributes } from '../lib/state'
+
+const pattern = `
+<section data-charpente-loading aria-busy="true" inert>
+  ...
+</section>
+
+<p role="status" class="sr-only">Chargement de la liste des commandes</p>`
+
+const srOnly = `
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}`
+
+const reduced = `
+@media (prefers-reduced-motion: reduce) {
+  [data-charpente-loading] :is(...feuilles) {
+    animation: none !important;
+    --charpente-shine-layer: none !important;
+  }
+}`
+
+const mixed = `
+<p>Commande <strong>#1042</strong> validée hier.</p>`
+
+const wrapped = `
+<p><span>Commande</span> <strong>#1042</strong> <span>validée hier.</span></p>`
+---
+
+<Base
+  title="Accessibilité"
+  description="aria-busy, inert, zone aria-live, prefers-reduced-motion, contraste et limites connues de charpente."
+>
+  <div class="prose">
+    <h1>Accessibilité</h1>
+    <p class="lead">
+      Un squelette est une image. Ce qui le rend accessible, ce sont les attributs que vous posez
+      autour, et charpente ne les pose pas à votre place en CSS pur.
+    </p>
+
+    <h2 id="aria-busy">aria-busy</h2>
+    <p>
+      <code>aria-busy="true"</code> indique aux technologies d'assistance que la zone est en cours
+      de mise à jour : elles peuvent attendre la fin avant de la lire. Retirez-le quand le contenu
+      est prêt.
+    </p>
+
+    <h2 id="inert">inert</h2>
+    <p>
+      <code>inert</code> retire la zone du parcours clavier, de l'arbre d'accessibilité et des
+      clics. Sans lui, un utilisateur pourrait activer un bouton invisible ou tabuler dans du texte
+      transparent. charpente masque déjà le texte (il est rendu transparent), mais seul
+      <code>inert</code> empêche réellement l'interaction et la lecture.
+    </p>
+
+    <h2 id="live">Annoncer le chargement</h2>
+    <p>
+      <code>aria-busy</code> ne dit rien à voix haute. Pour annoncer le chargement et la fin du
+      chargement, ajoutez une zone <code>role="status"</code> (équivalent d'un
+      <code>aria-live="polite"</code>) qui reste dans la page et dont vous changez le texte. Elle
+      doit être <strong>hors</strong> de la zone <code>inert</code>, sinon elle n'est plus
+      accessible.
+    </p>
+    <CodeBlock lang="html" code={pattern} />
+    <p>Le style de masquage visuel, à définir une fois :</p>
+    <CodeBlock lang="css" code={srOnly} />
+    <p>
+      Le wrapper <code>&lt;Charpente&gt;</code> de <code>charpente-vue</code> fait cela avec sa
+      prop <code>label</code>.
+    </p>
+
+    <h2 id="reduced-motion">prefers-reduced-motion</h2>
+    <p>
+      Quand le système demande moins de mouvement, charpente coupe toutes les animations des
+      squelettes, y compris le délai d'apparition : le squelette est affiché tout de suite, immobile.
+      Aucune configuration n'est nécessaire.
+    </p>
+    <CodeBlock lang="css" code={reduced} />
+    <p>
+      Les boucles de démonstration de ce site proposent aussi un bouton de pause, comme le
+      demande le critère « mouvement automatique ».
+    </p>
+
+    <h2 id="contrast">Contraste</h2>
+    <p>
+      Les squelettes sont volontairement peu contrastés : ce sont des maquettes de contenu, pas du
+      contenu. Ils ne portent aucune information, et l'état de chargement doit être transmis par
+      <code>aria-busy</code> et la zone <code>role="status"</code>, pas par la couleur seule.
+    </p>
+    <p>
+      Si vous voulez un squelette plus visible (écrans peu lumineux, mode contraste élevé), relevez
+      <code>strong</code> et <code>base</code> dans <code>colorScheme.tokens</code>, ou choisissez
+      <code>outline</code>, dont les pointillés suivent <code>strong</code>.
+    </p>
+    <p>
+      Pour ce site : le texte atteint au moins 4,5:1, les focus sont tracés par un contour de 3 px et
+      tout est utilisable au clavier.
+    </p>
+
+    <h2 id="limits">Limites connues</h2>
+    <p>
+      Deux cas ne sont pas peints. Ils sont rendus ci-dessous avec la même structure en contenu
+      puis en chargement.
+    </p>
+
+    <h3 id="checkbox">Cases à cocher et boutons radio</h3>
+    <p>
+      Une case à cocher native ignore l'image de fond : le navigateur la dessine lui-même. En
+      chargement, elle reste donc visible telle quelle, et seul son libellé (un texte nu dans un
+      <code>label</code>) devient transparent.
+    </p>
+    <div class="split">
+      <div class="stage">
+        <div class="stage__bar"><span class="stage__label">Contenu</span></div>
+        <label class="switch"><input type="checkbox" checked /> Retards seulement</label>
+      </div>
+      <div class="stage">
+        <div class="stage__bar"><span class="stage__label">Chargement</span></div>
+        <label class="switch" {...stateAttributes({ loading: true })}>
+          <input type="checkbox" checked /> Retards seulement
+        </label>
+      </div>
+    </div>
+
+    <h3 id="mixed">Texte nu dans un paragraphe à contenu mixte</h3>
+    <p>
+      Seuls les éléments sans enfant élément sont peints. Dans un paragraphe qui mêle du texte et
+      des éléments, le texte nu est masqué mais pas peint : seules les parties enveloppées dans un
+      élément apparaissent.
+    </p>
+    <CodeBlock lang="html" code={mixed} />
+    <div class="split">
+      <div class="stage">
+        <div class="stage__bar"><span class="stage__label">Contenu</span></div>
+        <p>Commande <strong>#1042</strong> validée hier à 16 h.</p>
+      </div>
+      <div class="stage">
+        <div class="stage__bar"><span class="stage__label">Chargement</span></div>
+        <div {...stateAttributes({ loading: true })}>
+          <p>Commande <strong>#1042</strong> validée hier à 16 h.</p>
+        </div>
+      </div>
+    </div>
+    <p>Enveloppez chaque morceau de texte dans un élément, comme <code>span</code> :</p>
+    <CodeBlock lang="html" code={wrapped} />
+    <div class="stage">
+      <div class="stage__bar"><span class="stage__label">Chargement, texte enveloppé</span></div>
+      <div {...stateAttributes({ loading: true })}>
+        <p><span>Commande</span> <strong>#1042</strong> <span>validée hier à 16 h.</span></p>
+      </div>
+    </div>
+    <p>
+      Une alternative est de marquer le paragraphe avec <code>data-charpente-block</code> : il est
+      alors peint d'un seul bloc.
+    </p>
+  </div>
+</Base>

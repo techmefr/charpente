@@ -1,0 +1,80 @@
+---
+import 'virtual:charpente.css'
+import '../styles/global.css'
+import { asset, href, NAV, SITE_NAME } from '../lib/site'
+
+interface Props {
+  title: string
+  description: string
+}
+
+const { title, description } = Astro.props
+const current = Astro.url.pathname
+const fullTitle = title === 'Accueil' ? `${SITE_NAME}, skeleton loaders en CSS pur` : `${title} · ${SITE_NAME}`
+---
+
+<!doctype html>
+<html lang="fr" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={asset('favicon.svg')} />
+    <script is:inline>
+      try {
+        var stored = localStorage.getItem('charpente-scheme')
+      } catch (error) {
+        stored = null
+      }
+      var dark = stored ? stored === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#contenu">Aller au contenu</a>
+    <header class="top">
+      <a class="brand" href={href()}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <path d="M3 20V9l9-6 9 6v11" />
+          <path d="M3 14h18M9 20v-6M15 20v-6" />
+        </svg>
+        {SITE_NAME}
+      </a>
+      <span class="top__tag">CSS pur</span>
+      <div class="top__actions">
+        <a class="btn btn--ghost" href="https://github.com/techmefr/charpente">GitHub</a>
+        <button type="button" class="btn btn--ghost" data-scheme-toggle aria-pressed="false">
+          Mode sombre
+        </button>
+      </div>
+    </header>
+    <div class="shell">
+      <nav class="sidenav" aria-label="Principal">
+        <ul>
+          {
+            NAV.map((item) => {
+              const target = href(item.path)
+              return (
+                <li>
+                  <a href={target} aria-current={current === target ? 'page' : undefined}>
+                    {item.label}
+                  </a>
+                </li>
+              )
+            })
+          }
+        </ul>
+      </nav>
+      <main id="contenu" tabindex="-1">
+        <slot />
+      </main>
+    </div>
+    <footer class="footer">
+      <p>charpente, skeleton loaders en CSS pur. Licence du dépôt applicable.</p>
+    </footer>
+    <script>
+      import '../scripts/scheme'
+    </script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+---
+import { avatar, PEOPLE } from '../lib/avatars'
+import { stateAttributes, type StateOptions } from '../lib/state'
+
+interface Props extends StateOptions {
+  index?: number
+  action?: string
+}
+
+const { index = 0, action = 'Suivre', ...state } = Astro.props
+const person = PEOPLE[index % PEOPLE.length]!
+---
+
+<article class="profile" {...stateAttributes(state)}>
+  <img
+    class="profile__avatar"
+    width="54"
+    height="54"
+    alt=""
+    src={avatar(person.initials, person.color)}
+  />
+  <div class="profile__body">
+    <span class="profile__name">{person.name}</span>
+    <span class="profile__role">{person.role}</span>
+  </div>
+  <button type="button" class="ui-btn">{action}</button>
+</article>
