@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { Charpente } from 'charpente-vue'
 
-const themes = ['solid', 'outline', 'dots', 'cyberpunk', 'web', 'mint']
+const themes = ['solid', 'outline', 'dots', 'cyberpunk', 'web', 'glass', 'frost', 'smoked', 'mint']
 const motions = ['shimmer', 'pulse', 'wave', 'glitch']
 
 const loading = ref(true)
@@ -11,6 +11,23 @@ const motion = ref<string[]>(['shimmer'])
 const delay = ref(120)
 const stagger = ref(40)
 const dark = ref(false)
+
+const glassDefaults = {
+  glass: { blur: 12, opacity: 0.12, reflection: 0.16, tint: '#b8c4ff' },
+  frost: { blur: 24, opacity: 0.26, reflection: 0.3, tint: '#e2e8f0' },
+  smoked: { blur: 16, opacity: 0.48, reflection: 0.08, tint: '#101827' },
+}
+const glass = ref({ ...glassDefaults.glass })
+const isGlass = computed(() => theme.value in glassDefaults)
+watch(theme, (name) => {
+  if (name in glassDefaults) glass.value = { ...glassDefaults[name as keyof typeof glassDefaults] }
+})
+const glassStyle = computed(() => isGlass.value ? {
+  '--charpente-glass-blur': `${glass.value.blur}px`,
+  '--charpente-glass-opacity': glass.value.opacity,
+  '--charpente-glass-tint': glass.value.tint,
+  '--charpente-glass-reflection': glass.value.reflection,
+} : {})
 
 watch(
   dark,
@@ -64,6 +81,20 @@ const items = computed(() => people.map((person) => (loading.value ? placeholder
       <label class="check"><input v-model="dark" type="checkbox" /> Sombre</label>
     </section>
 
+    <section v-if="isGlass" class="panel" aria-label="Réglages du verre">
+      <label>Flou {{ glass.blur }} px
+        <input v-model.number="glass.blur" type="range" min="0" max="40" step="1" />
+      </label>
+      <label>Opacité {{ Math.round(glass.opacity * 100) }} %
+        <input v-model.number="glass.opacity" type="range" min="0" max="1" step="0.01" />
+      </label>
+      <label>Reflet {{ Math.round(glass.reflection * 100) }} %
+        <input v-model.number="glass.reflection" type="range" min="0" max="1" step="0.01" />
+      </label>
+      <label>Teinte <input v-model="glass.tint" type="color" /></label>
+      <p class="glass-note">Les formes colorées derrière les fiches révèlent le flou et la transparence du verre.</p>
+    </section>
+
     <Charpente
       :loading="loading"
       :theme="theme"
@@ -72,6 +103,8 @@ const items = computed(() => people.map((person) => (loading.value ? placeholder
       :stagger="stagger"
       label="Chargement des fiches"
       class="grid"
+      :class="{ 'grid--glass': isGlass && loading }"
+      :style="glassStyle"
     >
       <article v-for="(person, index) in items" :key="index" class="card">
         <div class="card__banner" data-charpente-block></div>

@@ -143,3 +143,26 @@ body {
   flex: 1;
   min-width: 0;
 }
+
+.grid--glass {
+  padding: 24px;
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 15% 30%, #8b5cf6 0 12%, transparent 12.5%),
+    radial-gradient(ellipse at 80% 65%, #f59eaa 0 18%, transparent 18.5%),
+    radial-gradient(ellipse at 50% 10%, #38bdf8 0 16%, transparent 16.5%),
+    repeating-linear-gradient(115deg, transparent 0 28px, rgb(255 255 255 / 0.3) 28px 31px),
+    linear-gradient(135deg, #b9cadf, #d9c2e5 50%, #9dcfce);
+}
+
+.grid--glass .card {
+  background: transparent;
+  border-color: rgb(255 255 255 / 0.35);
+}
+
+.glass-note {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
