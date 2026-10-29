@@ -15,6 +15,7 @@ export default defineConfig({
       plugins: [starlightThemeRapide()],
       expressiveCode: { themes: ['dracula'] },
       favicon: '/favicon.svg',
+      head: [{ tag: 'link', attrs: { rel: 'alternate icon', href: '/charpente/favicon.ico' } }],
       logo: {
         light: './src/assets/logo-light.svg',
         dark: './src/assets/logo-dark.svg',

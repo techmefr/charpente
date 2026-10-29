@@ -51,7 +51,7 @@ const items = computed(() => people.map((person) => (loading.value ? placeholder
 <template>
   <main class="page">
     <header class="page__head">
-      <h1>Charpente</h1>
+      <h1><img :src="dark ? '/brand/logo-dark.svg' : '/brand/logo-light.svg'" alt="" width="40" height="40" />charpente</h1>
       <p>Skeleton loaders en CSS pur. Le thème, la motion et le timing sont indépendants.</p>
     </header>
 
