@@ -48,11 +48,29 @@ Many skeleton libraries ask you to draw placeholder shapes yourself and ship Jav
 | Look and feel | Configured per component | One config file, 38 themes |
 | Frameworks | Often a single one | Vue, React, Svelte, Solid, Angular, Astro, Blade and vanilla |
 
+## Looks, motion and timing
+
+<p align="center">
+  <img src="site/public/readme/looks.gif" alt="The same list switching between cyberpunk, blueprint, brutalist, aurora, neon, christmas, paper and vegas themes" width="520">
+</p>
+
 <p align="center">
   <img src="site/public/readme/themes.png" alt="The same loading layout with six very different themes: cyberpunk, blueprint, brutalist, aurora, christmas and neon" width="800">
 </p>
 
-<p align="center"><sub>One layout, six of the 38 themes: cyberpunk, blueprint, brutalist, aurora, christmas, neon.</sub></p>
+<p align="center"><sub>One layout, 38 themes. Six of them: cyberpunk, blueprint, brutalist, aurora, christmas, neon.</sub></p>
+
+**Motion**: shimmer, pulse, wave and glitch, alone or combined.
+
+<p align="center">
+  <img src="site/public/readme/motion.gif" alt="The same skeleton with the shimmer, pulse, wave and glitch motions" width="520">
+</p>
+
+**Themes by date**: `schedule` picks the theme from the calendar, so your loaders follow Valentine&rsquo;s Day, Halloween, Christmas and the seasons without a deploy.
+
+<p align="center">
+  <img src="site/public/readme/schedule.gif" alt="The theme changing with the date: Valentine, spring, summer, Halloween, Christmas and New Year" width="520">
+</p>
 
 ## Works with your stack
 
