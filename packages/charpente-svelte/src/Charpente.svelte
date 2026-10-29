@@ -37,7 +37,11 @@
     const now = loading
     const before = untrack(() => wasLoading)
     wasLoading = now
-    if (!before || now) return
+    if (now) {
+      ready = false
+      return
+    }
+    if (!before) return
     ready = true
     const timer = setTimeout(() => {
       ready = false
@@ -66,9 +70,9 @@
 >
   {@render children?.()}
 </svelte:element>
-{#if loading && label}
+{#if label}
   <span
     role="status"
     style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"
-  >{label}</span>
+  >{loading ? label : ""}</span>
 {/if}

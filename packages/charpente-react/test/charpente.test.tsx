@@ -35,8 +35,9 @@ describe("Charpente", () => {
     expect(html).toContain("data-charpente-motion=\"glitch shimmer\"")
   })
 
-  it("renders a status label only while loading", () => {
-    expect(renderToStaticMarkup(<Charpente loading label="Loading">x</Charpente>)).toContain("role=\"status\"")
-    expect(renderToStaticMarkup(<Charpente label="Loading">x</Charpente>)).not.toContain("role=\"status\"")
+  it("keeps the status region mounted and only fills it while loading", () => {
+    expect(renderToStaticMarkup(<Charpente loading label="Loading">x</Charpente>)).toMatch(/role="status"[^>]*>Loading</)
+    expect(renderToStaticMarkup(<Charpente label="Loading">x</Charpente>)).toMatch(/role="status"[^>]*><\/span>/)
+    expect(renderToStaticMarkup(<Charpente loading>x</Charpente>)).not.toContain("role=\"status\"")
   })
 })

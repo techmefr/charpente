@@ -41,7 +41,12 @@ export const Charpente = defineComponent({
     watch(
       () => props.loading,
       (now, before) => {
-        if (!before || now) return
+        if (now) {
+          clearTimeout(timer)
+          ready.value = false
+          return
+        }
+        if (!before) return
         ready.value = true
         timer = setTimeout(() => {
           ready.value = false
@@ -71,8 +76,8 @@ export const Charpente = defineComponent({
         slots.default?.(),
       )
 
-      if (!props.loading || !props.label) return root
-      return h(Fragment, [root, h('span', { role: 'status', style: SCREEN_READER_ONLY }, props.label)])
+      if (!props.label) return root
+      return h(Fragment, [root, h('span', { role: 'status', style: SCREEN_READER_ONLY }, props.loading ? props.label : '')])
     }
   },
 })

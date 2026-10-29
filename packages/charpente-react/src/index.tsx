@@ -40,7 +40,11 @@ export const useReveal = (loading: boolean, revealMs: number): boolean => {
   useEffect(() => {
     const wasLoading = previous.current
     previous.current = loading
-    if (!wasLoading || loading) return
+    if (loading) {
+      setReady(false)
+      return
+    }
+    if (!wasLoading) return
     setReady(true)
     const timer = setTimeout(() => setReady(false), revealMs)
     return () => clearTimeout(timer)
@@ -79,11 +83,11 @@ export const Charpente = ({
     children,
   )
 
-  if (!loading || !label) return root
+  if (!label) return root
   return createElement(
     Fragment,
     null,
     root,
-    createElement("span", { role: "status", style: SCREEN_READER_ONLY }, label),
+    createElement("span", { role: "status", style: SCREEN_READER_ONLY }, loading ? label : ""),
   )
 }
