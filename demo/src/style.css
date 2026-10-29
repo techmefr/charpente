@@ -29,6 +29,9 @@ body {
 }
 
 .page__head h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin: 0;
 }
 
