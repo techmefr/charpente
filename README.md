@@ -29,10 +29,10 @@
 </p>
 
 <p align="center">
-  <img src="site/public/readme/themes.png" alt="The same loading layout with six themes: solid, cyberpunk, christmas, blueprint, neon and aurora" width="800">
+  <img src="site/public/readme/themes.png" alt="The same loading layout with six very different themes: cyberpunk, blueprint, brutalist, aurora, christmas and neon" width="800">
 </p>
 
-<p align="center"><sub>One layout, six of the 38 themes: solid, cyberpunk, christmas, blueprint, neon, aurora.</sub></p>
+<p align="center"><sub>One layout, six of the 38 themes: cyberpunk, blueprint, brutalist, aurora, christmas, neon.</sub></p>
 
 ---
 
@@ -42,6 +42,32 @@
 - **Pure CSS**: generated at build time, no runtime JavaScript to paint or animate.
 - **One config file**: themes, motion and timing, with dark mode and seasonal theming.
 - **Accessible by default**: wrappers handle `aria-busy` and `inert` for you.
+
+## What makes it different
+
+Many skeleton libraries ask you to draw placeholder shapes yourself and ship JavaScript to render them. Charpente detects the shapes from your page.
+
+| | Hand-built skeletons | Charpente |
+| --- | --- | --- |
+| Placeholder shapes | Described or duplicated by hand | Detected automatically from your real layout |
+| Runtime cost | JavaScript components | CSS generated at build time |
+| Look and feel | Configured per component | One config file, 38 themes |
+| Frameworks | Often a single one | Vue, React, Svelte, Solid, Angular, Astro, Blade and vanilla |
+
+## Works with your stack
+
+| Framework | Package |
+| --- | --- |
+| Vue, Nuxt | `charpente-vue` |
+| React, Next | `charpente-react` |
+| Svelte | `charpente-svelte` |
+| Solid | `charpente-solid` |
+| Angular | `charpente-angular` |
+| Astro | `charpente-astro` |
+| Laravel, Livewire | `charpente-blade` |
+| Vanilla | `charpente/dom` |
+
+The [`examples`](examples) folder has a working setup for each framework, and for Tailwind, Bootstrap, MUI, shadcn and Vuetify. Install works with npm, pnpm and bun.
 
 ## Quick start
 
@@ -71,19 +97,6 @@ import virtual:charpente.css
 
 Remove the attributes when your content is ready.
 
-## Your framework
-
-| Framework | Package |
-| --- | --- |
-| Vue, Nuxt | `charpente-vue` |
-| React, Next | `charpente-react` |
-| Svelte | `charpente-svelte` |
-| Solid | `charpente-solid` |
-| Angular | `charpente-angular` |
-| Astro | `charpente-astro` |
-| Laravel, Livewire | `charpente-blade` |
-| Vanilla | `charpente/dom` |
-
 ## Go further
 
 [Installation guide](https://techmefr.github.io/charpente/getting-started/) ·
@@ -92,6 +105,12 @@ Remove the attributes when your content is ready.
 [Accessibility](https://techmefr.github.io/charpente/accessibility/)
 
 ## Contributing
+
+Charpente is young, and feedback is the most useful contribution.
+
+- **Test it and report back**: try it with your framework, UI library or package manager, and [open an issue](https://github.com/techmefr/charpente/issues) with what worked and what did not.
+- **Add a theme**: themes live in [`packages/charpente/src`](packages/charpente/src). Try yours in the playground, then open a pull request.
+- **Improve it**: fixes, new motions, wrappers for other frameworks and documentation are all welcome.
 
 This repository is a pnpm workspace.
 
