@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { schedulePresets, themeAt } from '../src'
+import { validateSchedule } from '../src/schedule'
 import type { CharpenteConfig } from '../src'
 
 const config: CharpenteConfig = {
@@ -60,5 +61,14 @@ describe('schedulePresets', () => {
     ['2026-09-30', 'autumn'],
   ])('picks the theme for %s', (day, theme) => {
     expect(themeAt(config, new Date(`${day}T12:00:00Z`))).toBe(theme)
+  })
+})
+
+describe('validateSchedule', () => {
+  it('rejects days that never exist', () => {
+    expect(() => validateSchedule([{ theme: 'web', from: '02-31', to: '03-01' }], ['web'], undefined)).toThrow(
+      'must look like MM-DD',
+    )
+    expect(() => validateSchedule([{ theme: 'web', from: '02-29', to: '03-01' }], ['web'], undefined)).not.toThrow()
   })
 })

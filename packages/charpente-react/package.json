@@ -28,7 +28,7 @@
     "charpente": "workspace:^"
   },
   "peerDependencies": {
-    "react": ">=18"
+    "react": ">=19"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",

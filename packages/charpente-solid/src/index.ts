@@ -38,6 +38,15 @@ const booleanInert = (attributes: Record<string, string>): Record<string, string
   return inert === undefined ? others : { ...others, inert: true }
 }
 
+const parseStyle = (value: string): Record<string, string> =>
+  Object.fromEntries(
+    value
+      .split(';')
+      .map((declaration) => declaration.split(/:(.*)/s))
+      .filter(([name, content]) => name?.trim() && content?.trim())
+      .map(([name, content]) => [name!.trim(), content!.trim()]),
+  )
+
 export const Charpente = (props: CharpenteProps): JSX.Element => {
   const [own, rest] = splitProps(props, [
     'loading',
@@ -58,7 +67,11 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
     const now = own.loading ?? false
     const before = wasLoading
     wasLoading = now
-    if (!before || now) return
+    if (now) {
+      setReady(false)
+      return
+    }
+    if (!before) return
     setReady(true)
     const timer = setTimeout(() => setReady(false), untrack(() => own.revealMs ?? 260))
     onCleanup(() => clearTimeout(timer))
@@ -74,7 +87,7 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
     })
 
   const style = () => {
-    const base = typeof own.style === 'object' && own.style !== null ? own.style : {}
+    const base = typeof own.style === 'string' ? parseStyle(own.style) : (own.style ?? {})
     return { ...base, ...attributes().style }
   }
 
@@ -97,12 +110,12 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
   )
 
   const status = () =>
-    own.loading && own.label
+    own.label
       ? createComponent(Dynamic, {
           component: 'span',
           role: 'status',
           style: SCREEN_READER_ONLY,
-          children: own.label,
+          children: own.loading ? own.label : '',
         })
       : undefined
 
