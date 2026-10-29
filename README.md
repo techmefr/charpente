@@ -28,12 +28,6 @@
   <img src="site/public/readme/demo.gif" alt="A list showing skeleton placeholders, then the loaded content in the same layout" width="560">
 </p>
 
-<p align="center">
-  <img src="site/public/readme/themes.png" alt="The same loading layout with six very different themes: cyberpunk, blueprint, brutalist, aurora, christmas and neon" width="800">
-</p>
-
-<p align="center"><sub>One layout, six of the 38 themes: cyberpunk, blueprint, brutalist, aurora, christmas, neon.</sub></p>
-
 ---
 
 ## Why Charpente
@@ -54,6 +48,12 @@ Many skeleton libraries ask you to draw placeholder shapes yourself and ship Jav
 | Look and feel | Configured per component | One config file, 38 themes |
 | Frameworks | Often a single one | Vue, React, Svelte, Solid, Angular, Astro, Blade and vanilla |
 
+<p align="center">
+  <img src="site/public/readme/themes.png" alt="The same loading layout with six very different themes: cyberpunk, blueprint, brutalist, aurora, christmas and neon" width="800">
+</p>
+
+<p align="center"><sub>One layout, six of the 38 themes: cyberpunk, blueprint, brutalist, aurora, christmas, neon.</sub></p>
+
 ## Works with your stack
 
 | Framework | Package |
@@ -67,7 +67,17 @@ Many skeleton libraries ask you to draw placeholder shapes yourself and ship Jav
 | Laravel, Livewire | `charpente-blade` |
 | Vanilla | `charpente/dom` |
 
-The [`examples`](examples) folder has a working setup for each framework, and for Tailwind, Bootstrap, MUI, shadcn and Vuetify. Install works with npm, pnpm and bun.
+### UI libraries tried
+
+| Library | Example |
+| --- | --- |
+| Tailwind CSS | [`examples/vanilla`](examples/vanilla) |
+| Bootstrap | [`examples/ui-bootstrap`](examples/ui-bootstrap) |
+| MUI | [`examples/ui-mui`](examples/ui-mui) |
+| shadcn/ui | [`examples/ui-shadcn`](examples/ui-shadcn) |
+| Vuetify | [`examples/ui-vuetify`](examples/ui-vuetify) |
+
+Every framework has a working setup in [`examples`](examples). Install works with npm, pnpm and bun.
 
 ## Quick start
 
