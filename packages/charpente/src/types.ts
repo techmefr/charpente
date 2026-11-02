@@ -21,12 +21,20 @@ export interface PatternDef {
   size?: Stepped<string>
 }
 
+export interface BorderImage {
+  image: string
+  slice?: number
+  width?: string
+  repeat?: 'stretch' | 'repeat' | 'round' | 'space'
+}
+
 export interface ThemeDef {
   extends?: string
   colors?: [base: string, strong: string]
   pattern?: string | PatternDef
   radius?: Stepped<string>
-  border?: string
+  border?: string | BorderImage
+  variants?: Record<string, ThemeDef>
   scale?: number
   style?: Record<string, Stepped<string>>
   tokens?: Tokens

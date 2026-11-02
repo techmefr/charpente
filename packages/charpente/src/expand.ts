@@ -1,5 +1,5 @@
 import { builtinPatterns } from './patterns'
-import type { Paint, PaintType, PatternDef, Stepped, ThemeDef } from './types'
+import type { BorderImage, Declarations, Paint, PaintType, PatternDef, Stepped, ThemeDef } from './types'
 
 const PAINT_TYPES: PaintType[] = ['text', 'media', 'control', 'block']
 const SCALED_TYPES: PaintType[] = ['media', 'block']
@@ -10,6 +10,27 @@ const resolvePattern = (pattern: string | PatternDef): PatternDef => {
   const found = builtinPatterns[pattern]
   if (!found) throw new Error(`charpente: unknown pattern "${pattern}"`)
   return found
+}
+
+const DEFAULT_BORDER_WIDTH = '12px'
+const DEFAULT_BORDER_SLICE = 30
+
+const imageUrl = (image: string): string => {
+  const source = image.trim()
+  if (source.startsWith('<')) return `url("data:image/svg+xml,${encodeURIComponent(source).replace(/'/g, '%27')}")`
+  if (source.startsWith('url(')) return source
+  throw new Error(`charpente: border image "${image}" is neither SVG markup nor url(...)`)
+}
+
+const borderDeclarations = (border: string | BorderImage): Declarations => {
+  if (typeof border === 'string') return { border }
+  const width = border.width ?? DEFAULT_BORDER_WIDTH
+  return {
+    boxSizing: 'border-box',
+    borderStyle: 'solid !important',
+    borderWidth: `${width} !important`,
+    borderImage: `${imageUrl(border.image)} ${border.slice ?? DEFAULT_BORDER_SLICE} / ${width} ${border.repeat ?? 'round'} !important`,
+  }
 }
 
 const at = <T>(value: Stepped<T>, step: number): T => (typeof value === 'function' ? (value as (step: number) => T)(step) : value)
@@ -26,7 +47,7 @@ export const expandTheme = (def: ThemeDef): ThemeDef => {
       ...(pattern && { fill: at(pattern.fill, step), ...(pattern.size && { size: at(pattern.size, step) }) }),
       style: {
         borderRadius: def.radius ? at(def.radius, step) : 'var(--charpente-radius)',
-        ...(def.border && { border: def.border }),
+        ...(def.border && borderDeclarations(def.border)),
         ...Object.fromEntries(Object.entries(def.style ?? {}).map(([property, value]) => [property, at(value, step)])),
       },
     }
@@ -34,4 +55,14 @@ export const expandTheme = (def: ThemeDef): ThemeDef => {
     paint[type] = { ...base, ...override, style: { ...base.style, ...override?.style } }
   }
   return { ...def, tokens, paint }
+}
+
+export const withVariants = (themes: Record<string, ThemeDef>): Record<string, ThemeDef> => {
+  const all: Record<string, ThemeDef> = {}
+  for (const [name, def] of Object.entries(themes)) {
+    const { variants, ...base } = def
+    all[name] = base
+    for (const [variant, override] of Object.entries(variants ?? {})) all[`${name}-${variant}`] = { ...base, ...override }
+  }
+  return all
 }
