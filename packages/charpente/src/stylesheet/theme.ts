@@ -1,10 +1,10 @@
 import { declarations, flat, splitTopLevel, tokenDeclarations } from '../css'
 import { resolveTheme } from '../themes'
 import { PAINT_TYPES, type CharpenteConfig, type Paint, type PaintType, type ThemeDef } from '../types'
-import { LOADING, TYPE_SELECTORS, within } from './selectors'
+import { CAPTURED_SLOTS, LOADING, TYPE_SELECTORS, within } from './selectors'
 import { darkThemeTokens } from './tokens'
 
-const paintRule = (type: PaintType, paint: Paint, scopes: string[]): string => {
+const paintRule = (type: PaintType, paint: Paint, scopes: string[], selector = TYPE_SELECTORS[type]): string => {
   const layers = splitTopLevel(paint.fill ?? flat('var(--charpente-base)'))
   const sizes = paint.size ? splitTopLevel(paint.size) : []
   const sizeList = layers.map((_, index) => sizes[index] ?? 'auto')
@@ -22,7 +22,7 @@ const paintRule = (type: PaintType, paint: Paint, scopes: string[]): string => {
   ]
     .filter(Boolean)
     .join(';\n  ')
-  return `${within(scopes, TYPE_SELECTORS[type])} {\n  ${body};\n}`
+  return `${within(scopes, selector)} {\n  ${body};\n}`
 }
 
 export const themeCss = (
@@ -30,6 +30,7 @@ export const themeCss = (
   isDefault: boolean,
   themes: Record<string, ThemeDef>,
   scheme: CharpenteConfig['colorScheme'],
+  captured = false,
 ): string => {
   const resolved = resolveTheme(name, themes)
   const scopes = [`${LOADING}[data-charpente-theme="${name}"]`]
@@ -43,5 +44,10 @@ export const themeCss = (
     blocks.push(darkThemeTokens(scopes, resolved.dark, scheme))
   }
   for (const type of PAINT_TYPES) blocks.push(paintRule(type, resolved.paint[type] ?? {}, scopes))
+  if (captured) {
+    const [text, media] = CAPTURED_SLOTS as [string, string]
+    blocks.push(paintRule('text', resolved.paint.text ?? {}, scopes, text))
+    blocks.push(paintRule('media', resolved.paint.media ?? {}, scopes, media))
+  }
   return blocks.join('\n')
 }

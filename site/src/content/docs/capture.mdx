@@ -86,5 +86,5 @@ npx charpente capture --url http://localhost:3000 --cdp http://localhost:9222
 While the area loads, the zone reserves its captured height and draws the captured shapes with the theme of the page: its colors, pattern and motion. The breakpoint is picked with media queries and the shapes stretch with the width of the zone between two breakpoints.
 
 <Aside type="note">
-The captured shapes are painted with the block fill of the theme. Capture again after a layout change, and keep the simple mode for areas where placeholder content is enough.
+Each shape keeps its nature: text shapes use the text paint of the theme, images the media paint, and blocks and controls the block paint. Capture again after a layout change, and keep the simple mode for areas where placeholder content is enough.
 </Aside>

@@ -1,4 +1,4 @@
-import type { BonesData, ZoneBones } from '../types'
+import type { BonesData, PaintType, ZoneBones } from '../types'
 import { maskUrl } from './mask'
 
 const LOADING = '[data-charpente-loading]'
@@ -16,16 +16,29 @@ const mediaQuery = (from: number, to: number | undefined): string => {
   return [min, max].filter(Boolean).join(' and ')
 }
 
-const zoneRule = (name: string, zone: ZoneBones): string => {
-  const mask = maskUrl(zone)
-  return [
-    `${LOADING} [data-charpente-capture="${name}"] {`,
-    `  min-height: ${Math.round(zone.height)}px;`,
-    `  -webkit-mask: ${mask} 0 0 / 100% 100% no-repeat;`,
-    `  mask: ${mask} 0 0 / 100% 100% no-repeat;`,
-    `}`,
-  ].join('\n')
+const SLOTS: { pseudo: string; kinds: PaintType[] }[] = [
+  { pseudo: '', kinds: ['block', 'control'] },
+  { pseudo: '::before', kinds: ['text'] },
+  { pseudo: '::after', kinds: ['media'] },
+]
+
+const maskDeclarations = (zone: ZoneBones, kinds: PaintType[]): string[] => {
+  const mask = maskUrl({ ...zone, bones: zone.bones.filter((bone) => kinds.includes(bone.kind ?? 'block')) })
+  return [`  -webkit-mask: ${mask} 0 0 / 100% 100% no-repeat;`, `  mask: ${mask} 0 0 / 100% 100% no-repeat;`]
 }
+
+const slotRule = (name: string, zone: ZoneBones, { pseudo, kinds }: (typeof SLOTS)[number]): string => {
+  const selector = `${LOADING} [data-charpente-capture="${name}"]${pseudo}`
+  const head = pseudo
+    ? ['  content: "";', '  position: absolute;', '  inset: 0;', '  pointer-events: none;']
+    : [`  min-height: ${Math.round(zone.height)}px;`, ...(zone.bones.some((bone) => bone.kind === 'text' || bone.kind === 'media') ? ['  position: relative;'] : [])]
+  return [`${selector} {`, ...head, ...maskDeclarations(zone, kinds), `}`].join('\n')
+}
+
+const zoneRule = (name: string, zone: ZoneBones): string =>
+  SLOTS.filter(({ pseudo, kinds }) => !pseudo || zone.bones.some((bone) => kinds.includes(bone.kind ?? 'block')))
+    .map((slot) => slotRule(name, zone, slot))
+    .join('\n')
 
 const zoneCss = (name: string, sets: Record<string, ZoneBones>): string => {
   const breakpoints = Object.keys(sets).map(Number).sort((a, b) => a - b)
