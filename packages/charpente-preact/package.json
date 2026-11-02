@@ -1,0 +1,46 @@
+{
+  "name": "charpente-preact",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Preact wrapper for charpente: a Charpente component that turns its children into a pure CSS skeleton while loading.",
+  "keywords": [
+    "preact",
+    "skeleton",
+    "skeleton-loader",
+    "loading",
+    "charpente"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techmefr/charpente.git",
+    "directory": "packages/charpente-preact"
+  },
+  "homepage": "https://techmefr.github.io/charpente/",
+  "bugs": "https://github.com/techmefr/charpente/issues",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "charpente": "workspace:^"
+  },
+  "peerDependencies": {
+    "preact": ">=10"
+  },
+  "devDependencies": {
+    "jsdom": "^27.4.0",
+    "preact": "^10.26.0",
+    "preact-render-to-string": "^6.5.0"
+  }
+}
