@@ -72,7 +72,7 @@ Use the wrapper of your framework. It sets the attributes, announces the loading
 | Laravel, Livewire | `charpente-blade` | `<x-charpente :loading="$pending" tag="main">` |
 | Vanilla | `charpente/dom` | `setLoading(element, { loading: true })` |
 
-All of them take `loading`, `theme`, `motion`, `delay`, `stagger` and `label`. The wrapper renders the container itself (`tag` or `as`), so it adds no extra element when you point it at the root you already have.
+All of them take `loading`, `theme`, `motion`, `delay`, `stagger` and `label`. The client wrappers (Vue, React, Solid, Svelte, Angular) also take `reveal` and `scope`. Astro and Blade render on the server: they take `reveal` (the delay between levels) but the fade-in and the page scope need the client, through `charpente/loader` or `setLoading`. The wrapper renders the container itself (`tag` or `as`), so it adds no extra element when you point it at the root you already have.
 
 When the data arrives, set `loading` to `false`: the real content is already there, in the same place, with no layout shift.
 

@@ -8,12 +8,13 @@ interface Props {
   motion?: string | string[]
   delay?: number
   stagger?: number
+  reveal?: number
   label?: string
   [attribute: string]: unknown
 }
 
-const { loading = false, as: Tag = "div", theme, motion, delay, stagger, label = "", style, ...rest } = Astro.props
-const { attributes: base, style: variables } = loadingAttributes({ loading, theme, motion, delay, stagger })
+const { loading = false, as: Tag = "div", theme, motion, delay, stagger, reveal, label = "", style, ...rest } = Astro.props
+const { attributes: base, style: variables } = loadingAttributes({ loading, theme, motion, delay, stagger, reveal })
 const attributes: Record<string, string | boolean> = { ...base }
 if (loading) attributes.inert = true
 const inline = Object.entries(variables).map(([name, value]) => name + ":" + value).join(";")
