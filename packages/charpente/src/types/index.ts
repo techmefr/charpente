@@ -93,6 +93,9 @@ export interface CaptureConfig {
   breakpoints?: number[]
   wait?: number
   out?: string
+  url?: string
+  cdp?: string
+  dev?: boolean
 }
 
 export interface CharpenteConfig {

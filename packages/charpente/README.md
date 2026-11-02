@@ -103,7 +103,7 @@ Wrappers accept `loading`, `theme`, `motion`, `delay`, `stagger`, `reveal`, `sco
 
 ## Faithful mode
 
-Simple by default: Charpente paints the content already in the page. For a skeleton that matches the real layout at every breakpoint, even when the area is empty, add `capture: { routes: ['/'] }` to the configuration, mark the zone with `data-charpente-block data-charpente-capture="name"` and run `npx charpente capture --url http://localhost:3000` (needs Playwright). Without `capture`, nothing changes.
+Simple by default: Charpente paints the content already in the page. For a skeleton that matches the real layout at every breakpoint, even when the area is empty, add `capture: { routes: ['/'] }` to the configuration, mark the zone with `data-charpente-block data-charpente-capture="name"` and run `npx charpente capture` (needs Playwright; the Vite plugin also captures by itself in dev, and `--cdp` reuses a Chrome that is already signed in). Without `capture`, nothing changes.
 
 ## Make it yours
 

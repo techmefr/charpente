@@ -12,7 +12,15 @@ export const readBones = (root: string, config: { capture?: CaptureConfig }): Bo
   return existsSync(file) ? (JSON.parse(readFileSync(file, 'utf8')) as BonesData) : undefined
 }
 
-export const writeBones = (root: string, config: { capture?: CaptureConfig }, data: BonesData): string => {
+export const writeChangedBones = (root: string, config: { capture?: CaptureConfig }, data: BonesData): boolean => {
+  const file = bonesPath(root, config)
+  const next = `${JSON.stringify(data, null, 2)}\n`
+  if (existsSync(file) && readFileSync(file, 'utf8') === next) return false
+  writeBones(root, config, data)
+  return true
+}
+
+export const writeBones =(root: string, config: { capture?: CaptureConfig }, data: BonesData): string => {
   const file = bonesPath(root, config)
   mkdirSync(dirname(file), { recursive: true })
   writeFileSync(file, `${JSON.stringify(data, null, 2)}\n`)
