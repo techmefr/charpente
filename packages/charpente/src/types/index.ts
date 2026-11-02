@@ -49,6 +49,7 @@ export interface MotionDef {
   easing?: string
   iterations?: string
   layer?: string
+  attachment?: string
   keyframes: Record<string, Declarations>
 }
 
@@ -113,6 +114,7 @@ export interface CharpenteConfig {
   motions?: Record<string, MotionDef>
   capture?: CaptureConfig
   bones?: BonesData
+  initial?: boolean | number
 }
 
 export interface CompileResult {

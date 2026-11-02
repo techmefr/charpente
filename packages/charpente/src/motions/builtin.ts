@@ -11,6 +11,17 @@ export const builtinMotions: Record<string, MotionDef> = {
       to: { '--charpente-shine-x': '180%' },
     },
   },
+  sweep: {
+    duration: '2.2s',
+    easing: 'linear',
+    attachment: 'fixed',
+    layer:
+      'linear-gradient(100deg, transparent 20%, var(--charpente-shine) 50%, transparent 80%)',
+    keyframes: {
+      from: { '--charpente-shine-x': '-250%' },
+      to: { '--charpente-shine-x': '350%' },
+    },
+  },
   pulse: {
     duration: '1.4s',
     keyframes: {
