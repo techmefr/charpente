@@ -68,21 +68,23 @@ const coreThemes: Record<string, ThemeDef> = {
   dots: { pattern: 'dots' },
   cyberpunk: {
     tokens: { base: '#0b1426', strong: '#16435a', accent: '#22d3ee', accent2: '#e879f9', shine: 'rgba(34,211,238,.18)' },
-    paint: Object.fromEntries(['text', 'media', 'control', 'block'].map((type) => [type, {
+    pattern: {
       fill: 'repeating-linear-gradient(0deg, transparent 0 3px, rgba(34,211,238,.07) 3px 4px), linear-gradient(125deg, var(--charpente-base) 45%, #251332)',
       size: 'auto, auto',
-      style: {
-        borderRadius: type === 'text' ? '3px' : '6px',
-        boxShadow: 'inset 0 0 0 1px rgba(34,211,238,.55), inset -2px 0 0 var(--charpente-accent2), 0 0 8px rgba(34,211,238,.1)',
-      },
-    }])),
+    },
+    radius: '6px',
+    style: {
+      boxShadow: 'inset 0 0 0 1px rgba(34,211,238,.55), inset -2px 0 0 var(--charpente-accent2), 0 0 8px rgba(34,211,238,.1)',
+    },
+    paint: { text: { style: { borderRadius: '3px' } } },
   },
   web: {
-    paint: Object.fromEntries(['text', 'media', 'control', 'block'].map((type) => [type, {
+    pattern: {
       fill: 'repeating-radial-gradient(ellipse at 22% 65%, transparent 0 9px, color-mix(in srgb, var(--charpente-strong) 65%, transparent) 9px 9.7px, transparent 9.7px 10px), repeating-conic-gradient(from 12deg at 22% 65%, transparent 0 23.5deg, color-mix(in srgb, var(--charpente-strong) 80%, transparent) 23.5deg 24deg), linear-gradient(var(--charpente-base), var(--charpente-base))',
       size: '96px 72px, 96px 72px, auto',
-      style: { borderRadius: type === 'text' ? '4px' : '8px' },
-    }])),
+    },
+    radius: '8px',
+    paint: { text: { style: { borderRadius: '4px' } } },
   },
 }
 
