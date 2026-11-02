@@ -1,7 +1,6 @@
 import { extraThemes } from './extras'
 import { glassThemes } from './glass'
-import { eventThemes, usageThemes } from './families'
-import { seasonalThemes } from './seasons'
+import { usageThemes } from './families'
 import type { ThemeDef } from './types'
 
 export const flat = (color: string): string => `linear-gradient(${color}, ${color})`
@@ -92,6 +91,4 @@ export const builtinThemes: Record<string, ThemeDef> = {
   ...extraThemes,
   ...glassThemes,
   ...usageThemes,
-  ...eventThemes,
-  ...seasonalThemes,
 }

@@ -1,39 +1,7 @@
-import { motif, scaled, tint } from './seasons'
+import { motif, scaled, tint } from './motifs'
 import type { ThemeDef } from './types'
 
 const flat = (color: string): string => `linear-gradient(${color}, ${color})`
-
-const heart = (color: string): string =>
-  `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath fill='${color}' d='M5 9C-2 4 1-1 5 2c4-3 7 2 0 7z'/%3E%3C/svg%3E")`
-
-export const eventThemes: Record<string, ThemeDef> = {
-  valentine: {
-    tokens: { accent: '#f43f5e', accent2: '#fb7185', shine: 'rgba(255, 255, 255, 0.6)' },
-    paint: scaled((step) => ({
-      fill: `${heart('%23fb7185')}, ${flat(tint('accent2', 22))}`,
-      size: `${12 * step}px ${12 * step}px, auto`,
-      style: { borderRadius: `${3 * step}px` },
-    })),
-  },
-  birthday: {
-    tokens: { accent: '#ec4899', accent2: '#facc15', shine: 'rgba(255, 255, 255, 0.7)' },
-    paint: scaled((step) => ({
-      fill: `radial-gradient(circle at 15% 30%, #ec4899 0 ${1.6 * step}px, transparent ${1.6 * step + 0.5}px), radial-gradient(circle at 45% 70%, #facc15 0 ${1.6 * step}px, transparent ${1.6 * step + 0.5}px), radial-gradient(circle at 70% 25%, #22d3ee 0 ${1.6 * step}px, transparent ${1.6 * step + 0.5}px), radial-gradient(circle at 90% 65%, #a78bfa 0 ${1.6 * step}px, transparent ${1.6 * step + 0.5}px), ${flat('rgba(254, 243, 199, 0.55)')}`,
-      size: `${18 * step}px ${14 * step}px, ${18 * step}px ${14 * step}px, ${18 * step}px ${14 * step}px, ${18 * step}px ${14 * step}px, auto`,
-      style: {
-        borderRadius: `${3 * step}px`,
-        outline: `1.5px dashed ${tint('accent', 70)}`,
-        outlineOffset: '-1.5px',
-      },
-    })),
-  },
-  pride: {
-    paint: scaled((step) => ({
-      fill: 'linear-gradient(180deg, rgba(228, 3, 3, 0.55) 0 16.6%, rgba(255, 140, 0, 0.55) 16.6% 33.3%, rgba(255, 237, 0, 0.6) 33.3% 50%, rgba(0, 128, 38, 0.5) 50% 66.6%, rgba(0, 77, 255, 0.5) 66.6% 83.3%, rgba(117, 7, 135, 0.5) 83.3% 100%)',
-      style: { borderRadius: `${2 * step}px` },
-    })),
-  },
-}
 
 export const usageThemes: Record<string, ThemeDef> = {
   editorial: {

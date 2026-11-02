@@ -10,6 +10,10 @@ import ThemeTranscripts from '../../components/ThemeTranscripts.astro'
 
 `schedule` maps periods of the year to themes. Halloween in October, Christmas in December, and the default theme the rest of the time.
 
+<Aside title="Recipes">
+`christmas`, `halloween`, `new-year`, `winter`, `spring`, `summer`, `autumn`, `valentine`, `birthday` and `pride` are not built in. Copy their folder from `recipes/` into your `themes/` directory, then schedule them like any other theme.
+</Aside>
+
 ## Declaring the slots
 
 Each slot has a `theme`, a start date `from` and an end date `to`, in `MM-DD` format, bounds included. The **first matching slot wins**. If `to` comes before `from`, the slot spans New Year (`12-01` to `02-15`). With no match, `defaultTheme` applies.

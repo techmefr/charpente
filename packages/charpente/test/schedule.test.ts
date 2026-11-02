@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { schedulePresets, themeAt } from '../src'
+import { themeAt } from '../src'
 import type { CharpenteConfig } from '../src'
 
 const config: CharpenteConfig = {
@@ -47,8 +47,19 @@ describe('themeAt', () => {
   })
 })
 
-describe('schedulePresets', () => {
-  const config = { defaultTheme: 'solid', schedule: schedulePresets.all }
+describe('a yearly calendar', () => {
+  const config = {
+    defaultTheme: 'solid',
+    schedule: [
+      { theme: 'halloween', from: '10-15', to: '11-02' },
+      { theme: 'christmas', from: '12-15', to: '12-26' },
+      { theme: 'new-year', from: '12-27', to: '01-03' },
+      { theme: 'winter', from: '12-21', to: '03-19' },
+      { theme: 'spring', from: '03-20', to: '06-20' },
+      { theme: 'summer', from: '06-21', to: '09-22' },
+      { theme: 'autumn', from: '09-23', to: '12-20' },
+    ],
+  }
   it.each([
     ['2026-10-31', 'halloween'],
     ['2026-12-25', 'christmas'],

@@ -1,6 +1,7 @@
 import { defineCharpente } from 'charpente'
 
 export default defineCharpente({
+  themesDir: '../recipes',
   defaultTheme: 'solid',
   timeZone: 'Europe/Paris',
   motion: 'shimmer',

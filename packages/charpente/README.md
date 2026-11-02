@@ -14,7 +14,7 @@
 <p align="center">
   <a href="https://techmefr.github.io/charpente/">Documentation</a> ·
   <a href="https://techmefr.github.io/charpente/playground/">Playground</a> ·
-  <a href="https://techmefr.github.io/charpente/themes/">38 themes</a> ·
+  <a href="https://techmefr.github.io/charpente/themes/">Themes</a> ·
   <a href="https://github.com/techmefr/charpente/blob/main/LICENSE">MIT license</a>
 </p>
 
@@ -28,7 +28,7 @@ The Vite plugin generates the CSS at build time. Skeleton painting and animation
 
 | Appearance | Movement | Timing |
 | --- | --- | --- |
-| 38 built-in themes, custom tokens, light and dark modes | Shimmer, pulse, wave and glitch, alone or combined | Delay to avoid flashes on fast loads; stagger between elements |
+| 28 built-in themes, ready-made recipes, custom tokens, light and dark modes | Shimmer, pulse, wave and glitch, alone or combined | Delay to avoid flashes on fast loads; stagger between elements |
 
 ## Get started
 
@@ -98,11 +98,24 @@ Wrappers accept `loading`, `theme`, `motion`, `delay`, `stagger` and `label`.
 
 ## Make it yours
 
-Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `vegas`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`, `halloween`, `christmas`, `new-year`, `winter`, `summer`, `spring`, `autumn`. Motions: `shimmer`, `pulse`, `wave`, `glitch`.
+Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `vegas`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`. Motions: `shimmer`, `pulse`, `wave`, `glitch`.
 
-`schedule: schedulePresets.all` (imported from `charpente`) applies celebrations first, then seasons; `celebrations` and `seasons` are also available separately.
+Add your own theme by creating a folder in `themes/` with a `theme.ts` file: it is declared automatically, and the folder name is the theme name.
 
-`include: ['dots', 'christmas']` ships only those themes, plus the default theme, the scheduled ones and your own.
+```ts
+// themes/aurore/theme.ts
+import { defineTheme } from 'charpente'
+
+export default defineTheme({
+  colors: ['#fde8e8', '#f5c2c2'],
+  pattern: 'stripes',
+  border: '1px solid #f5c2c2',
+})
+```
+
+Celebration and season themes (`christmas`, `halloween`, `new-year`, `winter`, `spring`, `summer`, `autumn`, `valentine`, `birthday`, `pride`) are recipes: copy a folder from [`recipes/`](https://github.com/techmefr/charpente/tree/main/recipes) into your `themes/`, then choose when to use it with `schedule`.
+
+`include: ['dots', 'blueprint']` ships only those themes, plus the default theme, the scheduled ones and your own.
 
 A theme can define `dark: { ... }` for its dark-mode tokens, and `colorScheme.light` (for example `'[data-theme="light"]'`) forces light inside a subtree.
 
