@@ -14,7 +14,9 @@ export { motionAttribute }
     '[attr.data-charpente-theme]': 'attributes()["data-charpente-theme"] ?? null',
     '[attr.data-charpente-motion]': 'attributes()["data-charpente-motion"] ?? null',
     '[attr.data-charpente-reveal]': 'attributes()["data-charpente-reveal"] ?? null',
-    '[attr.data-charpente-ready]': 'attributes()["data-charpente-ready"] ?? null',
+    '[attr.data-charpente-block]': 'attributes()["data-charpente-block"] ?? null',
+    '[attr.data-charpente-capture]': 'attributes()["data-charpente-capture"] ?? null',
+    '[attr.data-charpente-ready]':'attributes()["data-charpente-ready"] ?? null',
     '[style.--charpente-delay]': 'style()["--charpente-delay"] ?? null',
     '[style.--charpente-stagger]': 'style()["--charpente-stagger"] ?? null',
     '[style.--charpente-reveal]': 'style()["--charpente-reveal"] ?? null',
@@ -30,6 +32,7 @@ export class CharpenteDirective {
   readonly delay = input<number>()
   readonly stagger = input<number>()
   readonly reveal = input<number>()
+  readonly capture = input<string>()
   readonly revealMs = input(260)
   readonly scope = input<LoadingScope>()
 
@@ -44,8 +47,9 @@ export class CharpenteDirective {
   private readonly resolved = computed(() =>
     loadingAttributes(
       this.page()
-        ? { loading: false }
+        ? { loading: false, capture: this.capture() }
         : {
+            capture: this.capture(),
             loading: this.loading(),
             theme: this.theme(),
             motion: this.motion(),

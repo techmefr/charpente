@@ -35,6 +35,7 @@ export const Charpente = defineComponent({
     delay: { type: Number, default: undefined },
     stagger: { type: Number, default: undefined },
     reveal: { type: Number, default: undefined },
+    capture: { type: String, default: undefined },
     scope: { type: String as PropType<LoadingScope>, default: undefined },
     label: { type: String, default: '' },
     revealMs: { type: Number, default: 260 },
@@ -93,6 +94,7 @@ export const Charpente = defineComponent({
         delay: page.value ? undefined : props.delay,
         stagger: page.value ? undefined : props.stagger,
         reveal: page.value ? undefined : props.reveal,
+        capture: props.capture,
       })
 
       const root = h(
