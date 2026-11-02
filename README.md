@@ -81,6 +81,7 @@ Many skeleton libraries ask you to draw placeholder shapes yourself and ship Jav
 | Svelte | `charpente-svelte` |
 | Solid | `charpente-solid` |
 | Preact | `charpente-preact` |
+| React Native | `charpente-react-native` |
 | Angular | `charpente-angular` |
 | Astro | `charpente-astro` |
 | Laravel, Livewire | `charpente-blade` |
