@@ -26,9 +26,9 @@ export function compile(config: CharpenteConfig = {}): CompileResult {
     tokensCss(config),
     baseCss(),
     ...selectThemes(config, themes).map((name) =>
-      themeCss(name, name === defaultTheme, themes, config.colorScheme),
+      themeCss(name, name === defaultTheme, themes, config.colorScheme, Boolean(config.bones)),
     ),
-    motionCss(motions, defaultMotion, delay, stagger, warnings),
+    motionCss(motions, defaultMotion, delay, stagger, warnings, Boolean(config.bones)),
     revealCss(config.reveal ?? 0),
     ...(config.bones ? [bonesCss(config.bones)] : []),
   ].join('\n')

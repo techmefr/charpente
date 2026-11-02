@@ -79,6 +79,7 @@ export interface Bone {
   width: number
   height: number
   radius: number
+  kind?: PaintType
 }
 
 export interface ZoneBones {

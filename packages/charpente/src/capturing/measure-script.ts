@@ -11,6 +11,13 @@ export const MEASURE_SCRIPT = `(() => {
     return element.children.length === 0 && element.textContent.trim() !== ''
   }
 
+  const kindOf = (element) => {
+    if (element.hasAttribute('data-charpente-block')) return 'block'
+    if (element.matches(MEDIA)) return 'media'
+    if (element.matches(CONTROL)) return 'control'
+    return 'text'
+  }
+
   const measure = (element, zoneBox) => {
     const box = element.getBoundingClientRect()
     const style = getComputedStyle(element)
@@ -21,6 +28,7 @@ export const MEASURE_SCRIPT = `(() => {
       width: round(box.width),
       height: round(box.height),
       radius: parseFloat(style.borderTopLeftRadius) || 0,
+      kind: kindOf(element),
     }
   }
 
