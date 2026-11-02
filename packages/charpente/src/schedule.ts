@@ -52,22 +52,3 @@ export const themeAt = (config: ScheduleConfig, date: Date = new Date()): string
   const match = config.schedule?.find((entry) => covers(entry, today))
   return match?.theme ?? config.defaultTheme ?? DEFAULT_THEME
 }
-
-const celebrations: ScheduleEntry[] = [
-  { theme: 'halloween', from: '10-15', to: '11-02' },
-  { theme: 'christmas', from: '12-15', to: '12-26' },
-  { theme: 'new-year', from: '12-27', to: '01-03' },
-]
-
-const seasons: ScheduleEntry[] = [
-  { theme: 'winter', from: '12-21', to: '03-19' },
-  { theme: 'spring', from: '03-20', to: '06-20' },
-  { theme: 'summer', from: '06-21', to: '09-22' },
-  { theme: 'autumn', from: '09-23', to: '12-20' },
-]
-
-export const schedulePresets = {
-  celebrations,
-  seasons,
-  all: [...celebrations, ...seasons],
-}

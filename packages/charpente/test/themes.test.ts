@@ -1,6 +1,6 @@
 import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { compile, defineTheme, discoverThemes, expandTheme } from '../src'
 
@@ -29,6 +29,28 @@ describe('short theme format', () => {
   it('compiles a short theme declared in the config', () => {
     const { css } = compile({ themes: { aurore: { colors: ['#fde8e8', '#f5c2c2'], pattern: 'stripes' } } })
     expect(css).toContain('[data-charpente-theme="aurore"]')
+  })
+})
+
+describe('recipes', () => {
+  const repositoryRoot = resolve(import.meta.dirname, '..', '..', '..')
+  const recipeNames = ['autumn', 'birthday', 'christmas', 'halloween', 'new-year', 'pride', 'spring', 'summer', 'valentine', 'winter']
+
+  it('ships every recipe as a folder that compiles with a paint for every leaf type', async () => {
+    const recipes = await discoverThemes(repositoryRoot, 'recipes')
+    expect(Object.keys(recipes).sort()).toEqual(recipeNames)
+    const { css } = compile({ themes: recipes })
+    for (const name of recipeNames) {
+      const scope = `[data-charpente-loading][data-charpente-theme="${name}"]`
+      for (const selector of [':is(img, svg', ':is(button, input', '[data-charpente-block]', ':not(:has(*))']) {
+        expect(css).toContain(`${scope} ${selector}`)
+      }
+    }
+  })
+
+  it('is not part of the built-in themes', () => {
+    const { css } = compile()
+    for (const name of ['christmas', 'halloween', 'winter']) expect(css).not.toContain(`data-charpente-theme="${name}"`)
   })
 })
 

@@ -67,7 +67,7 @@ describe('compile', () => {
     expect(() => compile({ motion: 'nope' })).toThrow('unknown motion "nope"')
   })
 
-  it.each(['halloween', 'christmas', 'winter', 'summer', 'spring', 'autumn', 'new-year', 'paper', 'glass', 'blueprint', 'halftone', 'stripes', 'scanline', 'neon', 'vegas', 'aurora', 'brutalist', 'sketch', 'topo', 'waves', 'valentine', 'birthday', 'pride', 'editorial', 'commerce', 'analytics', 'gaming', 'music', 'developer', 'travel', 'wellness'])(
+  it.each(['paper', 'glass', 'blueprint', 'halftone', 'stripes', 'scanline', 'neon', 'vegas', 'aurora', 'brutalist', 'sketch', 'topo', 'waves', 'editorial', 'commerce', 'analytics', 'gaming', 'music', 'developer', 'travel', 'wellness'])(
     'ships the %s theme with a paint for every leaf type',
     (name) => {
       const { css } = compile({ defaultTheme: name })
@@ -131,15 +131,17 @@ describe('compile', () => {
     expect(compile().css).toContain('background-color: transparent !important')
   })
 
+  const winter = { winter: { extends: 'solid', dark: { shine: 'rgba(255,255,255,0.16)' } } }
+
   it('applies theme dark tokens under the media query', () => {
-    const { css } = compile({ defaultTheme: 'winter' })
+    const { css } = compile({ defaultTheme: 'winter', themes: winter })
     expect(css).toMatch(/@media \(prefers-color-scheme: dark\) \{\s*\[data-charpente-loading\]\[data-charpente-theme="winter"\]/)
   })
 
   it('applies theme dark tokens under the dark selector and keeps forced light out', () => {
-    const selector = compile({ defaultTheme: 'winter', colorScheme: { dark: '[data-theme="dark"]' } }).css
+    const selector = compile({ defaultTheme: 'winter', themes: winter, colorScheme: { dark: '[data-theme="dark"]' } }).css
     expect(selector).toContain('[data-theme="dark"] [data-charpente-loading][data-charpente-theme="winter"]')
-    const media = compile({ defaultTheme: 'winter', colorScheme: { light: '[data-theme="light"]' } }).css
+    const media = compile({ defaultTheme: 'winter', themes: winter, colorScheme: { light: '[data-theme="light"]' } }).css
     expect(media).toContain('[data-charpente-theme="winter"]:not([data-theme="light"] *)')
     expect(media).toContain('[data-theme="light"] {')
   })
@@ -154,11 +156,11 @@ describe('compile', () => {
     const { css } = compile({
       defaultTheme: 'solid',
       include: ['dots'],
-      schedule: [{ theme: 'christmas', from: '12-15', to: '12-26' }],
+      schedule: [{ theme: 'blueprint', from: '12-15', to: '12-26' }],
       themes: { mine: { extends: 'solid' } },
     })
-    for (const name of ['solid', 'dots', 'christmas', 'mine']) expect(css).toContain(`data-charpente-theme="${name}"`)
-    for (const name of ['cyberpunk', 'halloween']) expect(css).not.toContain(`data-charpente-theme="${name}"`)
+    for (const name of ['solid', 'dots', 'blueprint', 'mine']) expect(css).toContain(`data-charpente-theme="${name}"`)
+    for (const name of ['cyberpunk', 'neon']) expect(css).not.toContain(`data-charpente-theme="${name}"`)
   })
 
   it('rejects an include entry that is not a theme', () => {

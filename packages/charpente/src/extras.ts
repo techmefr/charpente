@@ -1,4 +1,4 @@
-import { motif, scaled, tint } from './seasons'
+import { motif, scaled, tint } from './motifs'
 import type { ThemeDef } from './types'
 
 const flat = (color: string): string => `linear-gradient(${color}, ${color})`
