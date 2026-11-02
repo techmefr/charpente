@@ -29,6 +29,7 @@ export interface CharpenteProps {
   stagger?: number
   label?: string
   reveal?: number
+  capture?: string
   revealMs?: number
   scope?: LoadingScope
   style?: CSSProperties
@@ -71,6 +72,7 @@ export const Charpente = ({
   delay,
   stagger,
   reveal,
+  capture,
   scope,
   label = "",
   revealMs = 260,
@@ -101,8 +103,8 @@ export const Charpente = ({
 
   const { attributes, style: variables } = loadingAttributes(
     page
-      ? { loading: false }
-      : { loading, theme, motion, delay, stagger, reveal },
+      ? { loading: false, capture }
+      : { loading, theme, motion, delay, stagger, reveal, capture },
   )
   const { inert, ...domAttributes } = attributes
   const hasVariables = Object.keys(variables).length > 0

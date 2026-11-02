@@ -11,6 +11,7 @@ export interface LoadingOptions {
   reveal?: number
   scope?: LoadingScope
   ready?: boolean
+  capture?: string
 }
 
 export const revealWindow = (revealMs: number, reveal = 0): number =>
@@ -34,6 +35,10 @@ export const loadingAttributes = (options: LoadingOptions): LoadingAttributes =>
     attributes['data-charpente-loading'] = ''
     attributes['aria-busy'] = 'true'
     attributes['inert'] = ''
+  }
+  if (options.capture !== undefined) {
+    attributes['data-charpente-block'] = ''
+    attributes['data-charpente-capture'] = options.capture
   }
   if (options.ready) attributes['data-charpente-ready'] = ''
   if (options.theme !== undefined) attributes['data-charpente-theme'] = options.theme

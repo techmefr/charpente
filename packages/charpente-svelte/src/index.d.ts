@@ -10,6 +10,7 @@ export interface CharpenteProps extends HTMLAttributes<HTMLElement> {
   delay?: number
   stagger?: number
   reveal?: number
+  capture?: string
   scope?: LoadingScope
   label?: string
   revealMs?: number

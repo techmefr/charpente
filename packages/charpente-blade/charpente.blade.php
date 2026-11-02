@@ -6,6 +6,7 @@
     'delay' => null,
     'stagger' => null,
     'reveal' => null,
+    'capture' => null,
     'label' => '',
 ])
 @php
@@ -23,6 +24,8 @@
     'data-charpente-theme' => $theme,
     'data-charpente-motion' => $motionValue,
     'data-charpente-reveal' => $reveal === null ? null : '',
+    'data-charpente-block' => $capture === null ? null : '',
+    'data-charpente-capture' => $capture,
     'aria-busy' => $loading ? 'true' : null,
 ]) }} @if ($loading) data-charpente-loading inert @endif>{{ $slot }}</{{ $tag }}>
 @if ($loading && $label !== '')
