@@ -21,7 +21,7 @@ Set up the charpente config and CSS as described in the [main README](https://gi
 <main [charpente]="pending">...</main>
 ```
 
-Props: `loading`, `theme`, `motion`, `delay`, `stagger`, `label`.
+Props: `loading`, `theme`, `motion`, `delay`, `stagger`, `reveal`, `revealMs`, `scope`, `label`.
 
 ## License
 

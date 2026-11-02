@@ -21,7 +21,7 @@ Set up the charpente config and CSS as described in the [main README](https://gi
 <Charpente as="main" loading={pending}>...</Charpente>
 ```
 
-Props: `loading`, `theme`, `motion`, `delay`, `stagger`, `label`.
+Props: `loading`, `theme`, `motion`, `delay`, `stagger`, `reveal`, `label`. `scope` and the fade-in after loading need the client: use `charpente/loader` or `setLoading`.
 
 ## License
 

@@ -13,14 +13,30 @@ const USAGE = [
   '       charpente theme [--config charpente.config.ts] [--date YYYY-MM-DD]',
 ].join('\n')
 
-const { positionals, values } = parseArgs({
-  allowPositionals: true,
-  options: {
-    config: { type: 'string', default: 'charpente.config.ts' },
-    out: { type: 'string', default: 'charpente.css' },
-    date: { type: 'string' },
-  },
-})
+const parse = () => {
+  try {
+    return parseArgs({
+      allowPositionals: true,
+      options: {
+        config: { type: 'string', default: 'charpente.config.ts' },
+        out: { type: 'string', default: 'charpente.css' },
+        date: { type: 'string' },
+        help: { type: 'boolean', short: 'h' },
+      },
+    })
+  } catch (error) {
+    console.error(`charpente: ${(error as Error).message.split('.')[0]}`)
+    console.error(USAGE)
+    process.exit(1)
+  }
+}
+
+const { positionals, values } = parse()
+
+if (values.help) {
+  console.log(USAGE)
+  process.exit(0)
+}
 
 const command = positionals[0]
 if (command !== 'build' && command !== 'theme') {
