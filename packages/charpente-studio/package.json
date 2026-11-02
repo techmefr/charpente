@@ -1,0 +1,35 @@
+{
+  "name": "charpente-studio",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Optional visual editor for charpente themes: tune colors, pattern and radius with a live preview and save a short-format theme folder.",
+  "keywords": [
+    "charpente",
+    "skeleton",
+    "theme",
+    "editor"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techmefr/charpente.git",
+    "directory": "packages/charpente-studio"
+  },
+  "homepage": "https://techmefr.github.io/charpente/",
+  "bugs": "https://github.com/techmefr/charpente/issues",
+  "type": "module",
+  "bin": {
+    "charpente-studio": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "charpente": "workspace:^"
+  }
+}
