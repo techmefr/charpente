@@ -31,7 +31,6 @@ export interface MotionDef {
   duration: string
   easing?: string
   iterations?: string
-  staggered?: boolean
   layer?: string
   keyframes: Record<string, Declarations>
 }

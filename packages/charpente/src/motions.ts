@@ -18,14 +18,6 @@ export const builtinMotions: Record<string, MotionDef> = {
       '50%': { opacity: '0.5' },
     },
   },
-  wave: {
-    duration: '1.4s',
-    staggered: true,
-    keyframes: {
-      '0%, 100%': { opacity: '1' },
-      '50%': { opacity: '0.45' },
-    },
-  },
   glitch: {
     duration: '2.6s',
     easing: 'steps(1, end)',

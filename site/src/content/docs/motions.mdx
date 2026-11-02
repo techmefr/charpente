@@ -1,6 +1,6 @@
 ---
 title: Motions and timing
-description: Shimmer, pulse, wave and glitch; each motion rendered, the delay before appearing, the offset between elements, combinations and their conflicts.
+description: Shimmer, pulse and glitch; each motion rendered, the delay before appearing, the offset between elements, combinations and their conflicts.
 ---
 
 import { Aside } from '@astrojs/starlight/components'
@@ -11,7 +11,7 @@ The motion describes the movement, the timing describes the moment. Both are set
 
 <LoopPause />
 
-## The four motions
+## The three motions
 
 Each one is a CSS animation applied to every leaf of the area. Without an attribute, the motion from `motion` in the configuration applies.
 
@@ -48,12 +48,12 @@ export default defineCharpente({
 
 ## The offset between elements
 
-`stagger` adds a delay proportional to the position of each element among its siblings (from 1 to 16): the skeleton appears in a cascade, and the `wave` motion ripples from one element to the next. Global setting in `timing.stagger`, local with `--charpente-stagger`.
+`stagger` adds a delay proportional to the position of each element among its siblings (from 1 to 16): the skeleton appears in a cascade, and every motion starts from one element to the next. Global setting in `timing.stagger`, local with `--charpente-stagger`.
 
 ```html
 <div
   data-charpente-loading
-  data-charpente-motion="wave"
+  data-charpente-motion="pulse"
   style="--charpente-delay: 600ms; --charpente-stagger: 150ms"
   aria-busy="true"
   inert

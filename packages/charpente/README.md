@@ -28,7 +28,7 @@ The Vite plugin generates the CSS at build time. Skeleton painting and animation
 
 | Appearance | Movement | Timing |
 | --- | --- | --- |
-| 28 built-in themes, ready-made recipes, custom tokens, light and dark modes | Shimmer, pulse, wave and glitch, alone or combined | Delay to avoid flashes on fast loads; stagger between elements |
+| 28 built-in themes, ready-made recipes, custom tokens, light and dark modes | Shimmer, pulse and glitch, alone or combined | Delay to avoid flashes on fast loads; stagger between elements |
 
 ## Get started
 
@@ -98,7 +98,7 @@ Wrappers accept `loading`, `theme`, `motion`, `delay`, `stagger` and `label`.
 
 ## Make it yours
 
-Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `vegas`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`. Motions: `shimmer`, `pulse`, `wave`, `glitch`.
+Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `vegas`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`. Motions: `shimmer`, `pulse`, `glitch`.
 
 Add your own theme by creating a folder in `themes/` with a `theme.ts` file: it is declared automatically, and the folder name is the theme name.
 

@@ -38,7 +38,6 @@ export default defineCharpente({
   motions: {
     rebond: {
       duration: '1.2s',
-      staggered: true,
       keyframes: {
         '0%, 100%': { transform: 'translateY(0)' },
         '50%': { transform: 'translateY(-3px)' },

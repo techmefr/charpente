@@ -56,13 +56,12 @@ themes: {
 
 ## 3. Write a motion
 
-A motion is a CSS animation applied to every leaf. With `staggered`, it starts in a cascade according to the site's `stagger`. The animated properties are free.
+A motion is a CSS animation applied to every leaf. It starts after `delay + rank × stagger`, so every motion follows the `stagger` of the site. The animated properties are free.
 
 ```ts title="charpente.config.ts"
 motions: {
   rebond: {
     duration: '1.2s',
-    staggered: true,
     keyframes: {
       '0%, 100%': { transform: 'translateY(0)' },
       '50%': { transform: 'translateY(-3px)' },

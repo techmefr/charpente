@@ -31,6 +31,14 @@ describe('compile', () => {
     expect(css).toContain('var(--charpente-stagger, 40ms)')
   })
 
+  it('starts every motion after the delay plus the stagger', () => {
+    const { css } = compile({ motion: ['glitch', 'pulse', 'shimmer'], timing: { stagger: 40 } })
+    for (const name of ['glitch', 'pulse', 'shimmer']) {
+      const animation = css.match(new RegExp(`charpente-${name} [^;]*?infinite`))?.[0] ?? ''
+      expect(animation).toContain('var(--charpente-i, 0) * var(--charpente-stagger, 40ms)')
+    }
+  })
+
   it('uses the media query for dark tokens by default', () => {
     expect(compile().css).toContain('@media (prefers-color-scheme: dark)')
   })
@@ -101,7 +109,10 @@ describe('compile', () => {
   })
 
   it('warns when two default motions animate the same property', () => {
-    const { warnings } = compile({ motion: ['pulse', 'wave'] })
+    const { warnings } = compile({
+      motion: ['pulse', 'breathe'],
+      motions: { breathe: { duration: '1s', keyframes: { '50%': { opacity: '0.3' } } } },
+    })
     expect(warnings.join('\n')).toContain('"opacity"')
   })
 
