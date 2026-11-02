@@ -4,6 +4,7 @@ import { dirname, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 import { createJiti } from 'jiti'
 import { compile } from './compile'
+import { discoverThemes } from './discover'
 import { themeAt } from './schedule'
 import type { CharpenteConfig } from './types'
 
@@ -35,6 +36,9 @@ if (existsSync(configPath)) {
   const loaded = await jiti.import<{ default?: CharpenteConfig } | CharpenteConfig>(configPath)
   config = 'default' in loaded && loaded.default ? loaded.default : (loaded as CharpenteConfig)
 }
+
+const discovered = await discoverThemes(process.cwd(), config.themesDir)
+config = { ...config, themes: { ...discovered, ...config.themes } }
 
 const { css, warnings } = compile(config)
 for (const warning of warnings) console.warn(warning)

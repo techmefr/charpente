@@ -66,26 +66,7 @@ const coreThemes: Record<string, ThemeDef> = {
       },
     },
   },
-  dots: {
-    paint: {
-      text: {
-        fill: 'radial-gradient(circle, var(--charpente-strong) 0.9px, transparent 1.2px)',
-        size: '5px 5px',
-      },
-      media: {
-        fill: 'radial-gradient(circle, var(--charpente-strong) 0.9px, transparent 1.2px)',
-        size: '5px 5px',
-      },
-      control: {
-        fill: 'radial-gradient(circle, var(--charpente-strong) 0.9px, transparent 1.2px)',
-        size: '5px 5px',
-      },
-      block: {
-        fill: 'radial-gradient(circle, var(--charpente-strong) 0.9px, transparent 1.2px)',
-        size: '5px 5px',
-      },
-    },
-  },
+  dots: { pattern: 'dots' },
   cyberpunk: {
     tokens: { base: '#0b1426', strong: '#16435a', accent: '#22d3ee', accent2: '#e879f9', shine: 'rgba(34,211,238,.18)' },
     paint: Object.fromEntries(['text', 'media', 'control', 'block'].map((type) => [type, {

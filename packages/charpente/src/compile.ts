@@ -1,4 +1,5 @@
 import { builtinMotions } from './motions'
+import { expandTheme } from './expand'
 import { validateSchedule } from './schedule'
 import { builtinThemes, flat } from './themes'
 import type {
@@ -104,8 +105,9 @@ const resolveTheme = (
   themes: Record<string, ThemeDef>,
   chain: string[] = [],
 ): ResolvedTheme => {
-  const def = themes[name]
-  if (!def) throw new Error(`charpente: unknown theme "${name}"`)
+  const source = themes[name]
+  if (!source) throw new Error(`charpente: unknown theme "${name}"`)
+  const def = expandTheme(source)
   if (chain.includes(name)) throw new Error(`charpente: theme "${name}" extends itself`)
   const parent = def.extends
     ? resolveTheme(def.extends, themes, [...chain, name])
