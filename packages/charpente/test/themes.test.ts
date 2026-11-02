@@ -2,7 +2,8 @@ import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { compile, defineTheme, discoverThemes, expandTheme } from '../src'
+import { compile, defineTheme, expandTheme } from '../src'
+import { discoverThemes } from '../src/discover'
 
 const PAINT_TYPES = ['text', 'media', 'control', 'block'] as const
 

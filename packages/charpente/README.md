@@ -83,7 +83,7 @@ When content is ready, remove `data-charpente-loading`, `aria-busy` and `inert`.
 
 ## Use it with your stack
 
-Wrappers accept `loading`, `theme`, `motion`, `delay`, `stagger` and `label`.
+Wrappers accept `loading`, `theme`, `motion`, `delay`, `stagger`, `reveal`, `scope` and `label`.
 
 | Framework | Package | Usage |
 | --- | --- | --- |
@@ -96,6 +96,10 @@ Wrappers accept `loading`, `theme`, `motion`, `delay`, `stagger` and `label`.
 | Laravel, Livewire | `packages/charpente-blade` | `<x-charpente :loading="$pending" tag="main">` |
 | Vanilla | `charpente/dom` | `setLoading(element, { loading: true })` |
 | Plain HTML | `charpente/loader` | `<charpente-loader loading theme="night">` |
+
+## Page or element, all at once or level by level
+
+`scope: "page"` in the config (or on a wrapper) puts the loading state on the whole page; `"element"`, the default, keeps it on the wrapper. `reveal: 1000` makes the content appear level by level, one second apart, when loading ends.
 
 ## Make it yours
 
