@@ -1,6 +1,6 @@
 import { MAX_REVEAL_DEPTH } from './attributes'
 import { builtinMotions } from './motions'
-import { expandTheme } from './expand'
+import { expandTheme, withVariants } from './expand'
 import { validateSchedule } from './schedule'
 import { builtinThemes, flat } from './themes'
 import type {
@@ -346,7 +346,7 @@ const revealCss = (reveal: number): string => {
 
 export function compile(config: CharpenteConfig = {}): CompileResult {
   const warnings: string[] = []
-  const themes = { ...builtinThemes, ...config.themes }
+  const themes = withVariants({ ...builtinThemes, ...config.themes })
   const motions = { ...builtinMotions, ...config.motions }
   const defaultTheme = config.defaultTheme ?? 'solid'
   const defaultMotion = normalizeMotion(config.motion ?? 'shimmer', motions)

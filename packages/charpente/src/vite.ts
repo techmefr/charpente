@@ -3,7 +3,7 @@ import { dirname, relative, resolve } from 'node:path'
 import { createJiti } from 'jiti'
 import type { Plugin, ViteDevServer } from 'vite'
 import { compile } from './compile'
-import { discoverThemes, themeFiles } from './discover'
+import { discoverThemes, themeAssets, themeFiles } from './discover'
 import type { CharpenteConfig } from './types'
 
 const VIRTUAL_ID = 'virtual:charpente.css'
@@ -71,7 +71,7 @@ export function charpente(options: CharpenteViteOptions = {}): Plugin {
       if (id !== VIRTUAL_ID && id !== THEME_ID) return undefined
       if (configPath) this.addWatchFile(configPath)
       const config = await readConfig()
-      for (const file of Object.values(themeFiles(root, config.themesDir))) this.addWatchFile(file)
+      for (const file of [...Object.values(themeFiles(root, config.themesDir)), ...themeAssets(root, config.themesDir)]) this.addWatchFile(file)
       if (id === THEME_ID) {
         const { defaultTheme, timeZone, schedule } = config
         return [

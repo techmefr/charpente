@@ -77,6 +77,30 @@ export default defineTheme({
 
 The grid is 8px on text and controls and 9.2px on media and blocks. `style` adds declarations to every type. An explicit `paint` still wins for the type it names, and its `style` is merged into the expanded one.
 
+## Border from a file and variants
+
+A border can be an image. Put an SVG next to `theme.ts` and point `border` at it: the file is read at build time and drawn with `border-image` on every skeleton, text and blocks alike. `slice` is the size of the corners in the SVG, `width` the thickness drawn, `repeat` how the edges fill (`round` by default).
+
+`variants` derives several themes from one: each key becomes the theme `<name>-<variant>` and replaces the fields it gives. The Christmas recipe keeps one gift border and offers several wrapping papers:
+
+```ts title="recipes/christmas/theme.ts"
+export default {
+  ...paper('#fecaca', '#b91c1c', '#fca5a5'),
+  border: { image: './border.svg', slice: 30, width: '14px' },
+  variants: {
+    green: paper('#bbf7d0', '#15803d', '#86efac'),
+    gold: paper('#fde68a', '#a16207', '#fcd34d'),
+    snow: paper('#e0f2fe', '#0369a1', '#bae6fd'),
+  },
+} satisfies ThemeDef
+```
+
+<ThemeStage label="Theme christmas" theme="christmas" />
+
+<ThemeStage label="Theme christmas-green" theme="christmas-green" />
+
+The SVG is an ordinary file: edit it and the stylesheet is regenerated. `schedule` and `include` use the derived names, such as `christmas-green`.
+
 ## 3. Write a motion
 
 A motion is a CSS animation applied to every leaf. It starts after `delay + rank × stagger`, so every motion follows the `stagger` of the site. The animated properties are free.

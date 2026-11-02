@@ -3,7 +3,8 @@ import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { compile, defineTheme, expandTheme } from '../src'
-import { discoverThemes } from '../src/discover'
+import { discoverThemes, themeAssets } from '../src/discover'
+import { withVariants } from '../src/expand'
 
 const PAINT_TYPES = ['text', 'media', 'control', 'block'] as const
 
@@ -56,6 +57,31 @@ describe('short theme format', () => {
     expect(theme.paint?.media?.style).toEqual({ borderRadius: '6px', boxShadow: 'none' })
   })
 
+  it('draws an image border with border-image on every type', () => {
+    const theme = expandTheme({ pattern: 'dots', border: { image: '<svg xmlns="http://www.w3.org/2000/svg"/>', slice: 20, width: '10px', repeat: 'stretch' } })
+    for (const type of PAINT_TYPES) {
+      expect(theme.paint?.[type]?.style).toMatchObject({ boxSizing: 'border-box', borderStyle: 'solid !important', borderWidth: '10px !important' })
+      expect(theme.paint?.[type]?.style?.borderImage).toMatch(/^url\("data:image\/svg\+xml,.+"\) 20 \/ 10px stretch !important$/)
+    }
+  })
+
+  it('rejects a border image that is neither SVG markup nor url()', () => {
+    expect(() => expandTheme({ pattern: 'dots', border: { image: 'border.png' } })).toThrow('neither SVG markup nor url')
+  })
+
+  it('derives one theme per variant that replaces the fields it gives', () => {
+    const themes = withVariants({ gift: { colors: ['#111111', '#222222'], pattern: 'dots', variants: { green: { colors: ['#00ff00', '#00aa00'] } } } })
+    expect(Object.keys(themes)).toEqual(['gift', 'gift-green'])
+    expect(themes.gift?.variants).toBeUndefined()
+    expect(themes['gift-green']).toMatchObject({ pattern: 'dots', colors: ['#00ff00', '#00aa00'] })
+  })
+
+  it('compiles the variants as themes of their own', () => {
+    const { css } = compile({ themes: { gift: { colors: ['#111111', '#222222'], pattern: 'dots', variants: { green: { colors: ['#00ff00', '#00aa00'] } } } } })
+    expect(css).toContain('[data-charpente-theme="gift-green"]')
+    expect(css).toContain('--charpente-base: #00ff00')
+  })
+
   it('rejects an unknown pattern', () => {
     expect(() => expandTheme({ pattern: 'nope' })).toThrow('unknown pattern "nope"')
   })
@@ -82,6 +108,15 @@ describe('recipes', () => {
     }
   })
 
+  it('draws the christmas gift border and ships its wrapping papers as variants', async () => {
+    const recipes = await discoverThemes(repositoryRoot, 'recipes')
+    const { css } = compile({ themes: recipes })
+    expect(css).toContain('border-image: url("data:image/svg+xml')
+    for (const paper of ['christmas', 'christmas-green', 'christmas-gold', 'christmas-snow']) {
+      expect(css).toContain(`[data-charpente-theme="${paper}"]`)
+    }
+  })
+
   it('is not part of the built-in themes', () => {
     const { css } = compile()
     for (const name of ['christmas', 'halloween', 'winter']) expect(css).not.toContain(`data-charpente-theme="${name}"`)
@@ -97,6 +132,20 @@ describe('theme discovery', () => {
     const themes = await discoverThemes(root)
     expect(Object.keys(themes)).toEqual(['aurore'])
     expect(themes.aurore).toMatchObject({ pattern: 'grid' })
+  })
+
+  it('inlines the SVG file of an image border, in the theme and in its variants', async () => {
+    const root = mkdtempSync(join(tmpdir(), 'charpente-'))
+    mkdirSync(join(root, 'themes', 'gift'), { recursive: true })
+    writeFileSync(join(root, 'themes', 'gift', 'border.svg'), '<svg xmlns="http://www.w3.org/2000/svg"/>')
+    writeFileSync(
+      join(root, 'themes', 'gift', 'theme.js'),
+      "export default { pattern: 'dots', border: { image: './border.svg' }, variants: { red: { border: { image: './border.svg', slice: 10 } } } }",
+    )
+    const themes = await discoverThemes(root)
+    expect(themes.gift?.border).toMatchObject({ image: '<svg xmlns="http://www.w3.org/2000/svg"/>' })
+    expect(themes.gift?.variants?.red?.border).toMatchObject({ image: '<svg xmlns="http://www.w3.org/2000/svg"/>', slice: 10 })
+    expect(themeAssets(root).map((file) => file.endsWith('border.svg'))).toEqual([true])
   })
 
   it('returns nothing when there is no themes directory', async () => {

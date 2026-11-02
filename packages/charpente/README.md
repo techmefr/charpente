@@ -119,6 +119,8 @@ export default defineTheme({
 })
 ```
 
+A theme can draw its border from an SVG file next to `theme.ts` (`border: { image: './border.svg' }`) and offer `variants`, for example several wrapping papers around one gift border.
+
 Celebration and season themes (`christmas`, `halloween`, `new-year`, `winter`, `spring`, `summer`, `autumn`, `valentine`, `birthday`, `pride`) are recipes: copy a folder from [`recipes/`](https://github.com/techmefr/charpente/tree/main/recipes) into your `themes/`, then choose when to use it with `schedule`.
 
 `include: ['dots', 'blueprint']` ships only those themes, plus the default theme, the scheduled ones and your own.
