@@ -23,6 +23,7 @@ export interface ThemeDef {
   extends?: string
   colors?: [base: string, strong: string]
   pattern?: string | PatternDef
+  radius?: string
   border?: string
   tokens?: Tokens
   dark?: Tokens

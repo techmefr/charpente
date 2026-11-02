@@ -111,6 +111,7 @@ export default defineTheme({
   colors: ['#fde8e8', '#f5c2c2'],
   pattern: 'stripes',
   border: '1px solid #f5c2c2',
+  radius: '4px',
 })
 ```
 

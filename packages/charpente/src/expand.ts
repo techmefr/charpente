@@ -11,14 +11,14 @@ const resolvePattern = (pattern: string | PatternDef): PatternDef => {
 }
 
 export const expandTheme = (def: ThemeDef): ThemeDef => {
-  if (!def.colors && !def.pattern && !def.border) return def
+  if (!def.colors && !def.pattern && !def.border && !def.radius) return def
   const tokens = def.colors ? { base: def.colors[0], strong: def.colors[1], ...def.tokens } : def.tokens
   const pattern = def.pattern ? resolvePattern(def.pattern) : undefined
   const paint: Partial<Record<PaintType, Paint>> = {}
   for (const type of PAINT_TYPES) {
     paint[type] = {
       ...(pattern && { fill: pattern.fill, ...(pattern.size && { size: pattern.size }) }),
-      style: { borderRadius: 'var(--charpente-radius)', ...(def.border && { border: def.border }) },
+      style: { borderRadius: def.radius ?? 'var(--charpente-radius)', ...(def.border && { border: def.border }) },
       ...def.paint?.[type],
     }
   }

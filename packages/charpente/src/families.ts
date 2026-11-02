@@ -65,11 +65,11 @@ export const usageThemes: Record<string, ThemeDef> = {
   },
   music: {
     tokens: { accent: '#a855f7', accent2: '#22d3ee' },
-    paint: scaled(() => ({
+    pattern: {
       fill: `${motif('<g fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"><path d="M4 21v6m5-12v18m5-23v28m5-19v10m5-24v38m5-29v20m5-14v8m5-18v28m5-20v12"/></g>')}, ${flat(tint('accent', 8))}`,
       size: '48px 48px, auto',
-      style: { borderRadius: '4px' },
-    })),
+    },
+    radius: '4px',
   },
   developer: {
     tokens: { accent: '#10b981', accent2: '#38bdf8', shine: 'rgba(16, 185, 129, 0.3)' },
