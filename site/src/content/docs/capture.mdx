@@ -1,0 +1,61 @@
+---
+title: Faithful mode
+description: Capture the real layout of your zones at build time with charpente capture, so the skeleton matches your page at every breakpoint, even when the area is still empty.
+---
+
+import { Aside } from '@astrojs/starlight/components'
+
+By default Charpente paints the content that is already in the page: nothing to configure, it works immediately. That needs placeholder content in the loading area.
+
+When you want the skeleton to match the real layout, even if the area is empty while loading, add a `capture` entry to the configuration. Without it, nothing changes.
+
+## 1. Configure the capture
+
+```ts title="charpente.config.ts"
+import { defineCharpente } from 'charpente'
+
+export default defineCharpente({
+  capture: {
+    routes: ['/', '/team'],
+    breakpoints: [375, 768, 1280],
+  },
+})
+```
+
+| Option | Default | Role |
+| --- | --- | --- |
+| `routes` | required | Pages to visit, relative to the URL you give to the command. |
+| `breakpoints` | `[375, 768, 1280]` | Viewport widths to measure. |
+| `wait` | `500` | Milliseconds to wait after the page is idle. |
+| `out` | `charpente.bones.json` | File that stores the measures. |
+
+## 2. Mark the zones
+
+Add `data-charpente-capture="name"` next to `data-charpente-block` on the area to reproduce. The zone is measured in its loaded state: its text, images, controls and blocks become the shapes of the skeleton.
+
+```html
+<section data-charpente-block data-charpente-capture="team">
+  <h2>Meet the team</h2>
+  <p>A short introduction.</p>
+  <img src="/team.jpg" alt="The team" width="320" height="120" />
+  <button type="button">Join us</button>
+</section>
+```
+
+## 3. Capture
+
+Start your application, then run the command with its address. It needs Playwright (`pnpm add -D playwright`).
+
+```sh
+npx charpente capture --url http://localhost:3000
+```
+
+The measures go to `charpente.bones.json`. Commit it, or generate it in your pipeline. The Vite plugin and `charpente build` read it and add the zones to the stylesheet.
+
+## What you get
+
+While the area loads, the zone reserves its captured height and draws the captured shapes with the theme of the page: its colors, pattern and motion. The breakpoint is picked with media queries and the shapes stretch with the width of the zone between two breakpoints.
+
+<Aside type="note">
+The captured shapes are painted with the block fill of the theme. Capture again after a layout change, and keep the simple mode for areas where placeholder content is enough.
+</Aside>
