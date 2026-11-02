@@ -1,4 +1,4 @@
-import { motif, scaled, tint } from './motifs'
+import { motif, tint } from './motifs'
 import type { ThemeDef } from './types'
 
 const flat = (color: string): string => `linear-gradient(${color}, ${color})`
@@ -34,34 +34,33 @@ export const usageThemes: Record<string, ThemeDef> = {
   },
   commerce: {
     tokens: { accent: '#b45309', shine: 'rgba(255, 255, 255, 0.5)' },
-    paint: scaled((step) => ({
-      fill: `repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0 2px, transparent 2px ${6 * step}px), ${flat(tint('accent', 28))}`,
+    pattern: {
+      fill: (step) => `repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0 2px, transparent 2px ${6 * step}px), ${flat(tint('accent', 28))}`,
       size: 'auto, auto',
-      style: {
-        borderRadius: `${3 * step}px`,
-        outline: `1.5px dashed ${tint('accent', 65)}`,
-        outlineOffset: `-${2 * step}px`,
-      },
-    })),
+    },
+    radius: (step) => `${3 * step}px`,
+    style: {
+      outline: `1.5px dashed ${tint('accent', 65)}`,
+      outlineOffset: (step) => `-${2 * step}px`,
+    },
   },
   analytics: {
     tokens: { accent: '#6366f1', shine: 'rgba(255, 255, 255, 0.5)' },
-    paint: scaled((step) => ({
-      fill: `repeating-linear-gradient(90deg, ${tint('accent', 38)} 0 ${10 * step}px, transparent ${10 * step}px ${12 * step}px), linear-gradient(var(--charpente-strong) 1px, transparent 1px), linear-gradient(90deg, var(--charpente-strong) 1px, transparent 1px), ${flat(tint('base', 60))}`,
-      size: `auto, ${6 * step}px ${6 * step}px, ${6 * step}px ${6 * step}px, auto`,
-      style: { borderRadius: `${step}px` },
-    })),
+    pattern: {
+      fill: (step) =>
+        `repeating-linear-gradient(90deg, ${tint('accent', 38)} 0 ${10 * step}px, transparent ${10 * step}px ${12 * step}px), linear-gradient(var(--charpente-strong) 1px, transparent 1px), linear-gradient(90deg, var(--charpente-strong) 1px, transparent 1px), ${flat(tint('base', 60))}`,
+      size: (step) => `auto, ${6 * step}px ${6 * step}px, ${6 * step}px ${6 * step}px, auto`,
+    },
+    radius: (step) => `${step}px`,
   },
   gaming: {
     tokens: { accent: '#22c55e', shine: 'rgba(134, 239, 172, 0.35)' },
-    paint: scaled((step) => ({
+    pattern: {
       fill: `conic-gradient(${tint('accent', 42)} 25%, ${tint('accent', 20)} 0 50%, ${tint('accent', 42)} 0 75%, ${tint('accent', 20)} 0)`,
-      size: `${5 * step}px ${5 * step}px`,
-      style: {
-        borderRadius: '0',
-        boxShadow: `inset 0 0 0 ${2}px ${tint('accent', 80)}`,
-      },
-    })),
+      size: (step) => `${5 * step}px ${5 * step}px`,
+    },
+    radius: '0',
+    style: { boxShadow: `inset 0 0 0 2px ${tint('accent', 80)}` },
   },
   music: {
     tokens: { accent: '#a855f7', accent2: '#22d3ee' },
@@ -73,29 +72,28 @@ export const usageThemes: Record<string, ThemeDef> = {
   },
   developer: {
     tokens: { accent: '#10b981', accent2: '#38bdf8', shine: 'rgba(16, 185, 129, 0.3)' },
-    paint: scaled((step) => ({
-      fill: `repeating-linear-gradient(90deg, ${tint('accent', 40)} 0 ${14 * step}px, transparent ${14 * step}px ${16 * step}px), ${flat(tint('base', 70))}`,
+    pattern: {
+      fill: (step) => `repeating-linear-gradient(90deg, ${tint('accent', 40)} 0 ${14 * step}px, transparent ${14 * step}px ${16 * step}px), ${flat(tint('base', 70))}`,
       size: 'auto, auto',
-      style: {
-        borderRadius: `${2 * step}px`,
-        boxShadow: `inset ${3}px 0 0 ${tint('accent2', 70)}`,
-      },
-    })),
+    },
+    radius: (step) => `${2 * step}px`,
+    style: { boxShadow: `inset 3px 0 0 ${tint('accent2', 70)}` },
   },
   travel: {
     tokens: { accent: '#0d9488', accent2: '#f59e0b', shine: 'rgba(255, 255, 255, 0.55)' },
-    paint: scaled((step) => ({
-      fill: `radial-gradient(circle, ${tint('accent2', 80)} 1px, transparent 1.6px), repeating-radial-gradient(circle at -25% 140%, transparent 0 ${9 * step}px, ${tint('accent', 40)} ${9 * step}px ${10 * step}px), ${flat(tint('base', 60))}`,
-      size: `${18 * step}px ${18 * step}px, auto, auto`,
-      style: { borderRadius: `${3 * step}px` },
-    })),
+    pattern: {
+      fill: (step) =>
+        `radial-gradient(circle, ${tint('accent2', 80)} 1px, transparent 1.6px), repeating-radial-gradient(circle at -25% 140%, transparent 0 ${9 * step}px, ${tint('accent', 40)} ${9 * step}px ${10 * step}px), ${flat(tint('base', 60))}`,
+      size: (step) => `${18 * step}px ${18 * step}px, auto, auto`,
+    },
+    radius: (step) => `${3 * step}px`,
   },
   wellness: {
     tokens: { accent: '#84a98c', accent2: '#e9c46a', shine: 'rgba(255, 255, 255, 0.6)' },
-    paint: scaled((step) => ({
+    pattern: {
       fill: `radial-gradient(circle, rgba(0, 0, 0, 0.05) 0.6px, transparent 1px), linear-gradient(120deg, ${tint('accent', 38)}, ${tint('accent2', 28)})`,
       size: '3px 3px, auto',
-      style: { borderRadius: step === 1 ? '999px' : `${8 * step}px` },
-    })),
+    },
+    radius: (step) => (step === 1 ? '999px' : `${8 * step}px`),
   },
 }

@@ -14,17 +14,21 @@ export interface Paint {
   style?: Declarations
 }
 
+export type Stepped<T> = T | ((step: number) => T)
+
 export interface PatternDef {
-  fill: string
-  size?: string
+  fill: Stepped<string>
+  size?: Stepped<string>
 }
 
 export interface ThemeDef {
   extends?: string
   colors?: [base: string, strong: string]
   pattern?: string | PatternDef
-  radius?: string
+  radius?: Stepped<string>
   border?: string
+  scale?: number
+  style?: Record<string, Stepped<string>>
   tokens?: Tokens
   dark?: Tokens
   paint?: Partial<Record<PaintType, Paint>>
