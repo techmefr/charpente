@@ -28,6 +28,12 @@ class HostComponent {
 })
 class BareAttributeComponent {}
 
+@Component({
+  imports: [CharpenteDirective],
+  template: `<div [charpente]="true" scope="page"></div>`,
+})
+class PageScopeComponent {}
+
 const setup = () => {
   const fixture = TestBed.createComponent(HostComponent)
   fixture.detectChanges()
@@ -113,5 +119,15 @@ describe('CharpenteDirective', () => {
     expect(element.getAttribute('data-charpente-theme')).toBe('solid')
     expect(element.style.getPropertyValue('--charpente-delay')).toBe('50ms')
     expect(element.hasAttribute('data-charpente-loading')).toBe(false)
+  })
+
+  it('applies the loading state to the page when the scope is page', () => {
+    const fixture = TestBed.createComponent(PageScopeComponent)
+    fixture.detectChanges()
+    const element = fixture.nativeElement.querySelector('div') as HTMLElement
+    expect(document.documentElement.hasAttribute('data-charpente-loading')).toBe(true)
+    expect(element.hasAttribute('data-charpente-loading')).toBe(false)
+    fixture.destroy()
+    expect(document.documentElement.hasAttribute('data-charpente-loading')).toBe(false)
   })
 })

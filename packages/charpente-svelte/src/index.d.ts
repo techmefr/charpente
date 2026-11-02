@@ -1,3 +1,4 @@
+import type { LoadingScope } from "charpente"
 import type { Component, Snippet } from "svelte"
 import type { HTMLAttributes } from "svelte/elements"
 
@@ -9,6 +10,7 @@ export interface CharpenteProps extends HTMLAttributes<HTMLElement> {
   delay?: number
   stagger?: number
   reveal?: number
+  scope?: LoadingScope
   label?: string
   revealMs?: number
   children?: Snippet

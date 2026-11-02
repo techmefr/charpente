@@ -43,6 +43,14 @@ describe('setLoading', () => {
     expect(revealWindow(260, 1000)).toBe(260 + 1000 * (MAX_REVEAL_DEPTH - 1))
   })
 
+  it('marks the area as ready when asked and clears it with the rest', () => {
+    const element = fakeElement()
+    apply(element, { loading: false, ready: true })
+    expect(element.attributes.get('data-charpente-ready')).toBe('')
+    apply(element, { loading: false })
+    expect(element.attributes.size).toBe(0)
+  })
+
   it('applies the reveal step as an attribute and a variable', () => {
     const element = fakeElement()
     apply(element, { loading: true, reveal: 1000 })

@@ -4,12 +4,14 @@ import {
   createSignal,
   mergeProps,
   onCleanup,
+  onMount,
   splitProps,
   untrack,
   type JSX,
 } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
-import { loadingAttributes, motionAttribute, revealWindow } from 'charpente'
+import { loadingAttributes, motionAttribute, revealWindow, type LoadingScope } from 'charpente'
+import { configuredScope, setLoading } from 'charpente/dom'
 
 export { motionAttribute }
 
@@ -21,6 +23,7 @@ export interface CharpenteProps extends JSX.HTMLAttributes<HTMLElement> {
   delay?: number
   stagger?: number
   reveal?: number
+  scope?: LoadingScope
   label?: string
   revealMs?: number
 }
@@ -48,6 +51,7 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
     'delay',
     'stagger',
     'reveal',
+    'scope',
     'label',
     'revealMs',
     'children',
@@ -66,15 +70,46 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
     onCleanup(() => clearTimeout(timer))
   })
 
-  const attributes = () =>
-    loadingAttributes({
+  let element: HTMLElement | undefined
+  const [page, setPage] = createSignal(own.scope === 'page')
+
+  onMount(() => {
+    if (own.scope === undefined && element) setPage(configuredScope(element) === 'page')
+  })
+
+  createEffect(() => {
+    if (own.scope !== undefined) setPage(own.scope === 'page')
+  })
+
+  createEffect(() => {
+    const target = element
+    if (!page() || !target) return
+    setLoading(target, {
       loading: own.loading ?? false,
       theme: own.theme,
       motion: own.motion,
       delay: own.delay,
       stagger: own.stagger,
       reveal: own.reveal,
+      ready: ready(),
+      scope: 'page',
     })
+    onCleanup(() => setLoading(target, { loading: false, scope: 'page' }))
+  })
+
+  const attributes = () =>
+    loadingAttributes(
+      page()
+        ? { loading: false }
+        : {
+            loading: own.loading ?? false,
+            theme: own.theme,
+            motion: own.motion,
+            delay: own.delay,
+            stagger: own.stagger,
+            reveal: own.reveal,
+          },
+    )
 
   const style = () => {
     const base = typeof own.style === 'object' && own.style !== null ? own.style : {}
@@ -87,8 +122,11 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
       get component() {
         return own.tag ?? 'div'
       },
+      ref: (target: HTMLElement) => {
+        element = target
+      },
       get 'data-charpente-ready'() {
-        return ready() ? '' : undefined
+        return ready() && !page() ? '' : undefined
       },
       get style() {
         return style()

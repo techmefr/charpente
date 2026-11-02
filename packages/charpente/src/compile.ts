@@ -299,7 +299,7 @@ const baseCss = (): string => {
 const tokensCss = (config: CharpenteConfig): string => {
   const light = { ...DEFAULT_TOKENS.light, ...config.colorScheme?.tokens?.light }
   const dark = { ...DEFAULT_TOKENS.dark, ...config.colorScheme?.tokens?.dark }
-  const root = `:root {\n  --charpente-radius: 0.35em;\n  ${tokenDeclarations(light)};\n}`
+  const root = `:root {\n  --charpente-radius: 0.35em;\n  --charpente-scope: ${config.scope ?? 'element'};\n  ${tokenDeclarations(light)};\n}`
   const darkSelector = config.colorScheme?.dark
   const lightSelector = config.colorScheme?.light
   const forcedLight = lightSelector ? `\n${lightSelector} {\n  ${tokenDeclarations(light)};\n}` : ''

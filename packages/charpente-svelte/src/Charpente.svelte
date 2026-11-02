@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { loadingAttributes, revealWindow } from "charpente"
-  import { untrack, type Snippet } from "svelte"
+  import { loadingAttributes, revealWindow, type LoadingScope } from "charpente"
+  import { configuredScope, setLoading } from "charpente/dom"
+  import { onMount, untrack, type Snippet } from "svelte"
 
   interface Props {
     loading?: boolean
@@ -10,6 +11,7 @@
     delay?: number
     stagger?: number
     reveal?: number
+    scope?: LoadingScope
     label?: string
     revealMs?: number
     style?: string
@@ -25,6 +27,7 @@
     delay,
     stagger,
     reveal,
+    scope,
     label = "",
     revealMs = 260,
     style,
@@ -47,7 +50,27 @@
     return () => clearTimeout(timer)
   })
 
-  const computed = $derived(loadingAttributes({ loading, theme, motion, delay, stagger, reveal }))
+  let element: HTMLElement | undefined = $state()
+  let page = $state(untrack(() => scope === "page"))
+
+  onMount(() => {
+    if (scope === undefined && element) page = configuredScope(element) === "page"
+  })
+
+  $effect(() => {
+    if (scope !== undefined) page = scope === "page"
+  })
+
+  $effect(() => {
+    const target = element
+    if (!page || !target) return
+    setLoading(target, { loading, theme, motion, delay, stagger, reveal, ready, scope: "page" })
+    return () => setLoading(target, { loading: false, scope: "page" })
+  })
+
+  const computed = $derived(
+    loadingAttributes(page ? { loading: false } : { loading, theme, motion, delay, stagger, reveal }),
+  )
   const inline = $derived(
     [style, ...Object.entries(computed.style).map(([name, value]) => `${name}:${value}`)]
       .filter(Boolean)
@@ -63,7 +86,8 @@
   this={tag}
   {...rest}
   {...attributes}
-  data-charpente-ready={ready ? "" : undefined}
+  bind:this={element}
+  data-charpente-ready={ready && !page ? "" : undefined}
   style={inline}
 >
   {@render children?.()}
