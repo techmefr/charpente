@@ -60,10 +60,10 @@ Many skeleton libraries ask you to draw placeholder shapes yourself and ship Jav
 
 <p align="center"><sub>One layout, many looks. Six of them: cyberpunk, blueprint, brutalist, aurora, christmas, neon.</sub></p>
 
-**Motion**: shimmer, pulse, wave and glitch, alone or combined.
+**Motion**: shimmer, pulse and glitch, alone or combined, with an optional offset between elements.
 
 <p align="center">
-  <img src="site/public/readme/motion.gif" alt="The same skeleton with the shimmer, pulse, wave and glitch motions" width="520">
+  <img src="site/public/readme/motion.gif" alt="The same skeleton with the shimmer, pulse, pulse with offset and glitch motions" width="520">
 </p>
 
 **Themes by date**: `schedule` picks the theme from the calendar, so your loaders follow Valentine&rsquo;s Day, Halloween, Christmas and the seasons without a deploy.

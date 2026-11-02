@@ -223,8 +223,7 @@ const motionCss = (
       reveal,
       ...names.map((name) => {
         const motion = motions[name] as MotionDef
-        const start = motion.staggered ? staggerDelay : delayVar
-        return `charpente-${name} ${motion.duration} ${motion.easing ?? 'ease-in-out'} ${start} ${motion.iterations ?? 'infinite'}`
+        return `charpente-${name} ${motion.duration} ${motion.easing ?? 'ease-in-out'} ${staggerDelay} ${motion.iterations ?? 'infinite'}`
       }),
     ]
     const layer = names.map((name) => motions[name]?.layer).find(Boolean)

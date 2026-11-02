@@ -115,16 +115,16 @@ expect(cyberImage !== solidImage && cyberImage.includes('repeating-linear-gradie
 expect((await root.getAttribute('data-charpente-theme')) === 'cyberpunk', 'playground: data-charpente-theme attribute set')
 
 await playground.uncheck('#pg-motions input[value="shimmer"]')
-await playground.check('#pg-motions input[value="wave"]')
+await playground.check('#pg-motions input[value="glitch"]')
 await playground.check('#pg-motions input[value="pulse"]')
 const names = await style('animationName')
-expect(names.includes('charpente-pulse') && names.includes('charpente-wave') && !names.includes('shimmer'), `playground: pulse + wave motions applied (${names})`)
-expect((await root.getAttribute('data-charpente-motion')) === 'pulse wave', 'playground: names sorted and separated by a space')
+expect(names.includes('charpente-pulse') && names.includes('charpente-glitch') && !names.includes('shimmer'), `playground: glitch + pulse motions applied (${names})`)
+expect((await root.getAttribute('data-charpente-motion')) === 'glitch pulse', 'playground: names sorted and separated by a space')
 
 await playground.uncheck('#pg-motions input[value="pulse"]')
-await playground.uncheck('#pg-motions input[value="wave"]')
+await playground.uncheck('#pg-motions input[value="glitch"]')
 expect((await root.getAttribute('data-charpente-motion')) === 'none', 'playground: no motion gives none')
-expect(!(await style('animationName')).includes('charpente-wave'), 'playground: none removes the animations')
+expect(!(await style('animationName')).includes('charpente-glitch'), 'playground: none removes the animations')
 
 await playground.check('#pg-motions input[value="glitch"]')
 await playground.check('#pg-motions input[value="shimmer"]')

@@ -46,7 +46,6 @@ export const CUSTOM_THEMES = [
 
 export const MOTIONS = [
   { name: 'shimmer', note: 'Glint sweeping across the shape' },
-  { name: 'pulse', note: 'Opacity breathing, all shapes together' },
-  { name: 'wave', note: 'Opacity offset by position (stagger)' },
+  { name: 'pulse', note: 'Opacity breathing, offset by position with stagger' },
   { name: 'glitch', note: 'Small position jumps' },
 ]

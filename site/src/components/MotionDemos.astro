@@ -21,9 +21,9 @@ const combos = [
     note: 'Compatible: a movement and a background layer do not interfere.',
   },
   {
-    motion: 'pulse wave',
-    title: 'pulse + wave (conflict)',
-    note: 'Both animate opacity. Both animations are applied, the last one in the list wins, and the offset of wave disappears.',
+    motion: 'glitch rebond',
+    title: 'glitch + rebond (conflict)',
+    note: 'Both animate transform. Both animations are applied and the last one in the list wins.',
   },
   {
     motion: 'shimmer pulse',
@@ -102,7 +102,7 @@ const combos = [
               data-loop
               data-loop-on="4200"
               data-loop-off="1400"
-              {...stateAttributes({ loading: true, delay: 0, stagger, motion: 'wave' })}
+              {...stateAttributes({ loading: true, delay: 0, stagger, motion: 'pulse' })}
             >
               {Array.from({ length: 8 }, () => <div class="bar" />)}
             </div>

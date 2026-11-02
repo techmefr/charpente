@@ -33,7 +33,6 @@ export default defineCharpente({
   motions: {
     rebond: {
       duration: '1.2s',
-      staggered: true,
       keyframes: {
         '0%, 100%': { transform: 'translateY(0)' },
         '50%': { transform: 'translateY(-3px)' },
@@ -140,7 +139,6 @@ themes: {
 | `duration` | required | Duration of one cycle, for example `'1.4s'`. |
 | `easing` | `'ease-in-out'` | CSS timing function. |
 | `iterations` | `'infinite'` | Number of cycles. |
-| `staggered` | `false` | If true, starts after `delay + rank × stagger`, like `wave`. |
 | `layer` | none | Background layer overlaid on the leaves, used by `shimmer` for its glint. |
 | `keyframes` | required | Animation steps: `from`, `to` or percentages, each with its declarations. |
 

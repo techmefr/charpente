@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { Charpente } from 'charpente-vue'
 
 const themes = ['solid', 'outline', 'dots', 'cyberpunk', 'web', 'glass', 'frost', 'smoked', 'mint']
-const motions = ['shimmer', 'pulse', 'wave', 'glitch']
+const motions = ['shimmer', 'pulse', 'glitch']
 
 const loading = ref(true)
 const theme = ref('solid')
