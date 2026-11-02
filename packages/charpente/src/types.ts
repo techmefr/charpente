@@ -12,8 +12,16 @@ export interface Paint {
   style?: Declarations
 }
 
+export interface PatternDef {
+  fill: string
+  size?: string
+}
+
 export interface ThemeDef {
   extends?: string
+  colors?: [base: string, strong: string]
+  pattern?: string | PatternDef
+  border?: string
   tokens?: Tokens
   dark?: Tokens
   paint?: Partial<Record<PaintType, Paint>>
@@ -57,6 +65,7 @@ export interface CharpenteConfig {
   timing?: Timing
   colorScheme?: ColorScheme
   themes?: Record<string, ThemeDef>
+  themesDir?: string
   motions?: Record<string, MotionDef>
 }
 
