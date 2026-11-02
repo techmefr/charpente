@@ -1,0 +1,132 @@
+:root {
+  --ink: var(--sl-color-text);
+  --ink-soft: var(--sl-color-gray-2);
+  --line: var(--sl-color-hairline);
+  --surface: var(--sl-color-bg);
+  --surface-2: var(--sl-color-gray-6);
+  --bg: var(--sl-color-gray-7);
+  --accent: var(--sl-color-text-accent);
+  --accent-ink: var(--sl-color-text-invert);
+  --accent-soft: var(--sl-color-accent-low);
+  --code-bg: var(--sl-color-gray-6);
+  --shadow: none;
+}
+
+.btn,
+button.btn {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.95rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent-ink);
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 9px;
+}
+
+.btn--ghost {
+  color: var(--ink);
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+.btn:hover {
+  filter: brightness(1.08);
+}
+
+.btn--ghost:hover {
+  background: var(--surface-2);
+  filter: none;
+}
+
+.btn[aria-pressed='true'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.stage {
+  padding: 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.stage__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.stage__label {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.field {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.92rem;
+}
+
+.field > span,
+.cp fieldset legend {
+  font-weight: 650;
+}
+
+.cp select,
+.cp input[type='date'],
+.cp input[type='text'] {
+  padding: 0.45rem 0.6rem;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--ink-soft);
+  border-radius: 8px;
+}
+
+.cp input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.cp fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  padding: 0;
+  margin-top: 0.3rem;
+  list-style: none;
+}
+
+.checks label,
+.switch {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cp input[type='checkbox'],
+.cp input[type='radio'] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--accent);
+}

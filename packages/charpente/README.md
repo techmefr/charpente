@@ -161,6 +161,23 @@ Framework wrappers announce loading and keep placeholder controls out of keyboar
 
 [Read the accessibility guide](https://techmefr.github.io/charpente/accessibility/).
 
+## Architecture
+
+The core is organised in OSDD layers under `packages/charpente/src`. Each layer owns one responsibility and is reached through its `index.ts` only.
+
+| Layer | Kind | Responsibility |
+| --- | --- | --- |
+| `types` | technical | Shared types and the paint types |
+| `css` | technical | CSS string helpers: declarations, gradients, motifs |
+| `discovery` | technical | Reading theme folders and their SVG files from disk |
+| `themes` | functional | Built-in themes, short format, patterns, variants, extends |
+| `motions` | functional | Built-in motions and their normalisation |
+| `schedule` | functional | Choosing a theme by date |
+| `loading` | functional | Loading attributes, DOM helper and the `charpente-loader` element |
+| `stylesheet` | functional | Generating the stylesheet from a configuration |
+
+A technical layer never imports a functional one. Files stay under 150 lines and functions under 75; `test/architecture.test.ts` enforces these rules.
+
 ## Work on Charpente
 
 ```sh

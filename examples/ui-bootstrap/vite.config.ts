@@ -1,6 +1,7 @@
 import { resolve } from 'node:path'
 import { charpente } from 'charpente/vite'
 import { defineConfig, type Plugin } from 'vite'
+import { htmlIncludes } from './html-includes'
 
 const cleanUrls = (): Plugin => ({
   name: 'clean-urls',
@@ -15,7 +16,7 @@ const cleanUrls = (): Plugin => ({
 
 export default defineConfig({
   server: { port: 5214, strictPort: true, fs: { allow: ['../..'] } },
-  plugins: [cleanUrls(), charpente()],
+  plugins: [cleanUrls(), htmlIncludes(), charpente()],
   build: {
     rollupOptions: {
       input: { simple: resolve(__dirname, 'simple.html'), complex: resolve(__dirname, 'complex.html') },

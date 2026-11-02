@@ -1,53 +1,6 @@
-import { Component, signal } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { CharpenteDirective } from '../src'
-
-@Component({
-  imports: [CharpenteDirective],
-  template: `<div
-    data-testid="host"
-    [charpente]="loading()"
-    [theme]="theme()"
-    [motion]="motion()"
-    [delay]="delay()"
-    [stagger]="stagger()"
-  ></div>`,
-})
-class HostComponent {
-  readonly loading = signal(true)
-  readonly theme = signal<string | undefined>(undefined)
-  readonly motion = signal<string | string[] | undefined>(undefined)
-  readonly delay = signal<number | undefined>(undefined)
-  readonly stagger = signal<number | undefined>(undefined)
-}
-
-@Component({
-  imports: [CharpenteDirective],
-  template: `<div data-testid="reveal" [charpente]="loading()" [reveal]="1000" [revealMs]="300"></div>`,
-})
-class RevealComponent {
-  readonly loading = signal(true)
-}
-
-@Component({
-  imports: [CharpenteDirective],
-  template: `<div charpente></div>`,
-})
-class BareAttributeComponent {}
-
-@Component({
-  imports: [CharpenteDirective],
-  template: `<div [charpente]="true" scope="page"></div>`,
-})
-class PageScopeComponent {}
-
-const setup = () => {
-  const fixture = TestBed.createComponent(HostComponent)
-  fixture.detectChanges()
-  const element = fixture.nativeElement.querySelector('[data-testid="host"]') as HTMLElement
-  return { fixture, element, host: fixture.componentInstance }
-}
+import { describe, expect, it } from 'vitest'
+import { BareAttributeComponent, setup } from './host-components'
 
 describe('CharpenteDirective', () => {
   it('sets loading attributes while loading', () => {
@@ -83,41 +36,6 @@ describe('CharpenteDirective', () => {
     expect(element.hasAttribute('data-charpente-theme')).toBe(false)
   })
 
-  it('binds a single motion', () => {
-    const { fixture, element, host } = setup()
-    host.motion.set('shimmer')
-    fixture.detectChanges()
-    expect(element.getAttribute('data-charpente-motion')).toBe('shimmer')
-  })
-
-  it('sorts and joins several motions', () => {
-    const { fixture, element, host } = setup()
-    host.motion.set(['pulse', 'shimmer'])
-    fixture.detectChanges()
-    expect(element.getAttribute('data-charpente-motion')).toBe('pulse shimmer')
-  })
-
-  it('maps an empty motion list to none', () => {
-    const { fixture, element, host } = setup()
-    host.motion.set([])
-    fixture.detectChanges()
-    expect(element.getAttribute('data-charpente-motion')).toBe('none')
-  })
-
-  it('binds delay and stagger as custom properties', () => {
-    const { fixture, element, host } = setup()
-    host.delay.set(120)
-    host.stagger.set(40)
-    fixture.detectChanges()
-    expect(element.style.getPropertyValue('--charpente-delay')).toBe('120ms')
-    expect(element.style.getPropertyValue('--charpente-stagger')).toBe('40ms')
-    host.delay.set(undefined)
-    host.stagger.set(undefined)
-    fixture.detectChanges()
-    expect(element.style.getPropertyValue('--charpente-delay')).toBe('')
-    expect(element.style.getPropertyValue('--charpente-stagger')).toBe('')
-  })
-
   it('keeps theme and timing when loading ends', () => {
     const { fixture, element, host } = setup()
     host.theme.set('solid')
@@ -127,39 +45,5 @@ describe('CharpenteDirective', () => {
     expect(element.getAttribute('data-charpente-theme')).toBe('solid')
     expect(element.style.getPropertyValue('--charpente-delay')).toBe('50ms')
     expect(element.hasAttribute('data-charpente-loading')).toBe(false)
-  })
-
-  it('applies the loading state to the page when the scope is page', () => {
-    const fixture = TestBed.createComponent(PageScopeComponent)
-    fixture.detectChanges()
-    const element = fixture.nativeElement.querySelector('div') as HTMLElement
-    expect(document.documentElement.hasAttribute('data-charpente-loading')).toBe(true)
-    expect(element.hasAttribute('data-charpente-loading')).toBe(false)
-    fixture.destroy()
-    expect(document.documentElement.hasAttribute('data-charpente-loading')).toBe(false)
-  })
-
-  describe('reveal', () => {
-    afterEach(() => vi.useRealTimers())
-
-    it('marks the host ready for every nested step after loading ends, then clears it', () => {
-      vi.useFakeTimers()
-      const fixture = TestBed.createComponent(RevealComponent)
-      fixture.detectChanges()
-      const element = fixture.nativeElement.querySelector('[data-testid="reveal"]') as HTMLElement
-      expect(element.getAttribute('data-charpente-reveal')).toBe('')
-      expect(element.style.getPropertyValue('--charpente-reveal')).toBe('1000ms')
-      fixture.componentInstance.loading.set(false)
-      fixture.detectChanges()
-      TestBed.flushEffects()
-      fixture.detectChanges()
-      expect(element.hasAttribute('data-charpente-ready')).toBe(true)
-      vi.advanceTimersByTime(300 + 1000 * 5 - 1)
-      fixture.detectChanges()
-      expect(element.hasAttribute('data-charpente-ready')).toBe(true)
-      vi.advanceTimersByTime(2)
-      fixture.detectChanges()
-      expect(element.hasAttribute('data-charpente-ready')).toBe(false)
-    })
   })
 })

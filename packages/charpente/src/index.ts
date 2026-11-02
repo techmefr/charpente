@@ -1,19 +1,15 @@
 import type { CharpenteConfig, ThemeDef } from './types'
 
-export { compile } from './compile'
-export { MAX_REVEAL_DEPTH, loadingAttributes, motionAttribute, revealWindow } from './attributes'
-export type { LoadingAttributes, LoadingOptions, LoadingScope } from './attributes'
+export { flat } from './css'
+export { MAX_REVEAL_DEPTH, loadingAttributes, motionAttribute, revealWindow } from './loading'
+export type { LoadingAttributes, LoadingOptions } from './loading'
 export { builtinMotions } from './motions'
 export { themeAt } from './schedule'
-export { builtinThemes, flat } from './themes'
+export { compile } from './stylesheet'
+export { builtinPatterns, builtinThemes, createGlassTheme, expandTheme } from './themes'
+export type { GlassOptions } from './themes'
 export type * from './types'
-
-export { expandTheme } from './expand'
-export { builtinPatterns } from './patterns'
 
 export const defineTheme = (theme: ThemeDef): ThemeDef => theme
 
 export const defineCharpente = (config: CharpenteConfig): CharpenteConfig => config
-
-export { createGlassTheme } from './glass'
-export type { GlassOptions } from './glass'

@@ -1,0 +1,133 @@
+.mini__top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.mini__top h3 {
+  flex: 1 1 8rem;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.mini__top input[type='search'] {
+  flex: 1 1 8rem;
+  min-width: 0;
+  padding: 0.45rem 0.65rem;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.mini__kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.7rem;
+}
+
+.kpi {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.kpi svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  color: var(--accent);
+}
+
+.kpi__label {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.kpi__value {
+  font-size: 1.35rem;
+}
+
+.panel {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.panel h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.chart {
+  width: 100%;
+  height: 7rem;
+  color: var(--accent);
+}
+
+.orders {
+  width: 100%;
+  font-size: 0.88rem;
+  border-collapse: collapse;
+}
+
+.orders th,
+.orders td {
+  padding: 0.4rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.badge {
+  padding: 0.1rem 0.55rem;
+  font-size: 0.78rem;
+  background: var(--surface-2);
+  border-radius: 999px;
+}
+
+.mini__form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.7rem;
+  align-items: end;
+}
+
+.mini__form label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.mini__form input[type='text'],
+.mini__form select {
+  min-width: 0;
+}
+
+.mini__form .check {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.mini__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.7rem;
+}
+
+.mini__card {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
