@@ -8,7 +8,7 @@ import {
   type CSSProperties,
   type PropType,
 } from 'vue'
-import { loadingAttributes, motionAttribute } from 'charpente'
+import { loadingAttributes, motionAttribute, revealWindow } from 'charpente'
 
 const SCREEN_READER_ONLY: CSSProperties = {
   position: 'absolute',
@@ -31,6 +31,7 @@ export const Charpente = defineComponent({
     motion: { type: [String, Array] as PropType<string | string[]>, default: undefined },
     delay: { type: Number, default: undefined },
     stagger: { type: Number, default: undefined },
+    reveal: { type: Number, default: undefined },
     label: { type: String, default: '' },
     revealMs: { type: Number, default: 260 },
   },
@@ -45,7 +46,7 @@ export const Charpente = defineComponent({
         ready.value = true
         timer = setTimeout(() => {
           ready.value = false
-        }, props.revealMs)
+        }, revealWindow(props.revealMs, props.reveal))
       },
     )
 
@@ -58,6 +59,7 @@ export const Charpente = defineComponent({
         motion: props.motion,
         delay: props.delay,
         stagger: props.stagger,
+        reveal: props.reveal,
       })
 
       const root = h(

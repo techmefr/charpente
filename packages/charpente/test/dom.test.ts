@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { MAX_REVEAL_DEPTH, revealWindow } from '../src'
 import { setLoading } from '../src/dom'
 
 const fakeElement = () => {
@@ -35,6 +36,36 @@ describe('setLoading', () => {
       '--charpente-delay': '120ms',
       '--charpente-stagger': '40ms',
     })
+  })
+
+  it('keeps the ready window open for the fade-in plus every nested step', () => {
+    expect(revealWindow(260)).toBe(260)
+    expect(revealWindow(260, 1000)).toBe(260 + 1000 * (MAX_REVEAL_DEPTH - 1))
+  })
+
+  it('applies the reveal step as an attribute and a variable', () => {
+    const element = fakeElement()
+    apply(element, { loading: true, reveal: 1000 })
+    expect(element.attributes.get('data-charpente-reveal')).toBe('')
+    expect(element.properties.get('--charpente-reveal')).toBe('1000ms')
+  })
+
+  it('applies the loading state to the page when the scope is page', () => {
+    const page = fakeElement()
+    const element = Object.assign(fakeElement(), { ownerDocument: { documentElement: page } })
+    apply(element, { loading: true, scope: 'page' })
+    expect(page.attributes.get('data-charpente-loading')).toBe('')
+    expect(element.attributes.size).toBe(0)
+    apply(element, { loading: false, scope: 'page' })
+    expect(page.attributes.size).toBe(0)
+  })
+
+  it('moves the loading state back to the element when the scope returns to element', () => {
+    const page = fakeElement()
+    const element = Object.assign(fakeElement(), { ownerDocument: { documentElement: page } })
+    apply(element, { loading: true, scope: 'page' })
+    apply(element, { loading: true })
+    expect(element.attributes.get('data-charpente-loading')).toBe('')
   })
 
   it('removes everything it applied when loading ends', () => {

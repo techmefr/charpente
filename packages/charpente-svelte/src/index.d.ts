@@ -8,6 +8,7 @@ export interface CharpenteProps extends HTMLAttributes<HTMLElement> {
   motion?: string | string[]
   delay?: number
   stagger?: number
+  reveal?: number
   label?: string
   revealMs?: number
   children?: Snippet

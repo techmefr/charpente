@@ -1,10 +1,19 @@
+export type LoadingScope = 'element' | 'page'
+
+export const MAX_REVEAL_DEPTH = 6
+
 export interface LoadingOptions {
   loading: boolean
   theme?: string
   motion?: string | string[]
   delay?: number
   stagger?: number
+  reveal?: number
+  scope?: LoadingScope
 }
+
+export const revealWindow = (revealMs: number, reveal = 0): number =>
+  revealMs + reveal * (MAX_REVEAL_DEPTH - 1)
 
 export interface LoadingAttributes {
   attributes: Record<string, string>
@@ -30,5 +39,9 @@ export const loadingAttributes = (options: LoadingOptions): LoadingAttributes =>
   if (motion !== undefined) attributes['data-charpente-motion'] = motion
   if (options.delay !== undefined) style['--charpente-delay'] = String(options.delay) + 'ms'
   if (options.stagger !== undefined) style['--charpente-stagger'] = String(options.stagger) + 'ms'
+  if (options.reveal !== undefined) {
+    attributes['data-charpente-reveal'] = ''
+    style['--charpente-reveal'] = String(options.reveal) + 'ms'
+  }
   return { attributes, style }
 }

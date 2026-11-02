@@ -62,6 +62,7 @@ export interface CharpenteConfig {
   schedule?: ScheduleEntry[]
   motion?: string | string[]
   timing?: Timing
+  reveal?: number
   colorScheme?: ColorScheme
   themes?: Record<string, ThemeDef>
   themesDir?: string
