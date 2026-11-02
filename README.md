@@ -84,6 +84,7 @@ Many skeleton libraries ask you to draw placeholder shapes yourself and ship Jav
 | Astro | `charpente-astro` |
 | Laravel, Livewire | `charpente-blade` |
 | Vanilla | `charpente/dom` |
+| Plain HTML | `<charpente-loader>` from `charpente/loader` |
 
 ### UI libraries tried
 

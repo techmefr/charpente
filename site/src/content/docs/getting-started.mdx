@@ -275,4 +275,27 @@ charpente build --out public/charpente.css
 <link rel="stylesheet" href="/charpente.css" />
 ```
 
+Then use the `<charpente-loader>` element, registered by `charpente/loader`. It plays the role of the wrappers: add the `loading` attribute while the area loads and remove it when the content is ready.
+
+```html
+<script type="module">
+  import 'charpente/loader'
+</script>
+
+<charpente-loader loading theme="night" motion="pulse" stagger="60" reveal="800">
+  <h2>Team</h2>
+  <p>A short introduction to the team.</p>
+</charpente-loader>
+```
+
+| Attribute | Role |
+| --- | --- |
+| `loading` | Enables the skeleton. Also available as the `loading` property. |
+| `theme`, `motion` | Local theme and motions, names separated by a space. |
+| `delay`, `stagger`, `reveal` | Timing in `ms`, like the props of the wrappers. |
+| `reveal-ms` | Duration of one fade-in, `260` by default. |
+| `scope` | `page` puts the loading state on `<html>`, `element` keeps it on the loader. Defaults to the `scope` of the configuration. |
+
+The element sets `aria-busy` and `inert` for you and cleans up when it leaves the page. It has no `label` attribute: describe the loading state with your own `role="status"` region.
+
 <Code title="fixtures/simple.html" lang="html" code={firstLines(simpleHtml, 12)} />
