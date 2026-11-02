@@ -17,6 +17,7 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
     'delay',
     'stagger',
     'reveal',
+    'capture',
     'scope',
     'label',
     'revealMs',
@@ -33,8 +34,9 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
   const attributes = () =>
     loadingAttributes(
       page()
-        ? { loading: false }
+        ? { loading: false, capture: own.capture }
         : {
+            capture: own.capture,
             loading: own.loading ?? false,
             theme: own.theme,
             motion: own.motion,

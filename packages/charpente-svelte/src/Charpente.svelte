@@ -11,6 +11,7 @@
     delay?: number
     stagger?: number
     reveal?: number
+    capture?: string
     scope?: LoadingScope
     label?: string
     revealMs?: number
@@ -27,6 +28,7 @@
     delay,
     stagger,
     reveal,
+    capture,
     scope,
     label = "",
     revealMs = 260,
@@ -69,7 +71,7 @@
   })
 
   const computed = $derived(
-    loadingAttributes(page ? { loading: false } : { loading, theme, motion, delay, stagger, reveal }),
+    loadingAttributes(page ? { loading: false, capture } : { loading, theme, motion, delay, stagger, reveal, capture }),
   )
   const inline = $derived(
     [style, ...Object.entries(computed.style).map(([name, value]) => `${name}:${value}`)]
