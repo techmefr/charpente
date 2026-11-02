@@ -22,6 +22,15 @@ describe('short theme format', () => {
     expect(theme.paint?.media?.fill).toContain('radial-gradient')
   })
 
+  it('applies the radius to every type and defaults to the radius token', () => {
+    const rounded = expandTheme({ pattern: 'dots', radius: '4px' })
+    const standard = expandTheme({ pattern: 'dots' })
+    for (const type of PAINT_TYPES) {
+      expect(rounded.paint?.[type]?.style).toMatchObject({ borderRadius: '4px' })
+      expect(standard.paint?.[type]?.style).toMatchObject({ borderRadius: 'var(--charpente-radius)' })
+    }
+  })
+
   it('rejects an unknown pattern', () => {
     expect(() => expandTheme({ pattern: 'nope' })).toThrow('unknown pattern "nope"')
   })

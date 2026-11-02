@@ -119,10 +119,10 @@ export const extraThemes: Record<string, ThemeDef> = {
   },
   waves: {
     tokens: { accent: '#38bdf8' },
-    paint: scaled(() => ({
+    pattern: {
       fill: `${motif('<path d="M-12 6q12-10 24 0t24 0t24 0M-12 16q12-10 24 0t24 0t24 0M-12 26q12-10 24 0t24 0t24 0M-12 36q12-10 24 0t24 0t24 0M-12 46q12-10 24 0t24 0t24 0" fill="none" stroke="#67b5dc" stroke-width=".8"/>')}, ${flat(tint('accent', 8))}`,
       size: '48px 48px, auto',
-      style: { borderRadius: '6px' },
-    })),
+    },
+    radius: '6px',
   },
 }
