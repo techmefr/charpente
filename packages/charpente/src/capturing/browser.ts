@@ -1,4 +1,5 @@
 import type { BonesData, CaptureConfig, ZoneBones } from '../types'
+import { DEFAULT_ROUTE_LIMIT, crawlRoutes } from './crawl'
 import { MEASURE_SCRIPT } from './measure-script'
 
 const DEFAULT_BREAKPOINTS = [375, 768, 1280]
@@ -57,7 +58,8 @@ const capturePage = async (page: PageHandle, url: string, breakpoint: number, wa
 
 const visit = async (page: PageHandle, origin: string, config: CaptureConfig, data: BonesData): Promise<void> => {
   const breakpoints = [...(config.breakpoints ?? DEFAULT_BREAKPOINTS)].sort((a, b) => a - b)
-  for (const route of config.routes) {
+  const routes = config.routes ?? (await crawlRoutes(page, origin, config.limit ?? DEFAULT_ROUTE_LIMIT, config.wait ?? DEFAULT_WAIT))
+  for (const route of routes) {
     for (const breakpoint of breakpoints) {
       const url = new URL(route, origin).toString()
       merge(data, await capturePage(page, url, breakpoint, config.wait ?? DEFAULT_WAIT), breakpoint)
