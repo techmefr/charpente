@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { loadingAttributes } from "charpente"
+  import { loadingAttributes, revealWindow } from "charpente"
   import { untrack, type Snippet } from "svelte"
 
   interface Props {
@@ -9,6 +9,7 @@
     motion?: string | string[]
     delay?: number
     stagger?: number
+    reveal?: number
     label?: string
     revealMs?: number
     style?: string
@@ -23,6 +24,7 @@
     motion,
     delay,
     stagger,
+    reveal,
     label = "",
     revealMs = 260,
     style,
@@ -41,11 +43,11 @@
     ready = true
     const timer = setTimeout(() => {
       ready = false
-    }, untrack(() => revealMs))
+    }, untrack(() => revealWindow(revealMs, reveal)))
     return () => clearTimeout(timer)
   })
 
-  const computed = $derived(loadingAttributes({ loading, theme, motion, delay, stagger }))
+  const computed = $derived(loadingAttributes({ loading, theme, motion, delay, stagger, reveal }))
   const inline = $derived(
     [style, ...Object.entries(computed.style).map(([name, value]) => `${name}:${value}`)]
       .filter(Boolean)

@@ -1,3 +1,4 @@
+import { MAX_REVEAL_DEPTH } from './attributes'
 import { builtinMotions } from './motions'
 import { expandTheme } from './expand'
 import { validateSchedule } from './schedule'
@@ -321,14 +322,26 @@ const selectThemes = (config: CharpenteConfig, themes: Record<string, ThemeDef>)
   return all.filter((name) => kept.has(name))
 }
 
-const revealCss = (): string =>
-  [
-    `[data-charpente-ready] > * {\n  animation: charpente-reveal-in 260ms ease-out;\n}`,
+const READY = '[data-charpente-ready]'
+
+const revealCss = (reveal: number): string => {
+  const step = `var(--charpente-reveal, ${reveal}ms)`
+  const deeper = reveal > 0 ? READY : `${READY}[data-charpente-reveal]`
+  const levels = Array.from({ length: MAX_REVEAL_DEPTH }, (_, depth) => ({
+    depth,
+    selector: `${depth === 0 ? READY : deeper}${' > *'.repeat(depth + 1)}`,
+  }))
+  return [
+    ...levels.map(
+      ({ depth, selector }) =>
+        `${selector} {\n  animation: charpente-reveal-in 260ms ease-out calc(${step} * ${depth}) both;\n}`,
+    ),
     `@media (prefers-reduced-motion: reduce) {`,
     `  ${allLeaves(LOADING).replace(/\n/g, '\n  ')} {\n    animation: none !important;\n    --charpente-shine-layer: none !important;\n  }`,
-    `  [data-charpente-ready] > * {\n    animation: none;\n  }`,
+    `  ${levels.map(({ selector }) => selector).join(',\n  ')} {\n    animation: none;\n  }`,
     `}`,
   ].join('\n')
+}
 
 export function compile(config: CharpenteConfig = {}): CompileResult {
   const warnings: string[] = []
@@ -349,7 +362,7 @@ export function compile(config: CharpenteConfig = {}): CompileResult {
       themeCss(name, name === defaultTheme, themes, config.colorScheme),
     ),
     motionCss(motions, defaultMotion, delay, stagger, warnings),
-    revealCss(),
+    revealCss(config.reveal ?? 0),
   ].join('\n')
 
   const css = [

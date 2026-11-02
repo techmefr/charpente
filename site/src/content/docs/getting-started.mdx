@@ -100,8 +100,10 @@ In plain HTML, with no wrapper, set the same attributes by hand on the container
 | `data-charpente-motion` | container | Names sorted alphabetically, separated by a space, or `none`. |
 | `data-charpente-block` | an element | Paints the element as a single block and hides its children. |
 | `data-charpente-ready` | container | Set for a few moments after loading for a fade-in. |
+| `data-charpente-reveal` | container | Reveals nested levels one after the other once loading ends, see `--charpente-reveal`. |
 | `--charpente-delay` | style | Delay before the skeleton appears, in `ms`. |
 | `--charpente-stagger` | style | Offset between siblings, in `ms`. |
+| `--charpente-reveal` | style | Delay between two nested levels when the content appears, in `ms`. |
 
 ## Vite plugin and CLI
 
@@ -178,8 +180,9 @@ import { Charpente } from 'charpente-vue'
 | `motion` | string or string[] | none | Local motions, sorted automatically. |
 | `delay` | number | none | Delay in ms. |
 | `stagger` | number | none | Offset in ms. |
+| `reveal` | number | none | Delay in ms between the levels of the content when loading ends: the first blocks appear, then what they contain one step later, and so on. |
 | `label` | string | empty | Text of a `role="status"` region read during loading. |
-| `revealMs` | number | `260` | Duration of `data-charpente-ready` after loading. |
+| `revealMs` | number | `260` | Duration of one fade-in. `data-charpente-ready` stays set for this duration plus five `reveal` steps. |
 
 ### React
 

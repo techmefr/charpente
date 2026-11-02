@@ -9,7 +9,7 @@ import {
   type JSX,
 } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
-import { loadingAttributes, motionAttribute } from 'charpente'
+import { loadingAttributes, motionAttribute, revealWindow } from 'charpente'
 
 export { motionAttribute }
 
@@ -20,6 +20,7 @@ export interface CharpenteProps extends JSX.HTMLAttributes<HTMLElement> {
   motion?: string | string[]
   delay?: number
   stagger?: number
+  reveal?: number
   label?: string
   revealMs?: number
 }
@@ -46,6 +47,7 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
     'motion',
     'delay',
     'stagger',
+    'reveal',
     'label',
     'revealMs',
     'children',
@@ -60,7 +62,7 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
     wasLoading = now
     if (!before || now) return
     setReady(true)
-    const timer = setTimeout(() => setReady(false), untrack(() => own.revealMs ?? 260))
+    const timer = setTimeout(() => setReady(false), untrack(() => revealWindow(own.revealMs ?? 260, own.reveal)))
     onCleanup(() => clearTimeout(timer))
   })
 
@@ -71,6 +73,7 @@ export const Charpente = (props: CharpenteProps): JSX.Element => {
       motion: own.motion,
       delay: own.delay,
       stagger: own.stagger,
+      reveal: own.reveal,
     })
 
   const style = () => {

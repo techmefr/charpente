@@ -1,4 +1,4 @@
-import { loadingAttributes } from "charpente"
+import { loadingAttributes, revealWindow } from "charpente"
 import {
   createElement,
   Fragment,
@@ -27,13 +27,14 @@ export interface CharpenteProps {
   delay?: number
   stagger?: number
   label?: string
+  reveal?: number
   revealMs?: number
   style?: CSSProperties
   children?: ReactNode
   [attribute: string]: unknown
 }
 
-export const useReveal = (loading: boolean, revealMs: number): boolean => {
+export const useReveal = (loading: boolean, revealMs: number, reveal?: number): boolean => {
   const [ready, setReady] = useState(false)
   const previous = useRef(loading)
 
@@ -42,9 +43,9 @@ export const useReveal = (loading: boolean, revealMs: number): boolean => {
     previous.current = loading
     if (!wasLoading || loading) return
     setReady(true)
-    const timer = setTimeout(() => setReady(false), revealMs)
+    const timer = setTimeout(() => setReady(false), revealWindow(revealMs, reveal))
     return () => clearTimeout(timer)
-  }, [loading, revealMs])
+  }, [loading, revealMs, reveal])
 
   return ready
 }
@@ -56,14 +57,15 @@ export const Charpente = ({
   motion,
   delay,
   stagger,
+  reveal,
   label = "",
   revealMs = 260,
   style,
   children,
   ...rest
 }: CharpenteProps) => {
-  const ready = useReveal(loading, revealMs)
-  const { attributes, style: variables } = loadingAttributes({ loading, theme, motion, delay, stagger })
+  const ready = useReveal(loading, revealMs, reveal)
+  const { attributes, style: variables } = loadingAttributes({ loading, theme, motion, delay, stagger, reveal })
   const { inert, ...domAttributes } = attributes
   const hasVariables = Object.keys(variables).length > 0
 

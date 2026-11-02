@@ -4,12 +4,24 @@ const MANAGED_ATTRIBUTES = [
   'data-charpente-loading',
   'data-charpente-theme',
   'data-charpente-motion',
+  'data-charpente-reveal',
   'aria-busy',
   'inert',
 ]
-const MANAGED_PROPERTIES = ['--charpente-delay', '--charpente-stagger']
+const MANAGED_PROPERTIES = ['--charpente-delay', '--charpente-stagger', '--charpente-reveal']
+
+const clear = (element: HTMLElement): void => {
+  for (const name of MANAGED_ATTRIBUTES) element.removeAttribute(name)
+  for (const name of MANAGED_PROPERTIES) element.style.removeProperty(name)
+}
 
 export const setLoading = (element: HTMLElement, options: LoadingOptions): void => {
+  const target = options.scope === 'page' ? element.ownerDocument.documentElement : element
+  if (target !== element) clear(element)
+  apply(target, options)
+}
+
+const apply = (element: HTMLElement, options: LoadingOptions): void => {
   const { attributes, style } = loadingAttributes(options)
   for (const name of MANAGED_ATTRIBUTES) {
     const value = attributes[name]

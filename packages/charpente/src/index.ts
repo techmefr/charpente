@@ -1,8 +1,8 @@
 import type { CharpenteConfig, ThemeDef } from './types'
 
 export { compile } from './compile'
-export { loadingAttributes, motionAttribute } from './attributes'
-export type { LoadingAttributes, LoadingOptions } from './attributes'
+export { MAX_REVEAL_DEPTH, loadingAttributes, motionAttribute, revealWindow } from './attributes'
+export type { LoadingAttributes, LoadingOptions, LoadingScope } from './attributes'
 export { builtinMotions } from './motions'
 export { themeAt } from './schedule'
 export { builtinThemes, flat } from './themes'
