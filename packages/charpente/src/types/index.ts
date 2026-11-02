@@ -90,7 +90,8 @@ export interface ZoneBones {
 export type BonesData = Record<string, Record<string, ZoneBones>>
 
 export interface CaptureConfig {
-  routes: string[]
+  routes?: string[]
+  limit?: number
   breakpoints?: number[]
   wait?: number
   out?: string

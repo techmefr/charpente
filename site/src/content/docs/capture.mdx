@@ -24,7 +24,8 @@ export default defineCharpente({
 
 | Option | Default | Role |
 | --- | --- | --- |
-| `routes` | required | Pages to visit, relative to the URL you give to the command. |
+| `routes` | scanned | Pages to visit, relative to the URL you give to the command. Leave it out and Charpente follows the internal links from `/`. |
+| `limit` | `30` | Most pages visited by the scan. |
 | `breakpoints` | `[375, 768, 1280]` | Viewport widths to measure. |
 | `wait` | `500` | Milliseconds to wait after the page is idle. |
 | `out` | `charpente.bones.json` | File that stores the measures. |
