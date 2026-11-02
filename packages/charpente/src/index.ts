@@ -10,7 +10,6 @@ export type * from './types'
 
 export { expandTheme } from './expand'
 export { builtinPatterns } from './patterns'
-export { discoverThemes } from './discover'
 
 export const defineTheme = (theme: ThemeDef): ThemeDef => theme
 

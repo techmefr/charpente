@@ -24,6 +24,16 @@ export default defineCharpente({
         shine: 'rgba(255, 255, 255, 0.6)',
       },
     },
+    grille: {
+      colors: ['#dbeafe', '#93c5fd'],
+      pattern: {
+        fill: 'linear-gradient(var(--charpente-strong) 1px, transparent 1px), linear-gradient(90deg, var(--charpente-strong) 1px, transparent 1px), linear-gradient(var(--charpente-base), var(--charpente-base))',
+        size: (step) => `${8 * step}px ${8 * step}px, ${8 * step}px ${8 * step}px, auto`,
+      },
+      radius: (step) => `${2 * step}px`,
+      style: { boxShadow: 'inset 0 0 0 1px #93c5fd' },
+      paint: { text: { style: { borderRadius: '1px' } } },
+    },
     'brume-ronde': {
       extends: 'brume',
       paint: {

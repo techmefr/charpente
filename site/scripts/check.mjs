@@ -130,6 +130,7 @@ await playground.check('#pg-motions input[value="glitch"]')
 await playground.check('#pg-motions input[value="shimmer"]')
 expect((await style('animationName')).includes('charpente-glitch'), 'playground: glitch + shimmer applied')
 
+await playground.locator('#pg-stagger').fill('0')
 await playground.locator('#pg-delay').fill('500')
 expect((await style('animationDelay')).includes('0.5s'), `playground: 500 ms delay applied (${await style('animationDelay')})`)
 await playground.locator('#pg-stagger').fill('100')
