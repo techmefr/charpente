@@ -18,6 +18,6 @@ Copy-paste stub, no Composer package. Requires the charpente CSS and Laravel 10+
 </x-charpente>
 ```
 
-Props: loading, tag (default div), theme, motion (string or array), delay (ms), stagger (ms), label (screen-reader text shown while loading).
+Props: loading, tag (default div), theme, motion (string or array), delay (ms), stagger (ms), reveal (ms between nested levels), label (screen-reader text shown while loading).
 Other attributes (class, data-testid, wire:key) go to the root element.
 Never write data-charpente-* by hand.

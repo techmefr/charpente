@@ -5,6 +5,7 @@
     'motion' => null,
     'delay' => null,
     'stagger' => null,
+    'reveal' => null,
     'label' => '',
 ])
 @php
@@ -14,12 +15,14 @@
     $variables = collect([
         '--charpente-delay' => $delay === null ? null : $delay.'ms',
         '--charpente-stagger' => $stagger === null ? null : $stagger.'ms',
+        '--charpente-reveal' => $reveal === null ? null : $reveal.'ms',
     ])->filter()->map(fn ($value, $name) => $name.':'.$value)->implode(';');
 @endphp
 <{{ $tag }} {{ $attributes->merge([
     'style' => $variables ?: null,
     'data-charpente-theme' => $theme,
     'data-charpente-motion' => $motionValue,
+    'data-charpente-reveal' => $reveal === null ? null : '',
     'aria-busy' => $loading ? 'true' : null,
 ]) }} @if ($loading) data-charpente-loading inert @endif>{{ $slot }}</{{ $tag }}>
 @if ($loading && $label !== '')
