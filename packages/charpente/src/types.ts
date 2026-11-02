@@ -1,3 +1,5 @@
+import type { LoadingScope } from './attributes'
+
 export type PaintType = 'text' | 'media' | 'control' | 'block'
 
 export type Declarations = Record<string, string>
@@ -63,6 +65,7 @@ export interface CharpenteConfig {
   motion?: string | string[]
   timing?: Timing
   reveal?: number
+  scope?: LoadingScope
   colorScheme?: ColorScheme
   themes?: Record<string, ThemeDef>
   themesDir?: string

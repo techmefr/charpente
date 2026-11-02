@@ -52,6 +52,7 @@ export default defineCharpente({
 | `motion` | string or string[] | `'shimmer'` | Default motion(s). `'none'` disables. |
 | `timing` | `Timing` | `{ delay: 120, stagger: 0 }` | Default delay and offset. |
 | `reveal` | number | `0` | Delay in ms between two nested levels when content appears after loading. `0` fades the first level only. Local setting with `--charpente-reveal`. |
+| `scope` | `'element'` or `'page'` | `'element'` | Where the wrappers and `setLoading` put the loading state by default: on their own element, or on the whole page (`<html>`). Local setting with the `scope` prop. |
 | `themesDir` | string | `'themes'` | Folder scanned for themes: each subfolder with a `theme.ts` file is declared under its folder name. |
 | `colorScheme` | `ColorScheme` | system media query | Dark mode and per-mode tokens. |
 | `themes` | `Record<string, ThemeDef>` | `{}` | Adds themes, or replaces a built-in theme of the same name. |

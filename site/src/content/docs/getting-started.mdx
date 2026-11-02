@@ -181,6 +181,7 @@ import { Charpente } from 'charpente-vue'
 | `delay` | number | none | Delay in ms. |
 | `stagger` | number | none | Offset in ms. |
 | `reveal` | number | none | Delay in ms between the levels of the content when loading ends: the first blocks appear, then what they contain one step later, and so on. |
+| `scope` | `'element'` or `'page'` | config `scope` | `page` puts the loading state on `<html>` so the whole page is covered, `element` keeps it on the wrapper. Applied once the component is mounted. |
 | `label` | string | empty | Text of a `role="status"` region read during loading. |
 | `revealMs` | number | `260` | Duration of one fade-in. `data-charpente-ready` stays set for this duration plus five `reveal` steps. |
 

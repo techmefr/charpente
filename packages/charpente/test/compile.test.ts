@@ -39,6 +39,11 @@ describe('compile', () => {
     }
   })
 
+  it('exposes the configured scope to the runtime as a custom property', () => {
+    expect(compile().css).toContain('--charpente-scope: element;')
+    expect(compile({ scope: 'page' }).css).toContain('--charpente-scope: page;')
+  })
+
   it('reveals nested levels one step after the other once the area is ready', () => {
     const { css } = compile({ reveal: 1000 })
     expect(css).toMatch(/\[data-charpente-ready\] > \* \{\s*animation: charpente-reveal-in 260ms ease-out calc\(var\(--charpente-reveal, 1000ms\) \* 0\) both/)

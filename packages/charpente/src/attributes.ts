@@ -10,6 +10,7 @@ export interface LoadingOptions {
   stagger?: number
   reveal?: number
   scope?: LoadingScope
+  ready?: boolean
 }
 
 export const revealWindow = (revealMs: number, reveal = 0): number =>
@@ -34,6 +35,7 @@ export const loadingAttributes = (options: LoadingOptions): LoadingAttributes =>
     attributes['aria-busy'] = 'true'
     attributes['inert'] = ''
   }
+  if (options.ready) attributes['data-charpente-ready'] = ''
   if (options.theme !== undefined) attributes['data-charpente-theme'] = options.theme
   const motion = motionAttribute(options.motion)
   if (motion !== undefined) attributes['data-charpente-motion'] = motion

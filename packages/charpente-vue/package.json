@@ -35,11 +35,12 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vue": ">=3.4",
-    "charpente": ">=0.1.0"
+    "charpente": ">=0.1.0",
+    "vue": ">=3.4"
   },
   "devDependencies": {
-    "vue": ">=3.4",
-    "charpente": "workspace:^"
+    "charpente": "workspace:^",
+    "jsdom": "^27.4.0",
+    "vue": ">=3.4"
   }
 }

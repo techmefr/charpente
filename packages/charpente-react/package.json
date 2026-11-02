@@ -3,7 +3,14 @@
   "version": "0.1.0",
   "license": "MIT",
   "description": "React wrapper for charpente: a Charpente component that turns its children into a pure CSS skeleton while loading.",
-  "keywords": ["react", "skeleton", "skeleton-loader", "loading", "charpente", "nextjs"],
+  "keywords": [
+    "react",
+    "skeleton",
+    "skeleton-loader",
+    "loading",
+    "charpente",
+    "nextjs"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/techmefr/charpente.git",
@@ -12,7 +19,9 @@
   "homepage": "https://techmefr.github.io/charpente/",
   "bugs": "https://github.com/techmefr/charpente/issues",
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -33,6 +42,7 @@
   "devDependencies": {
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "jsdom": "^27.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }
