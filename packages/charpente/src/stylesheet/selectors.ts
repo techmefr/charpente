@@ -17,5 +17,9 @@ export const TYPE_SELECTORS: Record<PaintType, string> = {
 export const within = (scopes: string[], selector: string): string =>
   scopes.map((scope) => `${scope} ${selector}`).join(',\n')
 
-export const allLeaves = (scope: string): string =>
+export const CAPTURED_SLOTS = ['[data-charpente-capture]::before', '[data-charpente-capture]::after']
+
+export const capturedLeaves = (scope: string): string => CAPTURED_SLOTS.map((slot) => `${scope} ${slot}`).join(',\n')
+
+export const allLeaves =(scope: string): string =>
   PAINT_TYPES.map((type) => `${scope} ${TYPE_SELECTORS[type]}`).join(',\n')
