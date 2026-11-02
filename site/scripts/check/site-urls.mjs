@@ -9,6 +9,7 @@ export const slugs = [
   'motions',
   'configuration',
   'calendar',
+  'capture',
   'create-a-theme',
   'playground',
   'accessibility',

@@ -72,6 +72,29 @@ export interface ScheduleEntry {
   to: string
 }
 
+export interface Bone {
+  x: number
+  y: number
+  width: number
+  height: number
+  radius: number
+}
+
+export interface ZoneBones {
+  width: number
+  height: number
+  bones: Bone[]
+}
+
+export type BonesData = Record<string, Record<string, ZoneBones>>
+
+export interface CaptureConfig {
+  routes: string[]
+  breakpoints?: number[]
+  wait?: number
+  out?: string
+}
+
 export interface CharpenteConfig {
   defaultTheme?: string
   include?: string[]
@@ -85,6 +108,8 @@ export interface CharpenteConfig {
   themes?: Record<string, ThemeDef>
   themesDir?: string
   motions?: Record<string, MotionDef>
+  capture?: CaptureConfig
+  bones?: BonesData
 }
 
 export interface CompileResult {

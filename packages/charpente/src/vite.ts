@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs'
 import { dirname, relative, resolve } from 'node:path'
 import { createJiti } from 'jiti'
 import type { Plugin, ViteDevServer } from 'vite'
+import { bonesPath, readBones } from './capturing'
 import { compile } from './stylesheet'
 import { discoverThemes, themeAssets, themeFiles } from './discovery'
 import type { CharpenteConfig } from './types'
@@ -40,7 +41,7 @@ export function charpente(options: CharpenteViteOptions = {}): Plugin {
   const readConfig = async (): Promise<CharpenteConfig> => {
     const config = await loadConfig()
     const discovered = await discoverThemes(root, config.themesDir)
-    return { ...config, themes: { ...discovered, ...config.themes } }
+    return { ...config, themes: { ...discovered, ...config.themes }, bones: config.bones ?? readBones(root, config) }
   }
 
   const themesRoot = async (): Promise<string> => resolve(root, (await loadConfig()).themesDir ?? 'themes')
@@ -71,6 +72,7 @@ export function charpente(options: CharpenteViteOptions = {}): Plugin {
       if (id !== VIRTUAL_ID && id !== THEME_ID) return undefined
       if (configPath) this.addWatchFile(configPath)
       const config = await readConfig()
+      this.addWatchFile(bonesPath(root, config))
       for (const file of [...Object.values(themeFiles(root, config.themesDir)), ...themeAssets(root, config.themesDir)]) this.addWatchFile(file)
       if (id === THEME_ID) {
         const { defaultTheme, timeZone, schedule } = config
@@ -92,7 +94,7 @@ export function charpente(options: CharpenteViteOptions = {}): Plugin {
       for (const event of ['add', 'unlink', 'addDir', 'unlinkDir'] as const) server.watcher.on(event, reload)
     },
     async handleHotUpdate({ file, server }) {
-      if (file !== configPath && !(await isThemeFile(file))) return undefined
+      if (file !== configPath && !(await isThemeFile(file)) && file !== bonesPath(root, await loadConfig())) return undefined
       invalidate(server)
       return []
     },

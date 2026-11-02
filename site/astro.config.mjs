@@ -28,6 +28,7 @@ export default defineConfig({
         { label: 'Motions and timing', slug: 'motions' },
         { label: 'Configuration', slug: 'configuration' },
         { label: 'Seasonal calendar', slug: 'calendar' },
+        { label: 'Faithful mode', slug: 'capture' },
         { label: 'Create a theme', slug: 'create-a-theme' },
         { label: 'Playground', link: '/playground/' },
         { label: 'Accessibility', slug: 'accessibility' },

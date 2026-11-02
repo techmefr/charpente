@@ -2,6 +2,7 @@ import { builtinMotions, normalizeMotion } from '../motions'
 import { validateSchedule } from '../schedule'
 import { builtinThemes, resolveTheme, withVariants } from '../themes'
 import type { CharpenteConfig, CompileResult } from '../types'
+import { bonesCss } from '../bones'
 import { baseCss } from './base'
 import { keyframesCss, motionCss } from './motion'
 import { revealCss } from './reveal'
@@ -29,6 +30,7 @@ export function compile(config: CharpenteConfig = {}): CompileResult {
     ),
     motionCss(motions, defaultMotion, delay, stagger, warnings),
     revealCss(config.reveal ?? 0),
+    ...(config.bones ? [bonesCss(config.bones)] : []),
   ].join('\n')
 
   const css = [

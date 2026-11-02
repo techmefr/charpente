@@ -101,6 +101,10 @@ Wrappers accept `loading`, `theme`, `motion`, `delay`, `stagger`, `reveal`, `sco
 
 `scope: "page"` in the config (or on a wrapper) puts the loading state on the whole page; `"element"`, the default, keeps it on the wrapper. `reveal: 1000` makes the content appear level by level, one second apart, when loading ends.
 
+## Faithful mode
+
+Simple by default: Charpente paints the content already in the page. For a skeleton that matches the real layout at every breakpoint, even when the area is empty, add `capture: { routes: ['/'] }` to the configuration, mark the zone with `data-charpente-block data-charpente-capture="name"` and run `npx charpente capture --url http://localhost:3000` (needs Playwright). Without `capture`, nothing changes.
+
 ## Make it yours
 
 Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `vegas`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`. Motions: `shimmer`, `pulse`, `glitch`.
@@ -170,11 +174,13 @@ The core is organised in OSDD layers under `packages/charpente/src`. Each layer 
 | `types` | technical | Shared types and the paint types |
 | `css` | technical | CSS string helpers: declarations, gradients, motifs |
 | `discovery` | technical | Reading theme folders and their SVG files from disk |
+| `capturing` | technical | Measuring zones in a headless browser and storing the bones |
 | `themes` | functional | Built-in themes, short format, patterns, variants, extends |
 | `motions` | functional | Built-in motions and their normalisation |
 | `schedule` | functional | Choosing a theme by date |
 | `loading` | functional | Loading attributes, DOM helper and the `charpente-loader` element |
 | `stylesheet` | functional | Generating the stylesheet from a configuration |
+| `bones` | functional | Turning captured zones into masked, theme-painted CSS |
 
 A technical layer never imports a functional one. Files stay under 150 lines and functions under 75; `test/architecture.test.ts` enforces these rules.
 
