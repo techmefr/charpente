@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs'
 import { dirname, relative, resolve } from 'node:path'
 import { createJiti } from 'jiti'
 import type { Plugin, ViteDevServer } from 'vite'
-import { bonesPath, readBones } from './capturing'
+import { bonesPath, captureBones, createCapturer, isCaptureTrigger, readBones, withOptions, writeChangedBones } from './capturing'
 import { compile } from './stylesheet'
 import { discoverThemes, themeAssets, themeFiles } from './discovery'
 import type { CharpenteConfig } from './types'
@@ -24,6 +24,25 @@ const findConfig = (from: string, fileName: string): string | undefined => {
     if (parent === directory) return undefined
     directory = parent
   }
+}
+
+const watchCapture = (server: ViteDevServer, root: string, config: CharpenteConfig): void => {
+  const http = server.httpServer
+  if (!config.capture || config.capture.dev === false || !http) return
+  const capture = withOptions(config.capture, {})
+  const bones = bonesPath(root, config)
+  const capturer = createCapturer(
+    async () => {
+      const address = http.address()
+      const origin = capture.url ?? (typeof address === 'object' && address ? `http://localhost:${address.port}` : undefined)
+      if (origin) writeChangedBones(root, config, await captureBones(origin, capture))
+    },
+    (message) => server.config.logger.warn(message),
+  )
+  http.once('listening', () => void capturer.run())
+  server.watcher.on('change', (file) => {
+    if (isCaptureTrigger(file, bones)) capturer.schedule()
+  })
 }
 
 export function charpente(options: CharpenteViteOptions = {}): Plugin {
@@ -92,6 +111,7 @@ export function charpente(options: CharpenteViteOptions = {}): Plugin {
         if (await isThemeFile(file)) invalidate(server)
       }
       for (const event of ['add', 'unlink', 'addDir', 'unlinkDir'] as const) server.watcher.on(event, reload)
+      watchCapture(server, root, await readConfig())
     },
     async handleHotUpdate({ file, server }) {
       if (file !== configPath && !(await isThemeFile(file)) && file !== bonesPath(root, await loadConfig())) return undefined

@@ -1,3 +1,6 @@
 export { captureBones } from './browser'
 export { MEASURE_SCRIPT } from './measure-script'
-export { bonesPath, readBones, writeBones } from './store'
+export { runCapture, withOptions } from './run'
+export type { CaptureOptions } from './run'
+export { createCapturer, isCaptureTrigger } from './session'
+export { bonesPath, readBones, writeBones, writeChangedBones } from './store'

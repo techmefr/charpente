@@ -28,6 +28,9 @@ export default defineCharpente({
 | `breakpoints` | `[375, 768, 1280]` | Viewport widths to measure. |
 | `wait` | `500` | Milliseconds to wait after the page is idle. |
 | `out` | `charpente.bones.json` | File that stores the measures. |
+| `url` | detected | Address of the running application. |
+| `cdp` | none | Address of a Chrome you already opened, see below. |
+| `dev` | `true` | Capture automatically with the Vite dev server. |
 
 ## 2. Mark the zones
 
@@ -50,7 +53,32 @@ Start your application, then run the command with its address. It needs Playwrig
 npx charpente capture --url http://localhost:3000
 ```
 
-The measures go to `charpente.bones.json`. Commit it, or generate it in your pipeline. The Vite plugin and `charpente build` read it and add the zones to the stylesheet.
+The measures go to `charpente.bones.json`, and the file is only rewritten when a measure changed. Commit it, or generate it in your pipeline. The Vite plugin and `charpente build` read it and add the zones to the stylesheet.
+
+Without `--url`, the command looks for your application on the usual ports (5173, 3000, 4321, 4200, 8080, 8000).
+
+| Flag | Role |
+| --- | --- |
+| `--url` | Address of the running application. |
+| `--breakpoints 375,768,1280` | Viewport widths to measure. |
+| `--wait 500` | Milliseconds to wait after the page is idle. |
+| `--out file.json` | File that stores the measures. |
+| `--watch` | Capture again after each change of a source file. |
+| `--cdp http://localhost:9222` | Measure in a Chrome you already opened. |
+| `--env-file .env` | Load environment variables before reading the configuration. |
+
+## Automatic capture with Vite
+
+With the Vite plugin, the capture runs by itself when the dev server starts and again after each change of a source file. There is nothing to run. Set `capture.dev` to `false` to turn it off. A missing Playwright is reported as a warning and the dev server keeps running.
+
+## Pages behind a login
+
+Start Chrome with a debugging port, sign in, then point the capture at it. The capture opens a tab in that browser and keeps your session.
+
+```sh
+google-chrome --remote-debugging-port=9222
+npx charpente capture --url http://localhost:3000 --cdp http://localhost:9222
+```
 
 ## What you get
 
