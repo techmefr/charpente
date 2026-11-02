@@ -21,7 +21,7 @@ export default defineConfig({
         dark: './src/assets/logo-dark.svg',
       },
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/techmefr/charpente' }],
-      customCss: ['virtual:charpente.css', './src/styles/custom.css', './src/styles/demo.css'],
+      customCss: ['virtual:charpente.css', './src/styles/custom.css', './src/styles/demo-base.css', './src/styles/demo-controls.css', './src/styles/demo-dashboard.css', './src/styles/demo-playground.css'],
       sidebar: [
         { label: 'Getting started', slug: 'getting-started' },
         { label: 'Themes', link: '/themes/' },

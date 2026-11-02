@@ -1,0 +1,100 @@
+---
+import { photo } from '../lib/avatars'
+import { kpis, orders, products } from '../lib/playground-content'
+import { stateAttributes } from '../lib/state'
+
+const initial = stateAttributes({
+  loading: true,
+  theme: 'solid',
+  motion: 'shimmer',
+  delay: 120,
+  stagger: 60,
+})
+---
+
+<div class="mini" id="pg-root" data-testid="playground" {...initial}>
+  <div class="mini__top">
+    <h3>Dashboard</h3>
+    <input type="search" placeholder="Search" aria-label="Search" />
+    <button type="button" class="ui-btn">Export</button>
+  </div>
+
+  <section class="mini__kpis" aria-label="Indicators">
+    {
+      kpis.map((kpi) => (
+        <article class="kpi">
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            {kpi.icon === 'circle' && <circle cx="10" cy="10" r="8" fill="currentColor" />}
+            {kpi.icon === 'square' && <rect x="2" y="2" width="16" height="16" fill="currentColor" />}
+            {kpi.icon === 'triangle' && <polygon points="10,2 18,18 2,18" fill="currentColor" />}
+          </svg>
+          <p class="kpi__label">{kpi.label}</p>
+          <strong class="kpi__value">{kpi.value}</strong>
+        </article>
+      ))
+    }
+  </section>
+
+  <section class="panel">
+    <h4>Sales over 12 months</h4>
+    <svg class="chart" viewBox="0 0 600 140" role="img" aria-label="Sales curve" preserveAspectRatio="none">
+      <polyline
+        points="0,110 50,90 100,100 150,60 200,70 250,40 300,55 350,30 400,45 450,20 500,35 550,15 600,25"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+      />
+    </svg>
+  </section>
+
+  <section class="panel">
+    <h4>Recent orders</h4>
+    <table class="orders">
+      <thead>
+        <tr><th scope="col">No.</th><th scope="col">Customer</th><th scope="col">Total</th><th scope="col">Status</th></tr>
+      </thead>
+      <tbody>
+        {
+          orders.map((row) => (
+            <tr>
+              <td>{row[0]}</td>
+              <td>{row[1]}</td>
+              <td>{row[2]}</td>
+              <td><span class="badge">{row[3]}</span></td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h4>Filters</h4>
+    <form class="mini__form" onsubmit="return false">
+      <label>Customer <input type="text" name="customer" placeholder="Customer name" /></label>
+      <label>
+        Status
+        <select name="status">
+          <option>All</option>
+          <option>Paid</option>
+          <option>Pending</option>
+        </select>
+      </label>
+      <label class="check"><input type="checkbox" name="late" /> Late only</label>
+      <button type="submit" class="ui-btn">Apply</button>
+    </form>
+  </section>
+
+  <section class="mini__cards" aria-label="Catalog">
+    {
+      products.map((product) => (
+        <article class="mini__card">
+          <img width="320" height="120" alt="" src={photo(product.from, product.to)} />
+          <span class="lines__title">{product.name}</span>
+          <span class="lines__text">{product.note}</span>
+          <button type="button" class="ui-btn">Add</button>
+        </article>
+      ))
+    }
+  </section>
+</div>

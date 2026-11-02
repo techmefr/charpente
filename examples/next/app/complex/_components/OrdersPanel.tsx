@@ -1,0 +1,22 @@
+export function OrdersPanel() {
+  return (
+    <section className="panel">
+      <h2>Commandes récentes</h2>
+      <table className="orders">
+        <thead>
+          <tr><th>N°</th><th>Client</th><th>Date</th><th>Total</th><th>Statut</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1001</td><td>Atelier Lumière</td><td>12/10/2026</td><td>1 240,00 €</td><td><span className="badge">Payée</span></td></tr>
+          <tr><td>1002</td><td>Maison Verdier</td><td>12/10/2026</td><td>389,90 €</td><td><span className="badge">En cours</span></td></tr>
+          <tr><td>1003</td><td>Studio Pivoine</td><td>11/10/2026</td><td>2 075,50 €</td><td><span className="badge">Payée</span></td></tr>
+          <tr><td>1004</td><td>Café du Port</td><td>11/10/2026</td><td>96,00 €</td><td><span className="badge">Remboursée</span></td></tr>
+          <tr><td>1005</td><td>Librairie Nord</td><td>10/10/2026</td><td>512,30 €</td><td><span className="badge">Payée</span></td></tr>
+          <tr><td>1006</td><td>Fleuriste Rose</td><td>10/10/2026</td><td>148,00 €</td><td><span className="badge">En cours</span></td></tr>
+          <tr><td>1007</td><td>Garage Moreau</td><td>09/10/2026</td><td>3 410,00 €</td><td><span className="badge">Payée</span></td></tr>
+          <tr><td>1008</td><td>Boulangerie Alba</td><td>09/10/2026</td><td>74,20 €</td><td><span className="badge">Payée</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+  )
+}

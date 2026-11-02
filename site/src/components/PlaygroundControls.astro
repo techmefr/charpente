@@ -1,0 +1,59 @@
+---
+import { motions } from '../lib/playground-content'
+import { CUSTOM_THEMES, THEMES } from '../lib/site'
+---
+
+<form class="pg__controls" aria-labelledby="pg-title" onsubmit="return false">
+  <h2 id="pg-title" class="stage__label">Settings</h2>
+
+  <label class="field">
+    <span>Theme</span>
+    <select id="pg-theme">
+      <optgroup label="Built-in themes">
+        {THEMES.map((theme) => <option value={theme.name}>{theme.label}</option>)}
+      </optgroup>
+      <optgroup label="This site's themes">
+        {CUSTOM_THEMES.map((theme) => <option value={theme.name}>{theme.label}</option>)}
+      </optgroup>
+    </select>
+  </label>
+
+  <fieldset>
+    <legend>Motions</legend>
+    <ul class="checks" id="pg-motions">
+      {
+        motions.map((motion) => (
+          <li>
+            <label>
+              <input type="checkbox" value={motion.name} checked={motion.checked} />
+              {motion.name}
+            </label>
+          </li>
+        ))
+      }
+    </ul>
+  </fieldset>
+
+  <label class="field">
+    <span>Delay: <output id="pg-delay-out">120 ms</output></span>
+    <input id="pg-delay" type="range" min="0" max="2000" step="10" value="120" />
+  </label>
+
+  <label class="field">
+    <span>Stagger : <output id="pg-stagger-out">60 ms</output></span>
+    <input id="pg-stagger" type="range" min="0" max="300" step="10" value="60" />
+  </label>
+
+  <div class="field">
+    <span>State</span>
+    <button type="button" class="btn" id="pg-toggle">
+      Show content
+    </button>
+  </div>
+
+  <div class="field">
+    <span>Applied attributes</span>
+    <p class="pg__readout"><code id="pg-readout"></code></p>
+  </div>
+  <p class="sr-only" id="pg-status" role="status"></p>
+</form>
