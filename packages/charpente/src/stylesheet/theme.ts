@@ -14,6 +14,7 @@ const paintRule = (type: PaintType, paint: Paint, scopes: string[]): string => {
     `background-size: 60% 100%, ${sizeList.join(', ')} !important`,
     `background-repeat: no-repeat, ${layers.map(() => 'repeat').join(', ')} !important`,
     `background-position: var(--charpente-shine-x, -80%) 0, ${layers.map(() => '0 0').join(', ')} !important`,
+    `background-attachment: var(--charpente-shine-attachment, scroll), ${layers.map(() => 'scroll').join(', ')} !important`,
     ...(type === 'text'
       ? ['background-clip: content-box !important', 'background-origin: content-box !important']
       : []),

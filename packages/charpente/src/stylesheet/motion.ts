@@ -70,6 +70,8 @@ export const motionCss = (
     const layer = names.map((name) => motions[name]?.layer).find(Boolean)
     const body = [`animation: ${animations.join(', ')}`]
     if (layer) body.push(`--charpente-shine-layer: ${layer}`)
+    const attachment = names.map((name) => motions[name]?.attachment).find(Boolean)
+    if (attachment) body.push(`--charpente-shine-attachment: ${attachment}`)
     return `${scopes.map(allLeaves).join(',\n')} {\n  ${body.join(';\n  ')};\n}`
   }
 

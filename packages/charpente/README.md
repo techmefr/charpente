@@ -107,7 +107,7 @@ Simple by default: Charpente paints the content already in the page. For a skele
 
 ## Make it yours
 
-Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `vegas`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`. Motions: `shimmer`, `pulse`, `glitch`.
+Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `vegas`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`. Motions: `shimmer`, `sweep` (one band across the page), `pulse`, `glitch`. With Vite, `initial: true` serves the page already marked as loading, so nothing flashes before your scripts run.
 
 Add your own theme by creating a folder in `themes/` with a `theme.ts` file: it is declared automatically, and the folder name is the theme name.
 

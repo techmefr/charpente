@@ -7,6 +7,7 @@ const MANAGED_ATTRIBUTES = [
   'data-charpente-motion',
   'data-charpente-reveal',
   'data-charpente-ready',
+  'data-charpente-initial',
   'aria-busy',
   'inert',
 ]

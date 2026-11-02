@@ -3,6 +3,7 @@ import { dirname, relative, resolve } from 'node:path'
 import { createJiti } from 'jiti'
 import type { Plugin, ViteDevServer } from 'vite'
 import { bonesPath, captureBones, createCapturer, isCaptureTrigger, readBones, withOptions, writeChangedBones } from './capturing'
+import { transformInitial } from './loading'
 import { compile } from './stylesheet'
 import { discoverThemes, themeAssets, themeFiles } from './discovery'
 import type { CharpenteConfig } from './types'
@@ -26,7 +27,15 @@ const findConfig = (from: string, fileName: string): string | undefined => {
   }
 }
 
-const watchCapture = (server: ViteDevServer, root: string, config: CharpenteConfig): void => {
+const invalidate = (server: ViteDevServer): void => {
+  for (const id of [VIRTUAL_ID, THEME_ID]) {
+    const module = server.moduleGraph.getModuleById(id)
+    if (module) server.moduleGraph.invalidateModule(module)
+  }
+  server.ws.send({ type: 'full-reload' })
+}
+
+const watchCapture =(server: ViteDevServer, root: string, config: CharpenteConfig): void => {
   const http = server.httpServer
   if (!config.capture || config.capture.dev === false || !http) return
   const capture = withOptions(config.capture, {})
@@ -70,14 +79,6 @@ export function charpente(options: CharpenteViteOptions = {}): Plugin {
     return path !== '' && !path.startsWith('..')
   }
 
-  const invalidate = (server: ViteDevServer): void => {
-    for (const id of [VIRTUAL_ID, THEME_ID]) {
-      const module = server.moduleGraph.getModuleById(id)
-      if (module) server.moduleGraph.invalidateModule(module)
-    }
-    server.ws.send({ type: 'full-reload' })
-  }
-
   return {
     name: 'charpente',
     configResolved(resolved) {
@@ -104,6 +105,9 @@ export function charpente(options: CharpenteViteOptions = {}): Plugin {
       const { css, warnings } = compile(config)
       for (const warning of warnings) this.warn(warning)
       return css
+    },
+    async transformIndexHtml(html) {
+      return transformInitial(html, (await loadConfig()).initial)
     },
     async configureServer(server) {
       server.watcher.add(await themesRoot())

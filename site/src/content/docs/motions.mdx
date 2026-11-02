@@ -17,6 +17,14 @@ Each one is a CSS animation applied to every leaf of the area. Without an attrib
 
 <MotionDemos kind="motions" />
 
+## One sweep across the page
+
+`sweep` draws a single band that crosses the whole viewport instead of one band per element, like the loading screens of big feeds. It is pure CSS: the shine layer is attached to the viewport. Browsers that ignore fixed backgrounds, such as Safari on iOS, show one band per element instead.
+
+```ts
+defineCharpente({ motion: "sweep" })
+```
+
 ## Combining and conflicts
 
 `data-charpente-motion` accepts several names separated by a space, **sorted alphabetically**. The compiler generates one rule per combination, up to six declared motions; beyond that, only single motions are generated.
