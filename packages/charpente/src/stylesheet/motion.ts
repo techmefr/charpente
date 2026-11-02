@@ -1,6 +1,6 @@
 import { declarations } from '../css'
 import type { MotionDef } from '../types'
-import { LOADING, allLeaves } from './selectors'
+import { LOADING, allLeaves, capturedLeaves } from './selectors'
 
 const MAX_COMBINED_MOTIONS = 6
 
@@ -54,7 +54,9 @@ export const motionCss = (
   delay: number,
   stagger: number,
   warnings: string[],
+  captured = false,
 ): string => {
+  const leaves = (scope: string): string => (captured ? `${allLeaves(scope)},\n${capturedLeaves(scope)}` : allLeaves(scope))
   const delayVar = `var(--charpente-delay, ${delay}ms)`
   const staggerDelay = `calc(${delayVar} + var(--charpente-i, 0) * var(--charpente-stagger, ${stagger}ms))`
   const reveal = `charpente-reveal 0s linear ${staggerDelay} both`
@@ -72,7 +74,7 @@ export const motionCss = (
     if (layer) body.push(`--charpente-shine-layer: ${layer}`)
     const attachment = names.map((name) => motions[name]?.attachment).find(Boolean)
     if (attachment) body.push(`--charpente-shine-attachment: ${attachment}`)
-    return `${scopes.map(allLeaves).join(',\n')} {\n  ${body.join(';\n  ')};\n}`
+    return `${scopes.map(leaves).join(',\n')} {\n  ${body.join(';\n  ')};\n}`
   }
 
   warnings.push(...conflictWarnings(motions, defaultNames))
