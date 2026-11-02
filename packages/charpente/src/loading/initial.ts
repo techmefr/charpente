@@ -21,5 +21,10 @@ export const transformInitial = (html: string, initial: boolean | number | undef
   }
 }
 
-export const withInitialLoading =(html: string): string =>
-  html.replace(/<html(\s[^>]*)?>/i, (_, attributes: string | undefined) => `<html${attributes ?? ''} ${initialAttributes()}>`)
+export const withInitialLoading = (html: string): string => {
+  const start = html.toLowerCase().indexOf('<html')
+  const end = start === -1 ? -1 : html.indexOf('>', start)
+  if (end === -1) return html
+  const open = html.slice(start, end).trimEnd()
+  return `${html.slice(0, start)}${open} ${initialAttributes()}${html.slice(end)}`
+}
