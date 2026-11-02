@@ -292,6 +292,7 @@ const baseCss = (): string => {
     `${LOADING} [data-charpente-block] > *,\n${LOADING} svg * {\n  visibility: hidden;\n}`,
     `${LOADING} img {\n  content: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");\n}`,
     `${LOADING} ::placeholder {\n  color: transparent;\n}`,
+    `charpente-loader {\n  display: block;\n}`,
     staggerIndices,
   ].join('\n')
 }

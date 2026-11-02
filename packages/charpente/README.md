@@ -95,6 +95,7 @@ Wrappers accept `loading`, `theme`, `motion`, `delay`, `stagger` and `label`.
 | Astro | `charpente-astro` | `<Charpente as="main" loading={pending}>` |
 | Laravel, Livewire | `packages/charpente-blade` | `<x-charpente :loading="$pending" tag="main">` |
 | Vanilla | `charpente/dom` | `setLoading(element, { loading: true })` |
+| Plain HTML | `charpente/loader` | `<charpente-loader loading theme="night">` |
 
 ## Make it yours
 
