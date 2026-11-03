@@ -1,5 +1,6 @@
 import { declarations } from '../css'
 import type { MotionDef } from '../types'
+import { overlayKeyframes, overlayRules } from './overlay'
 import { LOADING, allLeaves, capturedLeaves } from './selectors'
 
 const MAX_COMBINED_MOTIONS = 6
@@ -11,8 +12,8 @@ const stepsCss = (keyframes: MotionDef['keyframes']): string =>
 
 export const keyframesCss = (name: string, motion: MotionDef): string => {
   const own = `@keyframes charpente-${name} { ${stepsCss(motion.keyframes)} }`
-  if (!motion.container) return own
-  return `${own}\n@keyframes charpente-${name}-container { ${stepsCss(motion.container)} }`
+  const container = motion.container ? `\n@keyframes charpente-${name}-container { ${stepsCss(motion.container)} }` : ''
+  return `${own}${container}${overlayKeyframes(name, motion)}`
 }
 
 const speed = (duration: string): string => `calc(${duration} * var(--charpente-speed, 1))`
@@ -35,6 +36,11 @@ const motionScopes = (names: string[], allNames: string[]): string[] => {
     .map((name) => `:not([data-charpente-motion~="${name}"])`)
   return [exact, `${LOADING}${has.join('')}${lacks.join('')}`]
 }
+
+const themeDefaultScopes = (theme: string, isDefault: boolean): string[] => [
+  `${LOADING}[data-charpente-theme="${theme}"]:not([data-charpente-motion])`,
+  ...(isDefault ? [`${LOADING}:not([data-charpente-theme]):not([data-charpente-motion])`] : []),
+]
 
 const conflictWarnings = (motions: Record<string, MotionDef>, defaultNames: string[]): string[] => {
   const warnings: string[] = []
@@ -61,6 +67,7 @@ export const motionCss = (
   stagger: number,
   warnings: string[],
   captured = false,
+  themeDefaults: [string, string[], boolean][] = [],
 ): string => {
   const leaves = (scope: string): string => (captured ? `${allLeaves(scope)},\n${capturedLeaves(scope)}` : allLeaves(scope))
   const delayVar = `var(--charpente-delay, ${delay}ms)`
@@ -84,13 +91,14 @@ export const motionCss = (
   }
 
   const containerRule = (scopes: string[], names: string[]): string[] => {
+    const extra = overlayRules(scopes, names, motions, speed, delayVar)
     const own = names.filter((name) => motions[name]?.container)
-    if (own.length === 0) return []
+    if (own.length === 0) return extra
     const animations = own.map((name) => {
       const motion = motions[name] as MotionDef
       return `charpente-${name}-container ${speed(motion.duration)} ${motion.easing ?? 'ease-in-out'} ${delayVar} ${motion.iterations ?? 'infinite'}`
     })
-    return [`${scopes.join(',\n')} {\n  animation: ${animations.join(', ')};\n}`]
+    return [`${scopes.join(',\n')} {\n  animation: ${animations.join(', ')};\n}`, ...extra]
   }
 
   warnings.push(...conflictWarnings(motions, defaultNames))
@@ -101,6 +109,10 @@ export const motionCss = (
     ...subsets(allNames).map((names) => rule(motionScopes(names, allNames), names)),
     ...containerRule([`${LOADING}:not([data-charpente-motion])`], defaultNames),
     ...subsets(allNames).flatMap((names) => containerRule(motionScopes(names, allNames), names)),
+    ...themeDefaults.flatMap(([theme, names, isDefault]) => {
+      const scopes = themeDefaultScopes(theme, isDefault)
+      return [rule(scopes, names), ...containerRule(scopes, names)]
+    }),
     `@media (prefers-reduced-motion: reduce) {\n  ${LOADING} {\n    animation: none !important;\n  }\n}`,
   ]
   return rules.join('\n')

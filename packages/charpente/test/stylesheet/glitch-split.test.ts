@@ -51,7 +51,7 @@ describe('glitch split', () => {
 describe('motion speeds', () => {
   it('keeps calm, coherent built-in durations', () => {
     const durations = Object.fromEntries(Object.entries(builtinMotions).map(([name, motion]) => [name, motion.duration]))
-    expect(durations).toEqual({ shimmer: '1.8s', sweep: '2.4s', pulse: '1.6s', glitch: '3.4s' })
+    expect(durations).toEqual({ shimmer: '1.8s', sweep: '2.4s', pulse: '1.6s', glitch: '3.4s', crt: '5s' })
   })
 
   it('scales every duration with --charpente-speed', () => {

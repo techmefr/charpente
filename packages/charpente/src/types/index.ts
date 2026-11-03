@@ -53,6 +53,13 @@ export interface ThemeDef {
   paint?: Partial<Record<PaintType, Paint>>
   hover?: HoverDef
   hoverMotion?: HoverMotion
+  motion?: string
+}
+
+export interface MotionOverlay {
+  style: Declarations
+  duration: string
+  keyframes: Record<string, Declarations>
 }
 
 export interface MotionDef {
@@ -63,6 +70,7 @@ export interface MotionDef {
   attachment?: string
   keyframes: Record<string, Declarations>
   container?: Record<string, Declarations>
+  overlay?: MotionOverlay
 }
 
 export interface Timing {

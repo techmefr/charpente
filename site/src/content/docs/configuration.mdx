@@ -87,7 +87,7 @@ colorScheme: {
 
 ## Themes
 
-A theme has these optional fields: `extends`, `tokens`, `paint`, `hover` and `hoverMotion`. With `extends`, the theme inherits the parent's tokens, paints and hover: tokens are merged, paints are merged type by type, and within `style` key by key. `fill` and `size` replace the parent's.
+A theme has these optional fields: `extends`, `tokens`, `paint`, `hover`, `hoverMotion` and `motion`. With `extends`, the theme inherits the parent's tokens, paints and hover: tokens are merged, paints are merged type by type, and within `style` key by key. `fill` and `size` replace the parent's.
 
 ### Import a single theme
 
@@ -104,7 +104,7 @@ A name that is not imported throws an error that points to `charpente/themes`. M
 
 | Bundle | Size | Gzip |
 | --- | --- | --- |
-| `compile` from `charpente` (20 themes) | 24.2 kB | 7.7 kB |
+| `compile` from `charpente` (21 themes) | 24.2 kB | 7.7 kB |
 | `compile` from `charpente/lite` with one theme | 14.6 kB | 5.7 kB |
 | `nativeTheme` from `charpente` | 14.8 kB | 4.3 kB |
 | `nativeTheme` from `charpente/lite` | 4.2 kB | 1.8 kB |
@@ -167,6 +167,7 @@ themes: {
 | --- | --- | --- |
 | `hover` | string or per type | A token name (`'strong'`, `'accent'`...) or a color paints every type with it. An object gives `fill`, `size`, `style`, `radius` and `border` per type. |
 | `hoverMotion` | `'pause'`, `'faster'` or `'none'` | What the animation does under the pointer: stop, run faster (`--charpente-hover-fast`, default `600ms`), or nothing. Default `none`. |
+| `motion` | string | The motion used by default for this theme when the area has no `data-charpente-motion`, for instance `crt`. Inherited with `extends`. |
 
 ```ts title="Custom hover"
 themes: {
@@ -203,6 +204,8 @@ Details:
 | `iterations` | `'infinite'` | Number of cycles. |
 | `layer` | none | Background layer overlaid on the leaves, used by `shimmer` for its glint. |
 | `keyframes` | required | Animation steps: `from`, `to` or percentages, each with its declarations. |
+| `container` | none | Keyframes applied to the loading container next to the leaf keyframes, as `glitch` does. |
+| `overlay` | none | A layer drawn over the loading container: `style` for its static look, `duration` and `keyframes` for its movement, which stops under reduced motion. Used by `crt`. |
 
 ```ts title="A custom motion"
 motions: {

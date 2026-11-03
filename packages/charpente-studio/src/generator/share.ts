@@ -6,7 +6,7 @@ const KEY = 'g='
 
 export const BUILTIN_NAMES = [
   'solid', 'outline', 'dots', 'cyberpunk', 'web', 'blueprint', 'halftone', 'stripes', 'neon', 'aurora',
-  'brutalist', 'sketch', 'topo', 'waves', 'glass', 'frost', 'smoked', 'music', 'developer', 'wellness',
+  'brutalist', 'sketch', 'topo', 'waves', 'glass', 'frost', 'smoked', 'music', 'developer', 'wellness', 'crt',
 ]
 
 export const encodeState = (state: GeneratorState): string => {

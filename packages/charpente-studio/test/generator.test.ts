@@ -210,6 +210,15 @@ describe('preview', () => {
     expect(css).toContain(':hover')
   })
 
+  it('previews the crt motion with its overlay and keeps it through the config', () => {
+    const state = edit((draft) => (draft.motions = ['crt']))
+    const css = previewCss(state, themes, false)
+    expect(css).toContain('@keyframes charpente-crt-overlay')
+    expect(css).toContain('::after')
+    expect(configSource(state)).toContain("motion: 'crt'")
+    expect(sanitizeState(JSON.parse(JSON.stringify(state))).motions).toEqual(['crt'])
+  })
+
   it('compiles on top of every built-in theme', () => {
     for (const name of BUILTIN_NAMES) expect(() => previewCss(startState(name), themes, false)).not.toThrow()
   })

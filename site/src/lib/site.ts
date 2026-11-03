@@ -18,6 +18,7 @@ export const THEMES = [
   { name: 'waves', label: 'Waves', note: 'Blue waves' },
   { name: 'music', label: 'Music', note: 'Staves and notes at unrelated scales' },
   { name: 'developer', label: 'Developer', note: 'Falling green characters on black' },
+  { name: 'crt', label: 'CRT', note: 'Tube screen with rounded corners, green phosphor and scanlines' },
   { name: 'wellness', label: 'Wellness', note: 'Soft curves, light grain' },
   { name: 'valentine', label: 'Valentine', note: 'Little hearts, soft pink' },
   { name: 'birthday', label: 'Birthday', note: 'Colored sprinkles' },
@@ -40,4 +41,5 @@ export const MOTIONS = [
   { name: 'shimmer', note: 'Glint sweeping across the shape' },
   { name: 'pulse', note: 'Opacity breathing, offset by position with stagger' },
   { name: 'glitch', note: 'Brief bursts where the skeleton splits into a cyan and magenta ghost' },
+  { name: 'crt', note: 'Scrolling scanlines, phosphor glow, faint flicker and a dark vignette' },
 ]

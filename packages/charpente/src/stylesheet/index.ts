@@ -28,13 +28,19 @@ export const createCompiler =
     resolveTheme(defaultTheme, themes)
     validateSchedule(config.schedule ?? [], Object.keys(themes), config.timeZone)
 
+    const selected = selectThemes(config, themes)
+    const themeDefaults = selected.flatMap((name): [string, string[], boolean][] => {
+      const motion = resolveTheme(name, themes).motion
+      return motion ? [[name, normalizeMotion(motion, motions), name === defaultTheme]] : []
+    })
+
     const layered = [
       tokensCss(config),
       baseCss(),
-      ...selectThemes(config, themes).map((name) =>
+      ...selected.map((name) =>
         themeCss(name, name === defaultTheme, themes, config.colorScheme, Boolean(config.bones)),
       ),
-      motionCss(motions, defaultMotion, delay, stagger, warnings, Boolean(config.bones)),
+      motionCss(motions, defaultMotion, delay, stagger, warnings, Boolean(config.bones), themeDefaults),
       revealCss(config.reveal ?? 0),
       ...(config.bones ? [bonesCss(config.bones)] : []),
     ].join('\n')

@@ -1,7 +1,7 @@
 import type { ThemeDef } from 'charpente'
 
 export const PATTERNS = ['solid', 'dots', 'stripes', 'grid'] as const
-export const MOTIONS = ['shimmer', 'sweep', 'pulse', 'glitch'] as const
+export const MOTIONS = ['shimmer', 'sweep', 'pulse', 'glitch', 'crt'] as const
 
 export interface ThemeForm {
   name: string

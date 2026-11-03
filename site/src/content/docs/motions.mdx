@@ -1,6 +1,6 @@
 ---
 title: Motions and timing
-description: Shimmer, pulse and glitch; each motion rendered, the delay before appearing, the offset between elements, combinations and their conflicts.
+description: Shimmer, pulse, glitch and crt; each motion rendered, the delay before appearing, the offset between elements, combinations and their conflicts.
 ---
 
 import { Aside } from '@astrojs/starlight/components'
@@ -23,9 +23,19 @@ Each one is a CSS animation applied to every leaf of the area. Without an attrib
 
 The split is a `drop-shadow` filter applied to the loading container (`data-charpente-loading`) and not to each leaf, so it also works with captured zones, whose masks would otherwise clip it. A custom motion can do the same with a `container` field, keyframes applied to the container next to the leaf keyframes. It is disabled under `prefers-reduced-motion`.
 
+## The CRT screen
+
+`crt` turns the skeleton into a cathode-ray tube: thin scanlines scroll slowly over the area, a faint bar rolls from top to bottom, a green-tinted glow follows the shapes, the screen flickers for a fraction of a second now and then, and a dark vignette closes the edges. The glow takes the `accent` token, so it follows the theme.
+
+The scanlines, the optional RGB mask and the vignette are drawn on an overlay of the loading container (its `::after`), declared with the `overlay` field of a motion, so it works in automatic and captured mode alike. Two variables tune it: `--charpente-crt-mask` (opacity of the red, green and blue stripes, `0.05` by default, `0` to remove them) and `--charpente-crt-vignette` (`0.38`). Under `prefers-reduced-motion` the flicker, the glow animation and the scrolling stop, and the scanlines stay in place. The `crt` theme, with its amber variant `crt-amber`, declares this motion as its default through the `motion` field.
+
+```ts
+defineCharpente({ defaultTheme: "crt", motion: "crt" })
+```
+
 ## Speed
 
-Durations are tuned to be neither nervous nor sluggish: `shimmer` 1.8s, `sweep` 2.4s, `pulse` 1.6s, `glitch` 3.4s (one burst per cycle), all with `ease-in-out` except the stepped `glitch`. Every duration is multiplied by `--charpente-speed` (default `1`): `style="--charpente-speed: 0.5"` makes the motions twice as fast, `2` twice as slow. It can be set on `:root` or on one area.
+Durations are tuned to be neither nervous nor sluggish: `shimmer` 1.8s, `sweep` 2.4s, `pulse` 1.6s, `glitch` 3.4s (one burst per cycle), `crt` 5s (7s for the scanline scroll), all with `ease-in-out` except the stepped `glitch` and the linear `crt`. Every duration is multiplied by `--charpente-speed` (default `1`): `style="--charpente-speed: 0.5"` makes the motions twice as fast, `2` twice as slow. It can be set on `:root` or on one area.
 
 ## One sweep across the page
 
