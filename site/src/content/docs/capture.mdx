@@ -48,6 +48,8 @@ Add `data-charpente-capture="name"` next to `data-charpente-block` on the area t
 
 With a wrapper, the `capture` prop does the same: `<Charpente capture="team">` in React, Vue, Solid, Svelte, Astro and Blade, `capture="team"` next to `charpente` in Angular. The zone is marked even when nothing is loading.
 
+With React or Vue, `CharpenteSuspense` marks the same zone and shows it as a skeleton while a Suspense boundary waits, so the captured shapes appear instead of an empty area.
+
 ## 3. Capture
 
 Start your application, then run the command with its address. It needs Playwright (`pnpm add -D playwright`).
