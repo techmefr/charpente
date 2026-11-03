@@ -92,6 +92,7 @@ Wrappers accept `loading`, `theme`, `motion`, `delay`, `stagger`, `reveal`, `sco
 | Svelte | `charpente-svelte` | `<Charpente tag="main" loading={pending}>` |
 | Solid | `charpente-solid` | `<Charpente tag="main" loading={pending()}>` |
 | Preact | `charpente-preact` | `<Charpente as="ul" loading={pending}>` |
+| React Native | `charpente-react-native` | `<Charpente loading={pending}>` with the package Text, Image, Pressable |
 | Angular | `charpente-angular` | `<main [charpente]="pending">` |
 | Astro | `charpente-astro` | `<Charpente as="main" loading={pending}>` |
 | Laravel, Livewire | `packages/charpente-blade` | `<x-charpente :loading="$pending" tag="main">` |

@@ -6,8 +6,8 @@ export type { LoadingAttributes, LoadingOptions } from './loading'
 export { builtinMotions } from './motions'
 export { themeAt } from './schedule'
 export { compile } from './stylesheet'
-export { builtinPatterns, builtinThemes, createGlassTheme, expandTheme } from './themes'
-export type { GlassOptions } from './themes'
+export { builtinPatterns, builtinThemes, createGlassTheme, expandTheme, nativeTheme } from './themes'
+export type { GlassOptions, NativeColors, NativeTheme } from './themes'
 export type * from './types'
 
 export const defineTheme = (theme: ThemeDef): ThemeDef => theme
