@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://techmefr.github.io/charpente/
+    about: Guides, configuration reference and the theme tutorial
+  - name: Security report
+    url: https://github.com/techmefr/charpente/security/policy
+    about: Report a vulnerability privately
