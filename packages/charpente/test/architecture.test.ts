@@ -1,6 +1,6 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative, resolve, sep } from 'node:path'
-import ts from 'typescript'
+import ts from '@typescript/typescript6'
 import { describe, expect, it } from 'vitest'
 
 const SOURCE = resolve(import.meta.dirname, '..', 'src')
