@@ -35,7 +35,7 @@ export const Charpente = ({
 
   return (
     <CharpenteContext.Provider value={state}>
-      <View {...rest} accessibilityState={{ busy: shown }} pointerEvents={shown ? 'none' : rest.pointerEvents}>
+      <View {...rest} accessibilityState={{ ...rest.accessibilityState, busy: shown }} pointerEvents={shown ? 'none' : rest.pointerEvents}>
         {children}
       </View>
     </CharpenteContext.Provider>
