@@ -3,10 +3,8 @@
   gap: 0.85rem;
   border-radius: 0.75rem;
   background:
-    radial-gradient(circle at 16% 20%, #7c3aed 0 64px, transparent 65px),
-    radial-gradient(circle at 86% 36%, #f43f5e 0 80px, transparent 81px),
-    radial-gradient(circle at 28% 74%, #facc15 0 58px, transparent 59px),
-    radial-gradient(circle at 78% 92%, #06b6d4 0 66px, transparent 67px),
-    repeating-linear-gradient(115deg, transparent 0 20px, rgb(255 255 255 / 0.55) 20px 24px),
-    linear-gradient(135deg, #38bdf8, #a78bfa 50%, #fb7185);
+    radial-gradient(circle 74px at 80% 30%, color-mix(in srgb, var(--sl-color-accent) 55%, transparent) 0 94%, transparent),
+    radial-gradient(circle 58px at 22% 78%, color-mix(in srgb, #d9a05b 45%, transparent) 0 94%, transparent),
+    radial-gradient(ellipse 70% 50% at 10% 15%, color-mix(in srgb, #c77d9a 38%, transparent), transparent 75%),
+    linear-gradient(160deg, var(--sl-color-gray-5), var(--sl-color-gray-6));
 }
