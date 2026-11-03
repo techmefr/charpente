@@ -29,6 +29,7 @@ jobs:
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm build
       - run: pnpm test
-      - run: mkdir -p examples/svelte/.svelte-kit && echo "{}" > examples/svelte/.svelte-kit/tsconfig.json
+      - run: pnpm --dir examples/svelte install --frozen-lockfile --ignore-scripts
+      - run: pnpm --dir examples/svelte exec svelte-kit sync
       - run: pnpm --filter ./examples/nuxt exec nuxt prepare
       - run: pnpm --filter site build
