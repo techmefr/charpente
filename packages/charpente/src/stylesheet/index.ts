@@ -1,7 +1,8 @@
 import { builtinMotions, normalizeMotion } from '../motions'
 import { validateSchedule } from '../schedule'
 import { assertAvailable, builtinThemes, resolveTheme, withVariants } from '../themes'
-import type { CharpenteConfig, CompileResult, ThemeDef } from '../types'
+import { builtinShapes } from '../shapes'
+import type { CharpenteConfig, CompileResult, ShapeDef, ThemeDef } from '../types'
 import { bonesCss } from '../bones'
 import { baseCss } from './base'
 import { keyframesCss, motionCss } from './motion'
@@ -11,7 +12,7 @@ import { themeCss } from './theme'
 import { tokensCss } from './tokens'
 
 export const createCompiler =
-  (registry: Record<string, ThemeDef>, onlyRegistry = false) =>
+  (registry: Record<string, ThemeDef>, onlyRegistry = false, shapeRegistry: Record<string, ShapeDef> = {}) =>
   (config: CharpenteConfig = {}): CompileResult => {
     const warnings: string[] = []
     const themes = withVariants({ ...registry, ...config.themes })
@@ -19,6 +20,7 @@ export const createCompiler =
       const named = [config.defaultTheme, ...(config.include ?? []), ...(config.schedule ?? []).map((entry) => entry.theme)]
       assertAvailable(named, themes)
     }
+    const shapes = { ...shapeRegistry, ...config.shapes }
     const motions = { ...builtinMotions, ...config.motions }
     const defaultTheme = config.defaultTheme ?? 'solid'
     const defaultMotion = normalizeMotion(config.motion ?? 'shimmer', motions)
@@ -32,7 +34,7 @@ export const createCompiler =
       tokensCss(config),
       baseCss(),
       ...selectThemes(config, themes).map((name) =>
-        themeCss(name, name === defaultTheme, themes, config.colorScheme, Boolean(config.bones)),
+        themeCss(name, name === defaultTheme, themes, config.colorScheme, Boolean(config.bones), shapes),
       ),
       motionCss(motions, defaultMotion, delay, stagger, warnings, Boolean(config.bones)),
       revealCss(config.reveal ?? 0),
@@ -50,4 +52,4 @@ export const createCompiler =
     return { css, warnings }
   }
 
-export const compile = (config: CharpenteConfig = {}): CompileResult => createCompiler(builtinThemes)(config)
+export const compile = (config: CharpenteConfig = {}): CompileResult => createCompiler(builtinThemes, false, builtinShapes)(config)

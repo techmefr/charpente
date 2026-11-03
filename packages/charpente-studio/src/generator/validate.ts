@@ -11,6 +11,7 @@ import {
   type LeafState,
   type MotionName,
 } from './state'
+import { ROLES, SHAPE_LIBRARY } from './shapes'
 
 export const NAME = /^[a-z][a-z0-9-]{0,40}$/
 const MAX_CSS = 4000
@@ -55,6 +56,16 @@ const bounded = (value: unknown, label: string, min: number, max: number): numbe
   return value
 }
 
+const shapeOf = (data: Record<string, unknown>): Pick<LeafState, 'shape' | 'roles'> => {
+  const shape = data.shape === undefined ? '' : data.shape
+  if (shape === '') return { shape: '', roles: [] }
+  if (typeof shape !== 'string' || !SHAPE_LIBRARY[shape]) return fail(`unknown shape "${String(shape)}"`)
+  const roles = data.roles === undefined ? [] : data.roles
+  const layers = SHAPE_LIBRARY[shape]?.layers.length ?? 0
+  if (!Array.isArray(roles) || (roles.length !== 0 && roles.length !== layers)) return fail('the layer roles do not match the shape')
+  return { shape, roles: roles.map((role) => choice(role, ROLES, 'layer role')) }
+}
+
 const leaf = (input: unknown): LeafState => {
   const data = record(input, 'a leaf')
   const border = record(data.border, 'a border')
@@ -68,6 +79,7 @@ const leaf = (input: unknown): LeafState => {
     custom: css(data.custom, 'the pasted fill'),
     size: css(data.size, 'the fill size'),
     hover: css(data.hover, 'the hover fill'),
+    ...shapeOf(data),
   }
 }
 

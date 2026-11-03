@@ -1,6 +1,6 @@
 import { declarations } from '../css'
+import { fillDeclarations, type Shaped } from './paint'
 import { PAINT_TYPES, type HoverMotion, type Paint, type PaintType } from '../types'
-import { fillDeclarations } from './paint'
 import { leavesOf, withinAll } from './selectors'
 
 const FAST_DURATIONS = `0s, ${Array(6).fill('var(--charpente-hover-fast, 600ms)').join(', ')}`
@@ -12,9 +12,9 @@ const motionDeclarations = (motion: HoverMotion): string[] => {
   return []
 }
 
-const hoverBody = (type: PaintType, paint: Paint | undefined, motion: HoverMotion): string =>
+const hoverBody = (type: PaintType, paint: Paint | undefined, motion: HoverMotion, shaped?: Shaped): string =>
   [
-    ...(paint?.fill ? fillDeclarations(type, paint) : []),
+    ...(paint?.fill ? fillDeclarations(type, paint, shaped) : []),
     declarations(paint?.style),
     ...motionDeclarations(motion),
   ]
@@ -26,12 +26,13 @@ export const hoverCss = (
   hover: Partial<Record<PaintType, Paint>>,
   motion: HoverMotion,
   captured: boolean,
+  overlays: Partial<Record<PaintType, Shaped>> = {},
 ): string => {
   const types = PAINT_TYPES.filter((type) => hover[type] || motion !== 'none')
   if (types.length === 0) return ''
   const resting = withinAll(scopes, types.flatMap((type) => leavesOf(type, captured)))
   const rules = types.map(
-    (type) => `${withinAll(scopes, leavesOf(type, captured, true))} {\n  ${hoverBody(type, hover[type], motion)};\n}`,
+    (type) => `${withinAll(scopes, leavesOf(type, captured, true))} {\n  ${hoverBody(type, hover[type], motion, overlays[type])};\n}`,
   )
   return [
     `@media (hover: hover) {\n${resting} {\n  pointer-events: auto;\n}\n${rules.join('\n')}\n}`,

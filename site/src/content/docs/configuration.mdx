@@ -57,6 +57,7 @@ export default defineCharpente({
 | `initial` | boolean or number | off | Vite only. Serves the page already marked as loading, so no content flashes before your scripts run. The page is released when your code takes over, or that many ms after the load event (`true` means 3000). Needs inline scripts to be allowed by your CSP. |
 | `scope` | `'element'` or `'page'` | `'element'` | Where the wrappers and `setLoading` put the loading state by default: on their own element, or on the whole page (`<html>`). Local setting with the `scope` prop. |
 | `themesDir` | string | `'themes'` | Folder scanned for themes: each subfolder with a `theme.ts` file is declared under its folder name. |
+| `shapes` | `Record<string, ShapeDef>` | `{}` | Layered shapes to register by name for `paint.shape`, see [layered shapes](/charpente/layered-shapes/). |
 | `colorScheme` | `ColorScheme` | system media query | Dark mode and per-mode tokens. |
 | `themes` | `Record<string, ThemeDef>` | `{}` | Adds themes, or replaces a built-in theme of the same name. |
 | `motions` | `Record<string, MotionDef>` | `{}` | Adds motions, or replaces a built-in motion. |

@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 
 const SOURCE = resolve(import.meta.dirname, '..', 'src')
 const TESTS = resolve(import.meta.dirname)
-const TECHNICAL = ['types', 'css', 'discovery', 'capturing']
+const TECHNICAL = ['types', 'css', 'discovery', 'capturing', 'shapes']
 const FUNCTIONAL = ['themes', 'motions', 'schedule', 'loading', 'stylesheet', 'bones']
 const LAYERS = [...TECHNICAL, ...FUNCTIONAL]
 const MAX_FILE_LINES = 150

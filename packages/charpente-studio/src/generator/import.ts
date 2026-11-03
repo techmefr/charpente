@@ -1,6 +1,7 @@
 import type { Declarations, HoverPaint, Paint, PaintType, ThemeDef } from 'charpente/lite'
 import { BORDER_KEYS, parseBorder } from './borders'
 import { FILLS, findFill } from './presets'
+import { shapeState } from './shapes'
 import { parseLiteral, type Literal } from './literal'
 import { COLOR_KEYS, LEAVES, normalizeState, startState, tokenOf, type GeneratorState, type LeafState } from './state'
 import { sanitizeState } from './validate'
@@ -47,6 +48,11 @@ const applyPaint = (leaf: LeafState, paint: Paint, ignored: string[]): void => {
   if (paint.fill) {
     const preset = FILLS.find((item) => item.fill === paint.fill && item.size === (paint.size ?? ''))
     Object.assign(leaf, preset ? { fill: preset.id } : { fill: 'custom', custom: paint.fill, size: paint.size ?? '' })
+  }
+  if (paint.shape) {
+    const found = shapeState(paint.shape)
+    if (found) Object.assign(leaf, found)
+    else ignored.push('shape')
   }
   if (style.borderRadius) leaf.radius = style.borderRadius
   if (style.clipPath) leaf.clip = style.clipPath

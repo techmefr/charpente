@@ -29,6 +29,18 @@ export const GENERATOR_CSS = `
 .gen-tile[aria-pressed=true] { border-color: var(--gen-accent); box-shadow: 0 0 0 2px var(--gen-accent) }
 .gen-swatch { width: 2.6rem; height: 1.7rem; background: var(--gen-accent) }
 .gen-swatch-fill { background-color: transparent; border: 1px solid var(--gen-line); border-radius: 0.25rem }
+.gen-shape-swatch { width: 2.6rem; height: 2.2rem }
+.gen-role-body { fill: var(--gen-muted) }
+.gen-role-accent { fill: var(--gen-accent) }
+.gen-role-accent2 { fill: #facc15 }
+.gen-role-detail { fill: #000; fill-opacity: 0.25 }
+.gen-role-shine { fill: #fff; fill-opacity: 0.6 }
+.gen-label { font-size: 0.85rem; font-weight: 600 }
+.gen-layers { display: grid; gap: 0.35rem; margin: 0; padding: 0; list-style: none; max-height: 14rem; overflow: auto }
+.gen-layer { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; align-items: center; font-size: 0.82rem }
+.gen-layer select { width: auto }
+.gen-shape-preview { display: grid; justify-items: center; padding: 0.5rem; border: 1px dashed var(--gen-line); border-radius: 0.5rem }
+.gen-shape-preview > * { display: block; width: 9rem; height: 9rem; border: 0; padding: 0; margin: 0 }
 .gen-inline { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; font-size: 0.8rem; color: var(--gen-muted) }
 .gen-link { font: inherit; padding: 0; color: var(--gen-accent-text); background: none; border: 0; text-decoration: underline; cursor: pointer }
 .gen-problem { color: var(--gen-accent-text); min-height: 0 }

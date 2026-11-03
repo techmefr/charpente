@@ -47,6 +47,10 @@
       "types": "./dist/themes.d.ts",
       "import": "./dist/themes.js"
     },
+    "./shapes": {
+      "types": "./dist/shapes.d.ts",
+      "import": "./dist/shapes.js"
+    },
     "./dom": {
       "types": "./dist/dom.d.ts",
       "import": "./dist/dom.js"

@@ -47,6 +47,17 @@ describe('generator saves', () => {
     expect((await post({ state, overwrite: true })).status).toBe(200)
   })
 
+  it('saves a layered shape and refuses an unknown one', async () => {
+    const state = { ...emptyState(), name: 'gifted' }
+    state.leaves.block.shape = 'gift'
+    expect((await post({ state })).status).toBe(200)
+    expect(readFileSync(join(root, 'themes', 'gifted', 'theme.ts'), 'utf8')).toContain("shape: 'gift'")
+    const unknown = { ...emptyState(), name: 'unknown-shape' }
+    unknown.leaves.block.shape = '../../etc'
+    expect((await post({ state: unknown })).status).toBe(400)
+    expect(existsSync(join(root, 'themes', 'unknown-shape'))).toBe(false)
+  })
+
   it('refuses a state that could break out of the css or the folder', async () => {
     const injected = { ...emptyState(), name: 'bad' }
     injected.leaves.text.custom = 'red} body{display:none'

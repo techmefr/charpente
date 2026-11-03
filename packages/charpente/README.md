@@ -133,6 +133,20 @@ Celebration and season themes (`christmas`, `halloween`, `new-year`, `winter`, `
 
 A theme can define `dark: { ... }` for its dark-mode tokens, and `colorScheme.light` (for example `'[data-theme="light"]'`) forces light inside a subtree.
 
+## Layered shapes
+
+A leaf can take the form of an SVG whose layers have roles: `body` layers show the paint of the theme (dots, neon, aurora...), `accent` and `accent2` layers use the accent colors, `detail` and `shine` shade and highlight. It is rendered in pure CSS (a mask for the silhouette, an SVG background for the accents).
+
+```ts
+export default defineTheme({
+  tokens: { accent: '#ec4899', accent2: '#facc15' },
+  pattern: 'dots',
+  paint: { media: { shape: 'gift' }, block: { shape: 'gift' } },
+})
+```
+
+Built-in shapes: `gift`, `card`, `avatar`, `label`, `bubble`. Each one is tree-shakable from `charpente/shapes` (register it with `shapes: { gift }` in `charpente/lite`). `blob(seed)` and `organicCard(seed)` draw organic shapes from a seed, and `charpente shape file.svg` turns an SVG into a shape file. In faithful mode block leaves have no slot, and `nativeTheme` ignores shapes. See [layered shapes](https://techmefr.github.io/charpente/layered-shapes/).
+
 ## One theme in a browser or React Native
 
 Theme names such as `theme: cyberpunk` are resolved by the Vite plugin and the CLI, in Node. To run `compile` or `nativeTheme` in a browser or React Native without the 20 built-in themes, use `charpente/lite` and import only the themes you need from `charpente/themes`:
