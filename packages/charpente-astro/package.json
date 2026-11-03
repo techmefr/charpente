@@ -3,7 +3,14 @@
   "version": "0.1.0",
   "license": "MIT",
   "description": "Astro wrapper for charpente: a Charpente component that turns any slot into a pure CSS skeleton while loading.",
-  "keywords": ["astro", "astro-component", "skeleton", "skeleton-loader", "loading", "charpente"],
+  "keywords": [
+    "astro",
+    "astro-component",
+    "skeleton",
+    "skeleton-loader",
+    "loading",
+    "charpente"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/techmefr/charpente.git",
@@ -12,7 +19,10 @@
   "homepage": "https://techmefr.github.io/charpente/",
   "bugs": "https://github.com/techmefr/charpente/issues",
   "type": "module",
-  "files": ["Charpente.astro", "LICENSE"],
+  "files": [
+    "Charpente.astro",
+    "LICENSE"
+  ],
   "exports": {
     ".": "./Charpente.astro",
     "./Charpente.astro": "./Charpente.astro"
@@ -22,5 +32,9 @@
   },
   "peerDependencies": {
     "astro": ">=4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

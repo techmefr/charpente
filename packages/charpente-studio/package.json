@@ -31,5 +31,9 @@
   "devDependencies": {
     "@types/node": "^26.6.6",
     "charpente": "workspace:^"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
