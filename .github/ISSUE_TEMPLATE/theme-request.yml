@@ -1,0 +1,38 @@
+name: Theme idea
+description: Suggest a theme you would like to see in Charpente
+title: 'theme: '
+labels: [theme, enhancement]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      description: A short lowercase name, for example ocean or autumn
+    validations:
+      required: true
+  - type: textarea
+    id: mood
+    attributes:
+      label: Look and feel
+      description: Colors, pattern, motion, the mood it should give. Links to references are welcome.
+    validations:
+      required: true
+  - type: dropdown
+    id: use
+    attributes:
+      label: Where would you use it
+      options:
+        - A product or dashboard
+        - A content or marketing site
+        - A seasonal or event theme
+        - A mobile app
+        - Something else
+    validations:
+      required: false
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Contribution
+      options:
+        - label: I can build it myself and send a pull request
+        - label: I would like someone to pick it up
