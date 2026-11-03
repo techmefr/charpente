@@ -1,12 +1,14 @@
-import { nativeTheme, type ThemeDef } from 'charpente'
+import { nativeTheme, type ThemeDef } from 'charpente/lite'
 import { useMemo, useRef, type ReactNode } from 'react'
 import { Animated, View, useColorScheme, type ViewProps } from 'react-native'
 import { CharpenteContext } from './context'
 import { useDelayed, usePulse, useReducedMotion } from './pulse'
 
+const INLINE_THEME = 'inline'
+
 export interface CharpenteProps extends ViewProps {
   loading?: boolean
-  theme?: string
+  theme?: string | ThemeDef
   themes?: Record<string, ThemeDef>
   motion?: 'pulse' | 'none'
   dark?: boolean
@@ -28,7 +30,10 @@ export const Charpente = ({
   const reducedMotion = useReducedMotion()
   const shown = useDelayed(loading, delay)
   const opacity = useRef(new Animated.Value(1)).current
-  const palette = useMemo(() => nativeTheme(theme, themes), [theme, themes])
+  const palette = useMemo(
+    () => (typeof theme === 'string' ? nativeTheme(theme, themes) : nativeTheme(INLINE_THEME, { [INLINE_THEME]: theme })),
+    [theme, themes],
+  )
   const color = (dark ?? scheme === 'dark') ? palette.dark.base : palette.light.base
   usePulse(opacity, shown && motion === 'pulse' && !reducedMotion)
   const state = useMemo(() => ({ loading: shown, color, radius: palette.radius, opacity }), [shown, color, palette.radius, opacity])

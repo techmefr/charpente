@@ -133,6 +133,19 @@ Celebration and season themes (`christmas`, `halloween`, `new-year`, `winter`, `
 
 A theme can define `dark: { ... }` for its dark-mode tokens, and `colorScheme.light` (for example `'[data-theme="light"]'`) forces light inside a subtree.
 
+## One theme in a browser or React Native
+
+Theme names such as `theme: cyberpunk` are resolved by the Vite plugin and the CLI, in Node. To run `compile` or `nativeTheme` in a browser or React Native without the 28 built-in themes, use `charpente/lite` and import only the themes you need from `charpente/themes`:
+
+```ts
+import { compile } from charpente/lite
+import { cyberpunk } from charpente/themes
+
+compile({ themes: { cyberpunk }, defaultTheme: cyberpunk })
+```
+
+Minified with esbuild, `compile` goes from 24.2 kB (7.7 kB gzip) to 14.6 kB (5.7 kB gzip) with one theme, and `nativeTheme` from 14.8 kB to 4.2 kB.
+
 ## Glass themes
 
 `glass` is lightly tinted and translucent, `frost` uses stronger blur and a milkier finish,

@@ -20,6 +20,14 @@ Use the `Text`, `Image`, `Pressable` and `Block` of this package in the area. Wh
 
 Props of `Charpente`: `loading`, `theme`, `themes` (custom theme definitions), `motion` (`pulse` or `none`), `dark` (defaults to the system scheme), `delay` in ms. The container is marked busy for accessibility and ignores touches while loading. The pulse stops when the system asks for reduced motion.
 
+The `theme` prop takes a name (`solid`, or a theme passed in `themes`) or a theme object imported from `charpente/themes`, so only the themes you import are bundled:
+
+```tsx
+import { cyberpunk } from 'charpente/themes'
+
+<Charpente loading theme={cyberpunk}>...</Charpente>
+```
+
 Not supported on native: patterns, gradients, image borders and the shimmer band. Colors, radius and the pulse follow the theme.
 
 ## License

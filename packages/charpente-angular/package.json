@@ -18,6 +18,7 @@
   "homepage": "https://techmefr.github.io/charpente/",
   "bugs": "https://github.com/techmefr/charpente/issues",
   "type": "module",
+  "sideEffects": false,
   "files": [
     "src"
   ],

@@ -1,4 +1,4 @@
-import { compile } from 'charpente'
+import { compile } from 'charpente/lite'
 import { formToTheme, type ThemeForm } from '../theme-file'
 
 const field = <Element extends HTMLElement>(id: string): Element => document.getElementById(id) as Element

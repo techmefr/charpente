@@ -128,6 +128,19 @@ import virtual:charpente.css
 
 Remove the attributes when your content is ready.
 
+## Import one theme
+
+Built-in theme names in `theme:` work with the Vite plugin and the CLI (Node build, no JavaScript at runtime). In a browser or React Native, import the theme object instead:
+
+```ts
+import { compile } from charpente/lite
+import { cyberpunk } from charpente/themes
+
+compile({ themes: { cyberpunk }, defaultTheme: cyberpunk })
+```
+
+Only the themes you import end up in your bundle: `compile` goes from 24.2 kB to 14.6 kB minified with one theme, `nativeTheme` from 14.8 kB to 4.2 kB.
+
 ## Go further
 
 [Installation guide](https://techmefr.github.io/charpente/getting-started/) ·
