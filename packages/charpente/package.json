@@ -58,7 +58,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "jiti": "^2.4.2"
+    "jiti": "^2.7.0"
   },
   "peerDependencies": {
     "playwright": ">=1.40",

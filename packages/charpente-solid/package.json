@@ -39,8 +39,8 @@
   },
   "devDependencies": {
     "charpente": "workspace:^",
-    "solid-js": "^1.9.0",
-    "jsdom": "^27.0.0",
+    "jsdom": "^27.4.0",
+    "solid-js": "^1.9.18",
     "vitest": "^5.0.5"
   }
 }
