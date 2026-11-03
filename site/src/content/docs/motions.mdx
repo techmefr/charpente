@@ -11,11 +11,21 @@ The motion describes the movement, the timing describes the moment. Both are set
 
 <LoopPause />
 
-## The three motions
+## The motions
 
 Each one is a CSS animation applied to every leaf of the area. Without an attribute, the motion from `motion` in the configuration applies.
 
 <MotionDemos kind="motions" />
+
+## The glitch split
+
+`glitch` stays calm, then splits in short bursts: a cyan ghost and a magenta ghost separate to either side of the skeleton, like an RGB split, while the shapes jolt by a few pixels, then everything snaps back clean. The ghost colors are the `accent` and `accent2` tokens of the theme, with a cyan and magenta fallback.
+
+The split is a `drop-shadow` filter applied to the loading container (`data-charpente-loading`) and not to each leaf, so it also works with captured zones, whose masks would otherwise clip it. A custom motion can do the same with a `container` field, keyframes applied to the container next to the leaf keyframes. It is disabled under `prefers-reduced-motion`.
+
+## Speed
+
+Durations are tuned to be neither nervous nor sluggish: `shimmer` 1.8s, `sweep` 2.4s, `pulse` 1.6s, `glitch` 3.4s (one burst per cycle), all with `ease-in-out` except the stepped `glitch`. Every duration is multiplied by `--charpente-speed` (default `1`): `style="--charpente-speed: 0.5"` makes the motions twice as fast, `2` twice as slow. It can be set on `:root` or on one area.
 
 ## One sweep across the page
 
