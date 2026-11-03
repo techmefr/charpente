@@ -22,6 +22,7 @@ Set up the charpente config and CSS as described in the [main README](https://gi
 ```
 
 Props: `loading`, `theme`, `motion`, `delay`, `stagger`, `label`.
+With Suspense, `<CharpenteSuspense fallback={<Placeholder />} capture="team">` shows the skeleton while its children are pending and the zone once they resolved. It takes the same props as Charpente except loading.
 
 ## License
 
