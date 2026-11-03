@@ -30,6 +30,7 @@ export default defineConfig({
         { label: 'Seasonal calendar', slug: 'calendar' },
         { label: 'Faithful mode', slug: 'capture' },
         { label: 'Create a theme', slug: 'create-a-theme' },
+        { label: 'Generator', link: '/generator/' },
         { label: 'Playground', link: '/playground/' },
         { label: 'Accessibility', slug: 'accessibility' },
       ],

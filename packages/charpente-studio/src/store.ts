@@ -20,17 +20,20 @@ export const listThemes = (root: string, dir: string): string[] => {
     .sort()
 }
 
-export const saveTheme = (root: string, dir: string, form: ThemeForm, overwrite = false): string => {
-  const folder = resolve(themeBase(root, dir), form.name)
+export const writeTheme = (root: string, dir: string, name: string, source: string, overwrite = false): string => {
+  const folder = resolve(themeBase(root, dir), name)
   const file = resolve(folder, 'theme.ts')
   mkdirSync(folder, { recursive: true })
   try {
-    writeFileSync(file, themeSource(form), { flag: overwrite ? 'w' : 'wx' })
+    writeFileSync(file, source, { flag: overwrite ? 'w' : 'wx' })
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'EEXIST') {
-      throw new ThemeExistsError(`charpente-studio: the theme "${form.name}" already exists`)
+      throw new ThemeExistsError(`charpente-studio: the theme "${name}" already exists`)
     }
     throw error
   }
   return file
 }
+
+export const saveTheme = (root: string, dir: string, form: ThemeForm, overwrite = false): string =>
+  writeTheme(root, dir, form.name, themeSource(form), overwrite)

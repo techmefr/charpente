@@ -1,0 +1,49 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro"
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "Generator",
+    description: "Build a charpente theme by choosing shapes, borders, paint, motion and hover, then copy or download the theme.ts file.",
+    tableOfContents: false,
+  }}
+>
+  <p>
+    Pick a built-in theme or start empty, change the shape, border, paint, motion and hover of each kind of leaf,
+    and watch the preview react. The result is a <code>theme.ts</code> file: copy it or download it into your
+    <code>themes/&lt;name&gt;/</code> folder. Colors come from your own site by default.
+  </p>
+  <div class="not-content cp">
+    <div id="generator"><noscript>The generator needs JavaScript.</noscript></div>
+  </div>
+
+  <script>
+    import { mountGenerator, themesOf } from "charpente-studio/generator"
+
+    const host = document.getElementById("generator")
+    if (host) {
+      void mountGenerator(host, {
+        hash: true,
+        loadThemes: async () => themesOf(await import("charpente/themes")),
+      })
+    }
+  </script>
+</StarlightPage>
+
+<style is:global>
+  :root {
+    --sl-content-width: 84rem;
+  }
+
+  #generator {
+    --gen-bg: var(--sl-color-bg-nav);
+    --gen-field: var(--sl-color-bg);
+    --gen-fg: var(--sl-color-text);
+    --gen-line: var(--sl-color-hairline);
+    --gen-muted: var(--sl-color-gray-2);
+    --gen-accent: var(--sl-color-accent);
+    --gen-accent-fg: var(--sl-color-text-invert);
+    --gen-accent-text: var(--sl-color-text-accent);
+  }
+</style>
