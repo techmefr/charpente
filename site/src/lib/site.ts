@@ -39,5 +39,5 @@ export const CUSTOM_THEMES = [
 export const MOTIONS = [
   { name: 'shimmer', note: 'Glint sweeping across the shape' },
   { name: 'pulse', note: 'Opacity breathing, offset by position with stagger' },
-  { name: 'glitch', note: 'Small position jumps' },
+  { name: 'glitch', note: 'Brief bursts where the skeleton splits into a cyan and magenta ghost' },
 ]

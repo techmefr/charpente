@@ -4,12 +4,18 @@ import { LOADING, allLeaves, capturedLeaves } from './selectors'
 
 const MAX_COMBINED_MOTIONS = 6
 
-export const keyframesCss = (name: string, motion: MotionDef): string => {
-  const steps = Object.entries(motion.keyframes)
+const stepsCss = (keyframes: MotionDef['keyframes']): string =>
+  Object.entries(keyframes)
     .map(([step, decls]) => `${step} { ${declarations(decls)} }`)
     .join(' ')
-  return `@keyframes charpente-${name} { ${steps} }`
+
+export const keyframesCss = (name: string, motion: MotionDef): string => {
+  const own = `@keyframes charpente-${name} { ${stepsCss(motion.keyframes)} }`
+  if (!motion.container) return own
+  return `${own}\n@keyframes charpente-${name}-container { ${stepsCss(motion.container)} }`
 }
+
+const speed = (duration: string): string => `calc(${duration} * var(--charpente-speed, 1))`
 
 const subsets = (names: string[]): string[][] => {
   if (names.length > MAX_COMBINED_MOTIONS) return names.map((name) => [name])
@@ -66,7 +72,7 @@ export const motionCss = (
       reveal,
       ...names.map((name) => {
         const motion = motions[name] as MotionDef
-        return `charpente-${name} ${motion.duration} ${motion.easing ?? 'ease-in-out'} ${staggerDelay} ${motion.iterations ?? 'infinite'}`
+        return `charpente-${name} ${speed(motion.duration)} ${motion.easing ?? 'ease-in-out'} ${staggerDelay} ${motion.iterations ?? 'infinite'}`
       }),
     ]
     const layer = names.map((name) => motions[name]?.layer).find(Boolean)
@@ -77,12 +83,25 @@ export const motionCss = (
     return `${scopes.map(leaves).join(',\n')} {\n  ${body.join(';\n  ')};\n}`
   }
 
+  const containerRule = (scopes: string[], names: string[]): string[] => {
+    const own = names.filter((name) => motions[name]?.container)
+    if (own.length === 0) return []
+    const animations = own.map((name) => {
+      const motion = motions[name] as MotionDef
+      return `charpente-${name}-container ${speed(motion.duration)} ${motion.easing ?? 'ease-in-out'} ${delayVar} ${motion.iterations ?? 'infinite'}`
+    })
+    return [`${scopes.join(',\n')} {\n  animation: ${animations.join(', ')};\n}`]
+  }
+
   warnings.push(...conflictWarnings(motions, defaultNames))
   const allNames = Object.keys(motions).sort()
   const rules = [
     rule([`${LOADING}:not([data-charpente-motion])`], defaultNames),
     rule([`${LOADING}[data-charpente-motion="none"]`], []),
     ...subsets(allNames).map((names) => rule(motionScopes(names, allNames), names)),
+    ...containerRule([`${LOADING}:not([data-charpente-motion])`], defaultNames),
+    ...subsets(allNames).flatMap((names) => containerRule(motionScopes(names, allNames), names)),
+    `@media (prefers-reduced-motion: reduce) {\n  ${LOADING} {\n    animation: none !important;\n  }\n}`,
   ]
   return rules.join('\n')
 }

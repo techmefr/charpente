@@ -1,9 +1,12 @@
 import type { MotionDef } from '../types'
 
+const split = (x: number, y: number): string =>
+  `drop-shadow(${x}px ${y}px 0 var(--charpente-${x < 0 ? 'accent2' : 'accent'}, ${x < 0 ? '#22d3ee' : '#ec4899'}))`
+
 export const builtinMotions: Record<string, MotionDef> = {
   shimmer: {
-    duration: '1.6s',
-    easing: 'linear',
+    duration: '1.8s',
+    easing: 'ease-in-out',
     layer:
       'linear-gradient(100deg, transparent 20%, var(--charpente-shine) 50%, transparent 80%)',
     keyframes: {
@@ -12,8 +15,8 @@ export const builtinMotions: Record<string, MotionDef> = {
     },
   },
   sweep: {
-    duration: '2.2s',
-    easing: 'linear',
+    duration: '2.4s',
+    easing: 'ease-in-out',
     attachment: 'fixed',
     layer:
       'linear-gradient(100deg, transparent 20%, var(--charpente-shine) 50%, transparent 80%)',
@@ -23,20 +26,29 @@ export const builtinMotions: Record<string, MotionDef> = {
     },
   },
   pulse: {
-    duration: '1.4s',
+    duration: '1.6s',
+    easing: 'ease-in-out',
     keyframes: {
       '0%, 100%': { opacity: '1' },
       '50%': { opacity: '0.5' },
     },
   },
   glitch: {
-    duration: '2.6s',
+    duration: '3.4s',
     easing: 'steps(1, end)',
     keyframes: {
-      '0%, 90%, 100%': { transform: 'none' },
-      '92%': { transform: 'translate(-2px, 1px)' },
-      '94%': { transform: 'translate(2px, -1px)' },
-      '96%': { transform: 'translate(-1px, 0)' },
+      '0%, 86%, 100%': { transform: 'none' },
+      '87%': { transform: 'translate(-3px, 1px)' },
+      '89%': { transform: 'translate(3px, -1px)' },
+      '91%': { transform: 'translate(-2px, 0)' },
+      '93%': { transform: 'translate(1px, 0)' },
+    },
+    container: {
+      '0%, 86%, 94%, 100%': { filter: 'none' },
+      '87%': { filter: `${split(-6, 0)} ${split(6, 0)}` },
+      '89%': { filter: `${split(5, -1)} ${split(-5, 1)}` },
+      '91%': { filter: `${split(-3, 0)} ${split(3, 0)}` },
+      '93%': { filter: `${split(2, 0)} ${split(-2, 0)}` },
     },
   },
 }

@@ -62,6 +62,7 @@ export interface MotionDef {
   layer?: string
   attachment?: string
   keyframes: Record<string, Declarations>
+  container?: Record<string, Declarations>
 }
 
 export interface Timing {
