@@ -73,6 +73,6 @@
     }
   },
   "devDependencies": {
-    "jsdom": "^27.4.0"
+    "jsdom": "^30.1.3"
   }
 }
