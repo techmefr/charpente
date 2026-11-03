@@ -1,0 +1,26 @@
+---
+import Sample from './Sample.astro'
+
+interface Props {
+  label: string
+  theme: string
+  motion?: string
+}
+
+const { label, theme, motion } = Astro.props
+---
+
+<div class="not-content cp stage hover-demo">
+  <div class="stage__bar">
+    <span class="stage__label">{label}</span>
+    <span class="stage__label">Hover a shape</span>
+  </div>
+  <Sample theme={theme} motion={motion} inert={false} />
+</div>
+
+<style is:global>
+  .hover-demo .stage__bar {
+    display: flex;
+    justify-content: space-between;
+  }
+</style>

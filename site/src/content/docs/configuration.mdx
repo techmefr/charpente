@@ -3,6 +3,8 @@ title: Configuration
 description: 'Full reference for charpente.config.ts: defaultTheme, schedule, timeZone, motion, timing, colorScheme, themes, motions, tokens and paints.'
 ---
 
+import HoverDemo from '../../components/HoverDemo.astro'
+
 Everything is set in `charpente.config.ts`. `defineCharpente` only types the object.
 
 ```ts title="charpente.config.ts"
@@ -85,7 +87,7 @@ colorScheme: {
 
 ## Themes
 
-A theme has three fields, all optional: `extends`, `tokens` and `paint`. With `extends`, the theme inherits the parent's tokens and paints: tokens are merged, paints are merged type by type, and within `style` key by key. `fill` and `size` replace the parent's.
+A theme has these optional fields: `extends`, `tokens`, `paint`, `hover` and `hoverMotion`. With `extends`, the theme inherits the parent's tokens, paints and hover: tokens are merged, paints are merged type by type, and within `style` key by key. `fill` and `size` replace the parent's.
 
 ### Import a single theme
 
@@ -157,6 +159,41 @@ themes: {
 }
 ```
 
+### Hover
+
+`hover` changes the look of a skeleton shape while the pointer is over it. It is set per leaf type, like `paint`, and only the types you name change. The fields are those of a paint (`fill`, `size`, `style`) plus `radius` and `border`, which take the same values as in the short format.
+
+| Key | Type | Role |
+| --- | --- | --- |
+| `hover` | string or per type | A token name (`'strong'`, `'accent'`...) or a color paints every type with it. An object gives `fill`, `size`, `style`, `radius` and `border` per type. |
+| `hoverMotion` | `'pause'`, `'faster'` or `'none'` | What the animation does under the pointer: stop, run faster (`--charpente-hover-fast`, default `600ms`), or nothing. Default `none`. |
+
+```ts title="Custom hover"
+themes: {
+  survol: { extends: 'solid', hover: 'accent' },
+  'survol-fin': {
+    extends: 'brume',
+    hover: {
+      text: { fill: 'linear-gradient(var(--charpente-accent), var(--charpente-accent))', radius: '999px' },
+      media: { border: '3px solid var(--charpente-accent)' },
+      control: { style: { opacity: '0.6' } },
+      block: { fill: 'linear-gradient(var(--charpente-accent2), var(--charpente-accent2))' },
+    },
+    hoverMotion: 'pause',
+  },
+}
+```
+
+<HoverDemo label="Theme survol" theme="survol" />
+
+Details:
+
+- The rules apply to the automatic mode and to the faithful mode: the captured zones (`data-charpente-capture`) react as a whole, and their text and media layers take the hover paint.
+- They sit inside `@media (hover: hover)`, so touch screens never see them. The hovered shapes receive pointer events, and an `inert` area never receives any: leave `inert` off the area (keep `aria-busy`) when you want hover, knowing that a loading link or button under the pointer can then be clicked. The framework wrappers always set `inert`, so hover is for hand-written markup for now.
+- The change is eased over `--charpente-hover-ms` (default `150ms`). The easing is dropped when the user prefers reduced motion.
+- With `extends`, `hover` is merged type by type and key by key like `paint`, and `hoverMotion` is inherited.
+- React Native has no hover: `nativeTheme` ignores both fields.
+
 ## Motions
 
 | Key | Default | Role |
@@ -201,3 +238,5 @@ It warns, without failing, when two default motions animate the same property: t
 | `--charpente-stagger` | Local offset, with unit. |
 | `--charpente-base`, `-strong`, `-shine`, `-accent`, `-accent2` | Tokens, overridable on any element of the area. |
 | `--charpente-radius` | Radius of `solid`. |
+| `--charpente-hover-ms` | Duration of the hover transition, with unit (default `150ms`). |
+| `--charpente-hover-fast` | Cycle duration with `hoverMotion: 'faster'` (default `600ms`). |

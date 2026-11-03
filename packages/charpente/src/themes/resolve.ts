@@ -1,10 +1,13 @@
-import { PAINT_TYPES, type Paint, type PaintType, type ThemeDef, type Tokens } from '../types'
+import { PAINT_TYPES, type HoverMotion, type Paint, type PaintType, type ThemeDef, type Tokens } from '../types'
+import { expandHover } from './hover'
 import { expandTheme } from './short-format'
 
 export interface ResolvedTheme {
   tokens: Tokens
   dark: Tokens
   paint: Partial<Record<PaintType, Paint>>
+  hover: Partial<Record<PaintType, Paint>>
+  hoverMotion: HoverMotion
 }
 
 const mergePaint = (
@@ -35,10 +38,12 @@ export const resolveTheme = (
   if (chain.includes(name)) throw new Error(`charpente: theme "${name}" extends itself`)
   const parent = def.extends
     ? resolveTheme(def.extends, themes, [...chain, name])
-    : { tokens: {}, dark: {}, paint: {} }
+    : { tokens: {}, dark: {}, paint: {}, hover: {}, hoverMotion: 'none' as HoverMotion }
   return {
     tokens: { ...parent.tokens, ...def.tokens },
     dark: { ...parent.dark, ...def.dark },
     paint: mergePaint(parent.paint, def.paint),
+    hover: mergePaint(parent.hover, expandHover(def.hover)),
+    hoverMotion: def.hoverMotion ?? parent.hoverMotion,
   }
 }
