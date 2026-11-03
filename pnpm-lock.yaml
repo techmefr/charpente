@@ -201,11 +201,11 @@ importers:
         specifier: ^30.1.3
         version: 30.1.3
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8(preact-render-to-string@6.8.2)
+        specifier: ^11.1.1
+        version: 11.1.1(preact-render-to-string@6.8.2)
       preact-render-to-string:
         specifier: ^6.8.2
-        version: 6.8.2(preact@10.29.8)
+        version: 6.8.2(preact@11.1.1)
 
   packages/charpente-react:
     dependencies:
@@ -5558,6 +5558,9 @@ packages:
   parse5@7.3.0:
     resolution: {integrity: sha512-IInvU7fabl34qmi9gY8XOVxhYyMyuH2xUNpb2q8/Y+7552KlejkRvqvD19nMoUW/uQGGbqNpA6Tufu5FL5BZgw==}
 
+  parse5@8.0.1:
+    resolution: {integrity: sha512-z1e/HMG90obSGeidlli3hj7cbocou0/wa5HacvI3ASx34PecNjNQeaHNo5WIZpWofN9kgkqV1q5YvXe3F0FoPw==}
+
   parse5@8.1.0:
     resolution: {integrity: sha512-sq3qBFpee5jeocbFbO48VHlGr8sT7mbXS0vxlKN6sottBtJzrOG3998sr0llSZcQAGgfpdmEYAIZE0P9z0dE8w==}
 
@@ -5695,10 +5698,10 @@ packages:
     peerDependencies:
       preact: '>=10 || >= 11.0.0-0'
 
-  preact@10.29.8:
-    resolution: {integrity: sha512-ej2aVZ+vZ8WO7tvlQWRM9N63A0KzF9q4mWJfDUHgYaIofWY9hu74QdnQrjoPMmZi2/nZ5gN0bJCQF49xQqx09Q==}
+  preact@11.1.1:
+    resolution: {integrity: sha512-vpFVfai437pbuLri7XVeslCPfrEZX6Z1S2gV+MOFrA/kji+NKUXvH7y01EnVjA1guLigfkVp77Sqipd4SIllCg==}
     peerDependencies:
-      preact-render-to-string: '>=5'
+      preact-render-to-string: '>=6.7.0'
     peerDependenciesMeta:
       preact-render-to-string:
         optional: true
@@ -7220,7 +7223,7 @@ snapshots:
   '@angular-devkit/core@22.2.5(chokidar@5.0.0)':
     dependencies:
       ajv: 8.20.0
-      ajv-formats: 3.0.1
+      ajv-formats: 3.0.1(ajv@8.20.0)
       jsonc-parser: 3.3.1
       picomatch: 4.0.7
       rxjs: 7.8.2
@@ -9957,8 +9960,8 @@ snapshots:
 
   agent-base@9.0.0: {}
 
-  ajv-formats@3.0.1:
-    dependencies:
+  ajv-formats@3.0.1(ajv@8.20.0):
+    optionalDependencies:
       ajv: 8.20.0
 
   ajv@8.20.0:
@@ -11554,7 +11557,7 @@ snapshots:
       html-encoding-sniffer: 7.0.0
       is-potential-custom-element-name: 1.0.1
       lru-cache: 11.5.3
-      parse5: 8.1.0
+      parse5: 8.0.1
       saxes: 6.0.0
       tough-cookie: 6.0.2
       undici: 8.12.3
@@ -12860,6 +12863,10 @@ snapshots:
     dependencies:
       entities: 6.0.1
 
+  parse5@8.0.1:
+    dependencies:
+      entities: 8.1.0
+
   parse5@8.1.0:
     dependencies:
       entities: 9.0.0
@@ -12961,13 +12968,13 @@ snapshots:
 
   powershell-utils@0.2.1: {}
 
-  preact-render-to-string@6.8.2(preact@10.29.8):
+  preact-render-to-string@6.8.2(preact@11.1.1):
     dependencies:
-      preact: 10.29.8(preact-render-to-string@6.8.2)
+      preact: 11.1.1(preact-render-to-string@6.8.2)
 
-  preact@10.29.8(preact-render-to-string@6.8.2):
+  preact@11.1.1(preact-render-to-string@6.8.2):
     optionalDependencies:
-      preact-render-to-string: 6.8.2(preact@10.29.8)
+      preact-render-to-string: 6.8.2(preact@11.1.1)
 
   pretty-bytes@7.2.0: {}
 
