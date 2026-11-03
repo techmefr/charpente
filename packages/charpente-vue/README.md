@@ -23,10 +23,10 @@ Set up the charpente config and CSS as described in the [main README](https://gi
 
 Props: `loading`, `theme`, `motion`, `delay`, `stagger`, `label`.
 
-## License
-
-MIT
-
 ## Suspense
 
 `<CharpenteSuspense capture="team">` wraps Vue Suspense: the `fallback` slot is shown as a skeleton while the default slot is pending, then the zone appears. It takes the same props as Charpente except `loading`. Vue marks Suspense as experimental.
+
+## License
+
+MIT

@@ -48,4 +48,41 @@ describe("CharpenteSuspense", () => {
     expect(loaded.getAttribute("data-charpente-capture")).toBe("team")
     expect(loaded.textContent).toBe("ready")
   })
+
+  it("keeps one zone mounted and plays the reveal when the content resolves", async () => {
+    let release = (): void => undefined
+    const Late = lazy(() => new Promise<{ default: () => ReactNode }>((done) => {
+      release = () => done({ default: () => <p>ready</p> })
+    }))
+
+    await act(async () => {
+      root = createRoot(host)
+      root.render(
+        <CharpenteSuspense capture="team" fallback={<p>placeholder</p>}>
+          <Late />
+        </CharpenteSuspense>,
+      )
+    })
+    const zone = host.firstElementChild as HTMLElement
+    expect(zone.hasAttribute("data-charpente-ready")).toBe(false)
+
+    await act(async () => release())
+    expect(host.firstElementChild).toBe(zone)
+    expect(zone.hasAttribute("data-charpente-ready")).toBe(true)
+  })
+
+  it("announces the label on the fallback", async () => {
+    const Never = lazy(() => new Promise<{ default: () => ReactNode }>(() => undefined))
+
+    await act(async () => {
+      root = createRoot(host)
+      root.render(
+        <CharpenteSuspense label="Loading team" fallback={<p>placeholder</p>}>
+          <Never />
+        </CharpenteSuspense>,
+      )
+    })
+    const status = host.querySelector("span[role=status]")
+    expect(status?.textContent).toBe("Loading team")
+  })
 })

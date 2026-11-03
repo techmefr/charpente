@@ -109,8 +109,11 @@ export const Charpente = defineComponent({
         slots.default?.(),
       )
 
-      if (!props.loading || !props.label) return root
-      return h(Fragment, [root, h('span', { role: 'status', style: SCREEN_READER_ONLY }, props.label)])
+      if (!props.label) return root
+      return h(Fragment, [
+        root,
+        props.loading ? h('span', { role: 'status', style: SCREEN_READER_ONLY }, props.label) : null,
+      ])
     }
   },
 })
