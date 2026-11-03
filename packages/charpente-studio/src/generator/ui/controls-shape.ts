@@ -18,18 +18,26 @@ export const bindText = (store: Store, input: HTMLInputElement | HTMLTextAreaEle
   }
 }
 
+const SWATCH: Record<string, { width: string; height: string }> = {
+  circle: { width: '1.7rem', height: '1.7rem' },
+  egg: { width: '1.5rem', height: '1.8rem' },
+  hexagon: { width: '2.2rem', height: '1.9rem' },
+}
+
 const isShape = (leaf: LeafState, preset: (typeof SHAPES)[number]): boolean =>
   leaf.radius === preset.radius && (leaf.clip === preset.clip || (preset.clip === 'none' && leaf.clip === ''))
 
 const shapeButton = (store: Store, preset: (typeof SHAPES)[number]): { button: HTMLButtonElement; refresh: () => void } => {
   const swatch = h('span', { class: 'gen-swatch', 'aria-hidden': 'true' })
   swatch.style.borderRadius = preset.radius
+  const size = SWATCH[preset.id]
+  if (size) Object.assign(swatch.style, size)
   if (preset.clip !== 'none') swatch.style.clipPath = preset.clip
   const button = h('button', { type: 'button', class: 'gen-tile', 'aria-pressed': 'false' }, swatch, h('span', {}, preset.label))
   button.addEventListener('click', () =>
-    store.edit((leaf) => {
+    store.edit((leaf, type) => {
       leaf.radius = preset.radius
-      leaf.clip = preset.clip
+      leaf.clip = preset.clip === 'none' && !store.parentClip(type) ? '' : preset.clip
     }),
   )
   return { button, refresh: () => button.setAttribute('aria-pressed', String(isShape(store.leaf(), preset))) }

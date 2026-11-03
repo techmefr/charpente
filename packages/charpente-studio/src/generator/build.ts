@@ -67,7 +67,7 @@ const shortTheme = (leaf: LeafState): ThemeDef => {
 export const stateToTheme = (input: GeneratorState): ThemeDef => {
   const state = normalizeState(input)
   const first = state.leaves.text
-  const uniform = !state.extends && LEAVES.every((type) => sameLeaf(state.leaves[type], first))
+  const uniform = LEAVES.every((type) => sameLeaf(state.leaves[type], first)) && (!state.extends || first.radius !== '')
   const paint = Object.fromEntries(LEAVES.map((type) => [type, paintOf(state.leaves[type])]).filter(([, value]) => Object.keys(value as Paint).length > 0))
   const hover = hoverOf(state)
   return {

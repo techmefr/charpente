@@ -1,4 +1,4 @@
-import type { ThemeDef } from 'charpente/lite'
+import type { PaintType, ThemeDef } from 'charpente/lite'
 import { sourceToState } from '../import'
 import { decodeState, encodeState } from '../share'
 import { emptyState, startState, type GeneratorState } from '../state'
@@ -64,6 +64,12 @@ export const mountGenerator = async (host: HTMLElement, options: GeneratorOption
   }
 
   const store = createStore(emptyState(), render)
+  const clipOf = (name: string, type: PaintType): boolean => {
+    const def = themes[name]
+    if (!def) return false
+    return Boolean(def.paint?.[type]?.style?.clipPath) || (def.extends ? clipOf(def.extends, type) : false)
+  }
+  store.parentClip = (type) => clipOf(store.state.extends, type)
   const adopt = async (state: GeneratorState): Promise<void> => {
     await ensure(state.extends)
     store.replace(state.extends && !themes[state.extends] ? { ...state, extends: '' } : state)

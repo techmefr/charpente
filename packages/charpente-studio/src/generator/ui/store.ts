@@ -1,3 +1,4 @@
+import type { PaintType } from 'charpente/lite'
 import { LEAVES, type GeneratorState, type LeafState } from '../state'
 
 export type Target = 'all' | (typeof LEAVES)[number]
@@ -6,7 +7,8 @@ export interface Store {
   state: GeneratorState
   target: Target
   leaf: () => LeafState
-  edit: (change: (leaf: LeafState) => void) => void
+  edit: (change: (leaf: LeafState, type: PaintType) => void) => void
+  parentClip: (type: PaintType) => boolean
   change: (change: (state: GeneratorState) => void) => void
   replace: (state: GeneratorState) => void
   refresh: () => void
@@ -23,10 +25,11 @@ export const createStore = (initial: GeneratorState, onChange: () => void): Stor
   const store: Store = {
     state: initial,
     target: 'all',
+    parentClip: () => false,
     leaf: () => store.state.leaves[store.target === 'all' ? 'text' : store.target],
     edit: (change) => {
       const targets = store.target === 'all' ? LEAVES : [store.target]
-      for (const type of targets) change(store.state.leaves[type])
+      for (const type of targets) change(store.state.leaves[type], type)
       store.change(() => undefined)
     },
     change: (change) => {
