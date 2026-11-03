@@ -3,8 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare": "svelte-kit sync",
     "dev": "vite dev --port 5205 --strictPort --host",
-    "build": "vite build",
+    "build": "svelte-kit sync && vite build",
     "preview": "vite preview --port 5205 --strictPort --host"
   },
   "dependencies": {
