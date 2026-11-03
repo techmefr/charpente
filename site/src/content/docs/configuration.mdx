@@ -87,7 +87,7 @@ colorScheme: {
 
 ## Themes
 
-A theme has these optional fields: `extends`, `tokens`, `paint`, `hover` and `hoverMotion`. With `extends`, the theme inherits the parent's tokens, paints and hover: tokens are merged, paints are merged type by type, and within `style` key by key. `fill` and `size` replace the parent's.
+A theme has these optional fields: `extends`, `tokens`, `paint`, `hover`, `hoverMotion` and `motion` (the name of the motion it runs by default). With `extends`, the theme inherits the parent's tokens, paints and hover: tokens are merged, paints are merged type by type, and within `style` key by key. `fill` and `size` replace the parent's.
 
 ### Import a single theme
 
@@ -104,7 +104,7 @@ A name that is not imported throws an error that points to `charpente/themes`. M
 
 | Bundle | Size | Gzip |
 | --- | --- | --- |
-| `compile` from `charpente` (20 themes) | 24.2 kB | 7.7 kB |
+| `compile` from `charpente` (17 themes) | 24.2 kB | 7.7 kB |
 | `compile` from `charpente/lite` with one theme | 14.6 kB | 5.7 kB |
 | `nativeTheme` from `charpente` | 14.8 kB | 4.3 kB |
 | `nativeTheme` from `charpente/lite` | 4.2 kB | 1.8 kB |
@@ -139,6 +139,8 @@ A "leaf" is an element that is painted as a single piece. `paint` assigns a pain
 | --- | --- | --- |
 | `fill` | string | Comma-separated background layers (`background-image`). Default: a flat `var(--charpente-base)` fill. |
 | `size` | string | Size of each layer, in the same order (`background-size`). `auto` for an unspecified layer. |
+| `position` | string | Position of each layer (`background-position`), `0 0` by default. A layer can use `calc(var(--charpente-flow) * 96px)` to move with an ambient motion. |
+| `repeat` | string | Repeat of each layer (`background-repeat`), `repeat` by default. `no-repeat` pins a layer such as a moon in a corner. |
 | `style` | `Record<string, string>` | Added CSS declarations: `borderRadius`, `clipPath`, `outline`, or an `--x` variable. |
 
 ```ts title="Custom paints"

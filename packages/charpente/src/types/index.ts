@@ -13,6 +13,8 @@ export type Tokens = Partial<Record<TokenName, string>>
 export interface Paint {
   fill?: string
   size?: string
+  position?: string
+  repeat?: string
   style?: Declarations
 }
 
@@ -53,6 +55,7 @@ export interface ThemeDef {
   paint?: Partial<Record<PaintType, Paint>>
   hover?: HoverDef
   hoverMotion?: HoverMotion
+  motion?: string | string[]
 }
 
 export interface MotionDef {
@@ -60,6 +63,7 @@ export interface MotionDef {
   easing?: string
   iterations?: string
   layer?: string
+  ambient?: boolean
   attachment?: string
   keyframes: Record<string, Declarations>
   container?: Record<string, Declarations>

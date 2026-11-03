@@ -8,6 +8,7 @@ export interface ResolvedTheme {
   paint: Partial<Record<PaintType, Paint>>
   hover: Partial<Record<PaintType, Paint>>
   hoverMotion: HoverMotion
+  motion?: string[]
 }
 
 const mergePaint = (
@@ -27,6 +28,9 @@ const mergePaint = (
   return merged
 }
 
+const motionNames = (motion: ThemeDef['motion']): string[] | undefined =>
+  motion === undefined ? undefined : Array.isArray(motion) ? motion : [motion]
+
 export const resolveTheme = (
   name: string,
   themes: Record<string, ThemeDef>,
@@ -45,5 +49,6 @@ export const resolveTheme = (
     paint: mergePaint(parent.paint, def.paint),
     hover: mergePaint(parent.hover, expandHover(def.hover)),
     hoverMotion: def.hoverMotion ?? parent.hoverMotion,
+    motion: motionNames(def.motion) ?? parent.motion,
   }
 }

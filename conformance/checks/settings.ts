@@ -14,16 +14,13 @@ export const THEMES = [
   'glass',
   'blueprint',
   'halftone',
-  'stripes',
   'neon',
   'aurora',
   'brutalist',
   'sketch',
   'topo',
   'waves',
-  'music',
   'developer',
-  'wellness',
 ]
 export const PAGES = ['simple', 'complex'] as const
 export const ROOT = '[data-testid="root"]'

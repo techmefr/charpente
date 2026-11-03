@@ -8,6 +8,7 @@ import { keyframesCss, motionCss } from './motion'
 import { revealCss } from './reveal'
 import { selectThemes } from './selection'
 import { themeCss } from './theme'
+import { themeMotions } from './theme-motion'
 import { tokensCss } from './tokens'
 
 export const createCompiler =
@@ -28,19 +29,22 @@ export const createCompiler =
     resolveTheme(defaultTheme, themes)
     validateSchedule(config.schedule ?? [], Object.keys(themes), config.timeZone)
 
+    const selected = selectThemes(config, themes)
+    const themed = config.motion === undefined ? themeMotions(selected, themes, motions, defaultTheme) : []
     const layered = [
       tokensCss(config),
       baseCss(),
-      ...selectThemes(config, themes).map((name) =>
+      ...selected.map((name) =>
         themeCss(name, name === defaultTheme, themes, config.colorScheme, Boolean(config.bones)),
       ),
-      motionCss(motions, defaultMotion, delay, stagger, warnings, Boolean(config.bones)),
+      motionCss(motions, defaultMotion, delay, stagger, warnings, Boolean(config.bones), themed),
       revealCss(config.reveal ?? 0),
       ...(config.bones ? [bonesCss(config.bones)] : []),
     ].join('\n')
 
     const css = [
       `@property --charpente-shine-x { syntax: '<percentage>'; inherits: false; initial-value: -80%; }`,
+      `@property --charpente-flow { syntax: '<number>'; inherits: false; initial-value: 0; }`,
       `@keyframes charpente-reveal { from { visibility: hidden; } to { visibility: visible; } }`,
       `@keyframes charpente-reveal-in { from { opacity: 0; } to { opacity: 1; } }`,
       ...Object.entries(motions).map(([name, motion]) => keyframesCss(name, motion)),

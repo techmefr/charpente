@@ -5,8 +5,8 @@ import { sanitizeState } from './validate'
 const KEY = 'g='
 
 export const BUILTIN_NAMES = [
-  'solid', 'outline', 'dots', 'cyberpunk', 'web', 'blueprint', 'halftone', 'stripes', 'neon', 'aurora',
-  'brutalist', 'sketch', 'topo', 'waves', 'glass', 'frost', 'smoked', 'music', 'developer', 'wellness',
+  'solid', 'outline', 'dots', 'cyberpunk', 'web', 'blueprint', 'halftone', 'neon', 'aurora',
+  'brutalist', 'sketch', 'topo', 'waves', 'glass', 'frost', 'smoked', 'developer',
 ]
 
 export const encodeState = (state: GeneratorState): string => {

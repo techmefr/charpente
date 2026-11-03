@@ -31,3 +31,21 @@ export const edgeCut = (size: number, color: string, width = 1.5): string[] => {
   const stroke = `transparent ${start}px, ${color} ${start}px ${round(start + width)}px, transparent ${round(start + width)}px`
   return [`linear-gradient(135deg, ${stroke})`, `linear-gradient(315deg, ${stroke})`]
 }
+
+export interface FlowLayer {
+  size: [number, number]
+  dx?: number
+  dy?: number
+}
+
+export const TYPE_SCALE: Record<PaintType, number> = { text: 0.4, media: 0.75, control: 0.5, block: 1 }
+
+export const flowLayout = (layers: FlowLayer[], scale = 1, before = 0): { size: string; position: string } => {
+  const lead = Array.from({ length: before }, () => 'auto')
+  const sizes = layers.map(({ size: [width, height] }) => `${round(width * scale)}px ${round(height * scale)}px`)
+  const moves = layers.map(({ size: [width, height], dx = 0, dy = 0 }) => {
+    const shift = (tiles: number, extent: number): string => `calc(var(--charpente-flow) * ${round(tiles * extent * scale)}px)`
+    return `${shift(dx, width)} ${shift(dy, height)}`
+  })
+  return { size: [...lead, ...sizes].join(', '), position: [...lead.map(() => '0 0'), ...moves].join(', ') }
+}

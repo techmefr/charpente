@@ -4,7 +4,6 @@ export default defineCharpente({
   themesDir: '../recipes',
   defaultTheme: 'solid',
   timeZone: 'Europe/Paris',
-  motion: 'shimmer',
   timing: { delay: 120, stagger: 60 },
   colorScheme: { dark: '[data-theme="dark"]' },
   schedule: [

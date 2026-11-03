@@ -1,6 +1,7 @@
 import { declarations } from '../css'
 import type { MotionDef } from '../types'
 import { LOADING, allLeaves, capturedLeaves } from './selectors'
+import type { ThemeMotion } from './theme-motion'
 
 const MAX_COMBINED_MOTIONS = 6
 
@@ -61,13 +62,14 @@ export const motionCss = (
   stagger: number,
   warnings: string[],
   captured = false,
+  themed: ThemeMotion[] = [],
 ): string => {
   const leaves = (scope: string): string => (captured ? `${allLeaves(scope)},\n${capturedLeaves(scope)}` : allLeaves(scope))
   const delayVar = `var(--charpente-delay, ${delay}ms)`
   const staggerDelay = `calc(${delayVar} + var(--charpente-i, 0) * var(--charpente-stagger, ${stagger}ms))`
   const reveal = `charpente-reveal 0s linear ${staggerDelay} both`
 
-  const rule = (scopes: string[], names: string[]): string => {
+  const rule = (scopes: string[], names: string[], reset = false): string => {
     const animations = [
       reveal,
       ...names.map((name) => {
@@ -78,6 +80,7 @@ export const motionCss = (
     const layer = names.map((name) => motions[name]?.layer).find(Boolean)
     const body = [`animation: ${animations.join(', ')}`]
     if (layer) body.push(`--charpente-shine-layer: ${layer}`)
+    else if (reset) body.push('--charpente-shine-layer: none')
     const attachment = names.map((name) => motions[name]?.attachment).find(Boolean)
     if (attachment) body.push(`--charpente-shine-attachment: ${attachment}`)
     return `${scopes.map(leaves).join(',\n')} {\n  ${body.join(';\n  ')};\n}`
@@ -94,11 +97,14 @@ export const motionCss = (
   }
 
   warnings.push(...conflictWarnings(motions, defaultNames))
-  const allNames = Object.keys(motions).sort()
+  const allNames = Object.keys(motions).filter((name) => !motions[name]?.ambient).sort()
+  const ambient = Object.keys(motions).filter((name) => motions[name]?.ambient).sort()
   const rules = [
     rule([`${LOADING}:not([data-charpente-motion])`], defaultNames),
     rule([`${LOADING}[data-charpente-motion="none"]`], []),
     ...subsets(allNames).map((names) => rule(motionScopes(names, allNames), names)),
+    ...ambient.map((name) => rule([`${LOADING}[data-charpente-motion="${name}"]`], [name])),
+    ...themed.map(({ scopes, names }) => rule(scopes, names, true)),
     ...containerRule([`${LOADING}:not([data-charpente-motion])`], defaultNames),
     ...subsets(allNames).flatMap((names) => containerRule(motionScopes(names, allNames), names)),
     `@media (prefers-reduced-motion: reduce) {\n  ${LOADING} {\n    animation: none !important;\n  }\n}`,

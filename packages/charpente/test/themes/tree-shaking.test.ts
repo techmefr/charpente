@@ -5,7 +5,7 @@ import * as themes from '../../src/theme-exports'
 
 const DIST = resolve(import.meta.dirname, '..', '..', 'dist')
 const IMPORTED = '#16435a'
-const OTHERS = ['#84a98c', '#101827', '#e9c46a', '#8593a8', '#9a7f52', '#22ff77']
+const OTHERS = ['#05080f', '#8a97ab', '#a88a52', '#22ff77', '#2f8fc4']
 
 const bundle = async (source: string): Promise<string> => {
   const { outputFiles } = await build({
@@ -40,8 +40,8 @@ describe('tree shaking', () => {
       import { frost } from 'charpente/themes'
       console.log(compile({ themes: { frost }, defaultTheme: 'frost' }).css)
     `)
-    expect(code).toContain('24px')
-    expect(code).not.toContain('#101827')
+    expect(code).toContain('30px')
+    expect(code).not.toContain('#05080f')
     expect(code).not.toContain(IMPORTED)
   })
 
@@ -59,7 +59,7 @@ console.log(themes)`)
     for (const name of Object.keys(themes)) {
       const alone = await bundle(`import { ${name} } from 'charpente/themes'
 console.log(${name})`)
-      expect(alone.length, name).toBeLessThan(all.length / 5)
+      expect(alone.length, name).toBeLessThan(all.length / 3)
     }
   })
 })

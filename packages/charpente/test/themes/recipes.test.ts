@@ -5,7 +5,7 @@ import { discoverThemes } from '../../src/discovery'
 
 describe('recipes', () => {
   const repositoryRoot = resolve(import.meta.dirname, '..', '..', '..', '..')
-  const recipeNames = ['autumn', 'birthday', 'christmas', 'halloween', 'new-year', 'pride', 'spring', 'summer', 'valentine', 'winter']
+  const recipeNames = ['autumn', 'birthday', 'christmas', 'halloween', 'new-year', 'spring', 'summer', 'winter']
 
   it('ships every recipe as a folder that compiles with a paint for every leaf type', async () => {
     const recipes = await discoverThemes(repositoryRoot, 'recipes')

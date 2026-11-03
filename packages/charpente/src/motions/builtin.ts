@@ -3,7 +3,20 @@ import type { MotionDef } from '../types'
 const split = (x: number, y: number): string =>
   `drop-shadow(${x}px ${y}px 0 var(--charpente-${x < 0 ? 'accent2' : 'accent'}, ${x < 0 ? '#22d3ee' : '#ec4899'}))`
 
+const flow = (duration: string): MotionDef => ({
+  duration,
+  easing: 'linear',
+  ambient: true,
+  keyframes: { from: { '--charpente-flow': '0' }, to: { '--charpente-flow': '1' } },
+})
+
 export const builtinMotions: Record<string, MotionDef> = {
+  waves: flow('10s'),
+  matrix: flow('6s'),
+  snow: flow('18s'),
+  petals: flow('16s'),
+  leaves: flow('17s'),
+  sparkle: flow('12s'),
   shimmer: {
     duration: '1.8s',
     easing: 'ease-in-out',
