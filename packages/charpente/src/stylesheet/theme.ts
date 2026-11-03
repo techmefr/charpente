@@ -1,29 +1,10 @@
-import { declarations, flat, splitTopLevel, tokenDeclarations } from '../css'
+import { tokenDeclarations } from '../css'
 import { resolveTheme } from '../themes'
-import { PAINT_TYPES, type CharpenteConfig, type Paint, type PaintType, type ThemeDef } from '../types'
-import { CAPTURED_SLOTS, LOADING, TYPE_SELECTORS, within } from './selectors'
+import { PAINT_TYPES, type CharpenteConfig, type ThemeDef } from '../types'
+import { hoverCss } from './hover'
+import { paintRule } from './paint'
+import { CAPTURED_SLOTS, LOADING } from './selectors'
 import { darkThemeTokens } from './tokens'
-
-const paintRule = (type: PaintType, paint: Paint, scopes: string[], selector = TYPE_SELECTORS[type]): string => {
-  const layers = splitTopLevel(paint.fill ?? flat('var(--charpente-base)'))
-  const sizes = paint.size ? splitTopLevel(paint.size) : []
-  const sizeList = layers.map((_, index) => sizes[index] ?? 'auto')
-  const body = [
-    'background-color: transparent !important',
-    `background-image: var(--charpente-shine-layer, none), ${layers.join(', ')} !important`,
-    `background-size: 60% 100%, ${sizeList.join(', ')} !important`,
-    `background-repeat: no-repeat, ${layers.map(() => 'repeat').join(', ')} !important`,
-    `background-position: var(--charpente-shine-x, -80%) 0, ${layers.map(() => '0 0').join(', ')} !important`,
-    `background-attachment: var(--charpente-shine-attachment, scroll), ${layers.map(() => 'scroll').join(', ')} !important`,
-    ...(type === 'text'
-      ? ['background-clip: content-box !important', 'background-origin: content-box !important']
-      : []),
-    declarations(paint.style),
-  ]
-    .filter(Boolean)
-    .join(';\n  ')
-  return `${within(scopes, selector)} {\n  ${body};\n}`
-}
 
 export const themeCss = (
   name: string,
@@ -49,5 +30,6 @@ export const themeCss = (
     blocks.push(paintRule('text', resolved.paint.text ?? {}, scopes, text))
     blocks.push(paintRule('media', resolved.paint.media ?? {}, scopes, media))
   }
-  return blocks.join('\n')
+  blocks.push(hoverCss(scopes, resolved.hover, resolved.hoverMotion, captured))
+  return blocks.filter(Boolean).join('\n')
 }

@@ -44,6 +44,20 @@ export default defineCharpente({
         },
       },
     },
+    survol: {
+      extends: 'solid',
+      hover: 'accent',
+    },
+    'survol-fin': {
+      extends: 'brume',
+      hover: {
+        text: { fill: 'linear-gradient(var(--charpente-accent), var(--charpente-accent))', radius: '999px' },
+        media: { border: '3px solid var(--charpente-accent)' },
+        control: { style: { opacity: '0.6' } },
+        block: { fill: 'linear-gradient(var(--charpente-accent2), var(--charpente-accent2))' },
+      },
+      hoverMotion: 'pause',
+    },
   },
   motions: {
     rebond: {

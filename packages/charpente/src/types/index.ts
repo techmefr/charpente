@@ -16,6 +16,15 @@ export interface Paint {
   style?: Declarations
 }
 
+export type HoverMotion = 'pause' | 'faster' | 'none'
+
+export interface HoverPaint extends Paint {
+  border?: string | BorderImage
+  radius?: string
+}
+
+export type HoverDef = string | Partial<Record<PaintType, HoverPaint>>
+
 export type Stepped<T> = T | ((step: number) => T)
 
 export interface PatternDef {
@@ -42,6 +51,8 @@ export interface ThemeDef {
   tokens?: Tokens
   dark?: Tokens
   paint?: Partial<Record<PaintType, Paint>>
+  hover?: HoverDef
+  hoverMotion?: HoverMotion
 }
 
 export interface MotionDef {

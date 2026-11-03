@@ -5,6 +5,7 @@ export interface StateOptions {
   delay?: number
   stagger?: number
   style?: string
+  inert?: boolean
 }
 
 export const motionAttribute = (motion: string | string[] | undefined): string | undefined => {
@@ -20,6 +21,7 @@ export const stateAttributes = ({
   delay,
   stagger,
   style,
+  inert = true,
 }: StateOptions): Record<string, string | boolean | undefined> => {
   const vars: string[] = []
   if (delay !== undefined) vars.push(`--charpente-delay: ${delay}ms`)
@@ -28,7 +30,7 @@ export const stateAttributes = ({
   return {
     'data-charpente-loading': loading ? '' : undefined,
     'aria-busy': loading ? 'true' : undefined,
-    inert: loading ? true : undefined,
+    inert: loading && inert ? true : undefined,
     'data-charpente-theme': theme,
     'data-charpente-motion': motionAttribute(motion),
     style: vars.length > 0 ? vars.join('; ') : undefined,
