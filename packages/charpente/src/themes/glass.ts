@@ -30,9 +30,3 @@ export const createGlassTheme = (options: GlassOptions = {}): ThemeDef => {
     paint: { text: paint('text'), media: paint('media'), control: paint('control'), block: paint('block') },
   }
 }
-
-export const glassThemes: Record<string, ThemeDef> = {
-  glass: createGlassTheme(),
-  frost: { extends: 'glass', ...createGlassTheme({ blur: '24px', opacity: 0.26, reflection: 0.3 }) },
-  smoked: { extends: 'glass', ...createGlassTheme({ blur: '16px', opacity: 0.48, tint: '#101827', reflection: 0.08 }) },
-}

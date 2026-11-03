@@ -87,6 +87,27 @@ colorScheme: {
 
 A theme has three fields, all optional: `extends`, `tokens` and `paint`. With `extends`, the theme inherits the parent's tokens and paints: tokens are merged, paints are merged type by type, and within `style` key by key. `fill` and `size` replace the parent's.
 
+### Import a single theme
+
+Built-in theme names in `theme:` work with the Vite plugin and the CLI, which build the CSS in Node and ship no JavaScript. In a browser or React Native, `compile` and `nativeTheme` come from `charpente/lite`, which only knows `solid`: import the themes you use from `charpente/themes`, one export each, and the bundler drops the rest.
+
+```ts
+import { compile } from charpente/lite
+import { cyberpunk } from charpente/themes
+
+const { css } = compile({ themes: { cyberpunk }, defaultTheme: cyberpunk })
+```
+
+A name that is not imported throws an error that points to `charpente/themes`. Measured with esbuild, minified:
+
+| Bundle | Size | Gzip |
+| --- | --- | --- |
+| `compile` from `charpente` (28 themes) | 24.2 kB | 7.7 kB |
+| `compile` from `charpente/lite` with one theme | 14.6 kB | 5.7 kB |
+| `nativeTheme` from `charpente` | 14.8 kB | 4.3 kB |
+| `nativeTheme` from `charpente/lite` | 4.2 kB | 1.8 kB |
+| One theme alone from `charpente/themes` | 0.5 kB | 0.3 kB |
+
 ### Tokens
 
 `--charpente-*` CSS variables usable in `fill` and `style`. A token defined in a theme applies to areas of that theme, whether the mode is light or dark.
