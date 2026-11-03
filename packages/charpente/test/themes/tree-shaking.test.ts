@@ -5,7 +5,7 @@ import * as themes from '../../src/theme-exports'
 
 const DIST = resolve(import.meta.dirname, '..', '..', 'dist')
 const IMPORTED = '#16435a'
-const OTHERS = ['#84a98c', '#101827', '#e9c46a', '96px 72px']
+const OTHERS = ['#84a98c', '#101827', '#e9c46a', '#8593a8', '#9a7f52', '#22ff77']
 
 const bundle = async (source: string): Promise<string> => {
   const { outputFiles } = await build({

@@ -1,14 +1,19 @@
 import type { ThemeDef } from '../../types'
+import { brutalist } from './brutalist'
+import { dots, outline, solid } from './core'
+import { cyberpunk } from './cyberpunk'
+import { developer } from './developer'
+import { aurora, blueprint, halftone, neon, stripes, waves } from './extras'
 import { frost, glass, smoked } from './glass'
-import { cyberpunk, dots, outline, solid, web } from './core'
-import {
-  aurora, blueprint, brutalist, halftone, neon, paper, scanline, sketch, stripes, topo, vegas, waves,
-} from './extras'
-import { analytics, commerce, developer, editorial, gaming, music, travel, wellness } from './usage'
+import { music } from './music'
+import { sketch } from './sketch'
+import { topo } from './topo'
+import { wellness } from './usage'
+import { web } from './web'
 
 export const builtinThemes: Record<string, ThemeDef> = {
   solid, outline, dots, cyberpunk, web,
-  paper, blueprint, halftone, stripes, scanline, vegas, neon, aurora, brutalist, sketch, topo, waves,
+  blueprint, halftone, stripes, neon, aurora, brutalist, sketch, topo, waves,
   glass, frost, smoked,
-  editorial, commerce, analytics, gaming, music, developer, travel, wellness,
+  music, developer, wellness,
 }

@@ -8,7 +8,7 @@ describe('lite compile', () => {
     const { css } = compile()
     expect(css).toContain('[data-charpente-loading]')
     expect(css).not.toContain('cyberpunk')
-    expect(css).not.toContain('vegas')
+    expect(css).not.toContain('topo')
   })
 
   it('compiles a theme imported from charpente/themes', () => {
@@ -29,7 +29,7 @@ describe('lite compile', () => {
 
   it('names the missing theme and where to import it from', () => {
     expect(() => compile({ defaultTheme: 'cyberpunk' })).toThrow(/unknown theme "cyberpunk".*charpente\/themes/)
-    expect(() => compile({ include: ['vegas'] })).toThrow(/unknown theme "vegas".*charpente\/themes/)
+    expect(() => compile({ include: ['topo'] })).toThrow(/unknown theme "topo".*charpente\/themes/)
     expect(() => compile({ schedule: [{ from: '12-01', to: '12-31', theme: 'neon' }] })).toThrow(/unknown theme "neon"/)
   })
 })
