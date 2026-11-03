@@ -32,4 +32,4 @@ const server = await startStudio({
   clientPath: fileURLToPath(new URL('./client.js', import.meta.url)),
 })
 const address = server.address()
-console.log(`charpente-studio: http://localhost:${typeof address === 'object' && address ? address.port : port}`)
+console.log(`charpente-studio: http://127.0.0.1:${typeof address === 'object' && address ? address.port : port}`)

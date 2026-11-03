@@ -32,13 +32,14 @@ const refreshThemes = async (): Promise<void> => {
   )
 }
 
-const save = async (): Promise<void> => {
+const save = async (overwrite = false): Promise<void> => {
   const response = await fetch('/api/themes', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(readForm()),
+    body: JSON.stringify({ ...readForm(), overwrite }),
   })
   const result = (await response.json()) as { file?: string; error?: string }
+  if (response.status === 409 && window.confirm(`${result.error ?? 'This theme exists'}. Overwrite it?`)) return save(true)
   say(response.ok ? `Saved ${result.file}` : (result.error ?? 'Could not save'))
   if (response.ok) await refreshThemes()
 }

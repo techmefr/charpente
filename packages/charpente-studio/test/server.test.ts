@@ -1,10 +1,12 @@
-import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
+import { request } from 'node:http'
 import type { Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { startStudio } from '../src/server'
+import { MAX_BODY, startStudio } from '../src/server'
+import { listThemes } from '../src/store'
 
 let server: Server
 let root = ''
@@ -12,6 +14,18 @@ let base = ''
 
 const post = (body: unknown) =>
   fetch(`${base}/api/themes`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
+
+const port = (): number => (server.address() as AddressInfo).port
+
+const raw = (headers: Record<string, string>): Promise<number> =>
+  new Promise((done, fail) => {
+    const call = request({ host: '127.0.0.1', port: port(), path: '/api/themes', headers }, (response) => {
+      response.resume()
+      done(response.statusCode ?? 0)
+    })
+    call.on('error', fail)
+    call.end()
+  })
 
 beforeAll(async () => {
   root = mkdtempSync(join(tmpdir(), 'charpente-studio-'))
@@ -48,8 +62,62 @@ describe('studio server', () => {
   })
 
   it('refuses a body that is not json', async () => {
-    const response = await fetch(`${base}/api/themes`, { method: 'POST', body: 'nope' })
+    const response = await fetch(`${base}/api/themes`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: 'nope' })
     expect(response.status).toBe(400)
+  })
+
+  it('refuses a foreign host', async () => {
+    expect(await raw({ host: 'evil.example' })).toBe(403)
+    expect(await raw({ host: '127.0.0.1:1' })).toBe(403)
+    expect(await raw({ host: `localhost:${port()}` })).toBe(200)
+  })
+
+  it('refuses a foreign origin', async () => {
+    expect(await raw({ origin: 'http://evil.example' })).toBe(403)
+    expect(await raw({ origin: `http://127.0.0.1:${port()}` })).toBe(200)
+  })
+
+  it('refuses a post that is not json', async () => {
+    const response = await fetch(`${base}/api/themes`, { method: 'POST', headers: { 'content-type': 'text/plain' }, body: '{}' })
+    expect(response.status).toBe(415)
+  })
+
+  it('refuses to overwrite a theme unless asked', async () => {
+    const theme = { name: 'keep', colors: ['#112233', '#445566'], pattern: 'dots', radius: 6, scale: 1 }
+    expect((await post(theme)).status).toBe(200)
+    expect((await post({ ...theme, pattern: 'grid' })).status).toBe(409)
+    expect(readFileSync(join(root, 'themes', 'keep', 'theme.ts'), 'utf8')).toContain("pattern: 'dots'")
+    expect((await post({ ...theme, pattern: 'grid', overwrite: true })).status).toBe(200)
+    expect(readFileSync(join(root, 'themes', 'keep', 'theme.ts'), 'utf8')).toContain("pattern: 'grid'")
+  })
+
+  it('refuses a null radius', async () => {
+    const response = await post({ name: 'nullr', colors: ['#112233', '#445566'], pattern: 'dots', radius: null, scale: 1 })
+    expect(response.status).toBe(400)
+  })
+
+  it('answers 413 over the body limit', async () => {
+    const response = await post({ name: 'big', padding: 'x'.repeat(MAX_BODY) })
+    expect(response.status).toBe(413)
+  })
+
+  it('sets security headers on the page', async () => {
+    const response = await fetch(base)
+    expect(response.headers.get('content-security-policy')).toBe("default-src 'self'; style-src 'unsafe-inline'; img-src data:; frame-ancestors 'none'")
+    expect(response.headers.get('x-content-type-options')).toBe('nosniff')
+  })
+
+  it('rejects when the port is taken', async () => {
+    await expect(startStudio({ root, dir: 'themes', port: port(), clientPath: join(root, 'client.js') })).rejects.toThrow()
+  })
+
+  it('refuses a folder outside the root', async () => {
+    await expect(startStudio({ root, dir: '../outside', port: 0, clientPath: join(root, 'client.js') })).rejects.toThrow('inside')
+  })
+
+  it('lists nothing for a folder without themes', () => {
+    mkdirSync(join(root, 'empty', 'sub'), { recursive: true })
+    expect(listThemes(root, 'empty')).toEqual([])
   })
 
   it('answers 404 elsewhere', async () => {

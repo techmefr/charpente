@@ -28,8 +28,8 @@ const color = (value: unknown): string => {
 }
 
 const bounded = (value: unknown, label: string, min: number, max: number): number => {
-  const number = Number(value)
-  if (!Number.isFinite(number) || number < min || number > max) throw new Error(`charpente-studio: ${label} must be between ${min} and ${max}`)
+  const number = value
+  if (typeof number !== 'number' || !Number.isFinite(number) || number < min || number > max) throw new Error(`charpente-studio: ${label} must be between ${min} and ${max}`)
   return number
 }
 

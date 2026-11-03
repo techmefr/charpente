@@ -16,6 +16,10 @@ describe('theme form', () => {
     [{ ...valid, colors: ['#000000'] }, 'two colors'],
     [{ ...valid, pattern: 'zigzag' }, 'pattern'],
     [{ ...valid, radius: -1 }, 'radius'],
+    [{ ...valid, radius: null }, 'radius'],
+    [{ ...valid, radius: '' }, 'radius'],
+    [{ ...valid, radius: false }, 'radius'],
+    [{ ...valid, radius: [] }, 'radius'],
     [{ ...valid, scale: 9 }, 'scale'],
     ['text', 'object'],
   ])('rejects %j', (input, message) => {
