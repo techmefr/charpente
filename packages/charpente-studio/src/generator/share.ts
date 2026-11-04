@@ -6,7 +6,7 @@ const KEY = 'g='
 
 export const BUILTIN_NAMES = [
   'solid', 'outline', 'dots', 'cyberpunk', 'web', 'blueprint', 'halftone', 'neon', 'aurora',
-  'paper', 'stripes', 'scanline', 'vegas', 'editorial', 'commerce', 'analytics', 'gaming', 'music', 'travel', 'wellness',
+  'travel', 'wellness',
   'brutalist', 'sketch', 'topo', 'waves', 'glass', 'frost', 'smoked', 'developer', 'crt',
 ]
 

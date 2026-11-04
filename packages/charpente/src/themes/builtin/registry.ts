@@ -9,7 +9,7 @@ import { frost, glass, smoked } from './glass'
 import { sketch } from './sketch'
 import { topo } from './topo'
 import { waves } from './waves'
-import { paper, stripes, scanline, vegas, editorial, commerce, analytics, gaming, music, travel, wellness } from './specialties'
+import { travel, wellness } from './specialties'
 import { web } from './web'
 
 export const builtinThemes: Record<string, ThemeDef> = {
@@ -17,5 +17,5 @@ export const builtinThemes: Record<string, ThemeDef> = {
   blueprint, halftone, neon, aurora, brutalist, sketch, topo, waves,
   glass, frost, smoked,
   developer, crt,
-  paper, stripes, scanline, vegas, editorial, commerce, analytics, gaming, music, travel, wellness,
+  travel, wellness,
 }
