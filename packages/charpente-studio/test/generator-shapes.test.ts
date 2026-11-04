@@ -79,9 +79,9 @@ describe('layered shapes in the generator', () => {
 
 describe('wrapped gifts in the generator', () => {
   it('lists both stretched variants with their fixed bow and writes their names', () => {
-    for (const name of ['gift-wrap', 'gift-wrap-band']) {
+    for (const name of ['gift-wrap', 'gift-wrap-band', 'frost-card', 'frost-chip']) {
       expect(SHAPE_LIBRARY[name]?.stretch).toBe(true)
-      expect(SHAPE_LIBRARY[name]?.fixed?.layers.length).toBeGreaterThan(0)
+      expect([SHAPE_LIBRARY[name]?.fixed].flat().length).toBeGreaterThan(0)
       expect(themeSource(shaped(name))).toContain(`shape: '${name}'`)
       expect(previewCss(shaped(name), {}, false)).toContain('mask-image')
     }

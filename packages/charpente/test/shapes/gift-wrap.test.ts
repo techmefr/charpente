@@ -14,8 +14,9 @@ describe('gift wrap shapes', () => {
     for (const shape of [giftWrap, giftWrapBand]) {
       expect(shape.stretch).toBe(true)
       expect(shape.layers[0]?.role).toBe('body')
-      expect(shape.fixed?.size).toMatch(/^auto \d+%$/)
-      expect(shape.fixed?.layers.some((layer) => layer.name === 'Knot')).toBe(true)
+      const [fixed] = [shape.fixed].flat()
+      expect(fixed?.size).toMatch(/^auto \d+%$/)
+      expect(fixed?.layers.some((layer) => layer.name === 'Knot')).toBe(true)
     }
   })
 

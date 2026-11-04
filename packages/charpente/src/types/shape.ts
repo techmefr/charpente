@@ -14,11 +14,12 @@ export interface FixedShape {
   viewBox: [width: number, height: number]
   layers: ShapeLayer[]
   size: string
+  position?: string
 }
 
 export interface ShapeDef {
   viewBox: [width: number, height: number]
   layers: ShapeLayer[]
   stretch?: boolean
-  fixed?: FixedShape
+  fixed?: FixedShape | FixedShape[]
 }

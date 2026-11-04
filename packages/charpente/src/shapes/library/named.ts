@@ -1,6 +1,8 @@
 export { avatar } from './avatar'
 export { bubble } from './bubble'
 export { card } from './card'
+export { frostCard } from './frost-card'
+export { frostChip } from './frost-chip'
 export { gift } from './gift'
 export { giftWrap } from './gift-wrap'
 export { giftWrapBand } from './gift-wrap-band'

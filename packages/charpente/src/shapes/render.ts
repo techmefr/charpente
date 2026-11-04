@@ -7,18 +7,21 @@ export interface ShapeOverlay {
   image: string
   size: string
   count: number
+  position: string
 }
 
 interface Group {
   viewBox: [number, number]
   layers: ShapeLayer[]
   size: string
+  position: string
   stretch: boolean
 }
 
 const groupsOf = (shape: ShapeDef): Group[] => {
-  const main = { viewBox: shape.viewBox, layers: shape.layers, size: shape.stretch ? '100% 100%' : 'contain', stretch: Boolean(shape.stretch) }
-  return shape.fixed ? [main, { ...shape.fixed, stretch: false }] : [main]
+  const main = { viewBox: shape.viewBox, layers: shape.layers, size: shape.stretch ? '100% 100%' : 'contain', position: 'center', stretch: Boolean(shape.stretch) }
+  const fixed = [shape.fixed ?? []].flat().map((part) => ({ ...part, position: part.position ?? 'center', stretch: false }))
+  return [main, ...fixed]
 }
 
 const imageOf = (group: Group, body: string): string => {
@@ -41,17 +44,17 @@ const paintedOf = (group: Group, colors: ShapeColors): string | undefined => {
 
 export const shapeOverlay = (shape: ShapeDef, colors: ShapeColors): ShapeOverlay | undefined => {
   const painted = groupsOf(shape)
-    .map((group) => ({ image: paintedOf(group, colors), size: group.size }))
-    .filter((entry): entry is { image: string; size: string } => entry.image !== undefined)
+    .map((group) => ({ image: paintedOf(group, colors), size: group.size, position: group.position }))
+    .filter((entry): entry is { image: string; size: string; position: string } => entry.image !== undefined)
     .reverse()
   if (painted.length === 0) return undefined
-  return { image: painted.map((entry) => entry.image).join(', '), size: painted.map((entry) => entry.size).join(', '), count: painted.length }
+  return { image: painted.map((entry) => entry.image).join(', '), size: painted.map((entry) => entry.size).join(', '), count: painted.length, position: painted.map((entry) => entry.position).join(', ') }
 }
 
 export const maskDeclarations = (shape: ShapeDef): string[] => {
   const groups = groupsOf(shape)
   const silhouettes = groups.map((group) => imageOf(group, group.layers.map((layer) => `<path d="${layer.path}"/>`).join('')))
-  const entries = [['image', silhouettes.join(', ')], ['size', groups.map((group) => group.size).join(', ')], ['repeat', 'no-repeat'], ['position', 'center']]
+  const entries = [['image', silhouettes.join(', ')], ['size', groups.map((group) => group.size).join(', ')], ['repeat', 'no-repeat'], ['position', groups.map((group) => group.position).join(', ')]]
   return [
     `--charpente-shape-mask: ${silhouettes[0]}`,
     `--charpente-shape-fit: ${groups[0]?.size}`,

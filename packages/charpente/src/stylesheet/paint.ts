@@ -26,7 +26,7 @@ export const fillDeclarations = (type: PaintType, paint: Paint, shaped?: Shaped)
     `background-image: var(--charpente-shine-layer, none), ${images.join(', ')} !important`,
     `background-size: 60% 100%, ${[...above.map((layer) => layer.size), ...sizeList].join(', ')} !important`,
     `background-repeat: no-repeat, ${[...Array(count).fill('no-repeat'), ...repeatList].join(', ')} !important`,
-    `background-position: var(--charpente-shine-x, -80%) 0, ${[...Array(count).fill('center'), ...positionList].join(', ')} !important`,
+    `background-position: var(--charpente-shine-x, -80%) 0, ${[...(overlay ? [overlay.position] : []), ...positionList].join(', ')} !important`,
     `background-attachment: var(--charpente-shine-attachment, scroll), ${[...Array(count).fill('scroll'), ...layers.map(() => 'scroll')].join(', ')} !important`,
     ...(type === 'text'
       ? ['background-clip: content-box !important', 'background-origin: content-box !important']
