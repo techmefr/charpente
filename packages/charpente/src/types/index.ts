@@ -1,3 +1,7 @@
+import type { ShapeDef } from './shape'
+
+export type * from './shape'
+
 export type LoadingScope = 'element' | 'page'
 
 export type PaintType = 'text' | 'media' | 'control' | 'block'
@@ -15,6 +19,7 @@ export interface Paint {
   size?: string
   position?: string
   repeat?: string
+  shape?: string | ShapeDef
   style?: Declarations
 }
 
@@ -129,6 +134,7 @@ export interface CharpenteConfig {
   colorScheme?: ColorScheme
   themes?: Record<string, ThemeDef>
   themesDir?: string
+  shapes?: Record<string, ShapeDef>
   motions?: Record<string, MotionDef>
   capture?: CaptureConfig
   bones?: BonesData

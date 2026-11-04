@@ -1,6 +1,6 @@
 import { defineConfig, type Options } from 'tsup'
 
-const PURE_CALL = /(?<![\w$.])(?:flat|lines|motif|tint\d*|createGlassTheme|buildTheme|createCompiler|createNativeTheme)\(/g
+const PURE_CALL = /(?<![\w$.])(?:flat|lines|motif|rrect|disc|blob|organicCard|tint\d*|createGlassTheme|buildTheme|createCompiler|createNativeTheme)\(/g
 const ANNOTATION = '/* @__PURE__ */ '
 
 const plugins: Options['plugins'] = [
@@ -19,7 +19,7 @@ export default defineConfig([
     plugins,
   },
   {
-    entry: { lite: 'src/lite.ts', themes: 'src/theme-exports.ts' },
+    entry: { lite: 'src/lite.ts', themes: 'src/theme-exports.ts', shapes: 'src/shape-exports.ts' },
     format: ['esm'],
     dts: true,
     splitting: false,

@@ -1,6 +1,7 @@
 import { compile, type ThemeDef } from 'charpente/lite'
 import { stateToTheme } from '../build'
 import type { GeneratorState } from '../state'
+import { SHAPE_LIBRARY } from '../shapes'
 
 export const PREVIEW_THEME = 'gen-preview'
 
@@ -24,6 +25,7 @@ const stripReduced = (css: string): string => {
 export const previewCss = (state: GeneratorState, themes: Record<string, ThemeDef>, forceMotion: boolean): string => {
   const { css } = compile({
     themes: { ...themes, [PREVIEW_THEME]: stateToTheme(state) },
+    shapes: SHAPE_LIBRARY,
     defaultTheme: PREVIEW_THEME,
     motion: state.motions.length > 0 ? state.motions : 'none',
     timing: { delay: state.delay, stagger: state.stagger },

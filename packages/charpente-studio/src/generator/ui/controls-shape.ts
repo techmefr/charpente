@@ -2,6 +2,7 @@ import { BORDER_KINDS, TOKENS, type BorderKind, type LeafState } from '../state'
 import { SHAPES } from '../presets'
 import { isSafeCss } from '../validate'
 import { h, labelled, section } from './dom'
+import { layeredControl } from './controls-layered'
 import type { Control, Store } from './store'
 
 export const bindText = (store: Store, input: HTMLInputElement | HTMLTextAreaElement, get: (leaf: LeafState) => string, set: (leaf: LeafState, value: string) => void): Control => {
@@ -47,13 +48,15 @@ export const shapesSection = (store: Store): Control => {
   const tiles = SHAPES.map((preset) => shapeButton(store, preset))
   const radius = h('input', { type: 'text', autocomplete: 'off', spellcheck: 'false' })
   const clip = h('input', { type: 'text', autocomplete: 'off', spellcheck: 'false', placeholder: 'none' })
-  const bound = [bindText(store, radius, (leaf) => leaf.radius, (leaf, value) => (leaf.radius = value)), bindText(store, clip, (leaf) => leaf.clip, (leaf, value) => (leaf.clip = value))]
+  const layered = layeredControl(store)
+  const bound = [layered, bindText(store, radius, (leaf) => leaf.radius, (leaf, value) => (leaf.radius = value)), bindText(store, clip, (leaf) => leaf.clip, (leaf, value) => (leaf.clip = value))]
   const { root } = section(
     'Shapes',
     true,
     h('div', { class: 'gen-tiles', role: 'group', 'aria-label': 'Shape presets' }, ...tiles.map((tile) => tile.button)),
     labelled('Border radius', radius, 'Any CSS value, for example 12px or 40% 60% / 30%.'),
-    labelled('Clip path', clip, 'polygon(), ellipse(), inset()... Layered shapes will plug in here.'),
+    labelled('Clip path', clip, 'polygon(), ellipse(), inset()...'),
+    layered.root,
   )
   return {
     root,

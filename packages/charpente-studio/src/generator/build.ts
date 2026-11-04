@@ -1,6 +1,7 @@
 import type { Declarations, HoverDef, HoverPaint, Paint, PaintType, ThemeDef, Tokens } from 'charpente/lite'
 import { BORDER_KEYS, borderDeclarations, colorValue } from './borders'
 import { findFill } from './presets'
+import { shapeValue } from './shapes'
 import { COLOR_KEYS, LEAVES, TOKENS, normalizeState, type GeneratorState, type LeafState } from './state'
 
 const IMAGE = /^(linear|radial|conic|repeating|url|image|-webkit)/
@@ -29,7 +30,8 @@ export const styleOf = (leaf: LeafState): Declarations => ({
 
 const paintOf = (leaf: LeafState): Paint => {
   const style = styleOf(leaf)
-  return { ...fillOf(leaf), ...(Object.keys(style).length > 0 && { style }) }
+  const shape = shapeValue(leaf.shape, leaf.roles)
+  return { ...fillOf(leaf), ...(shape !== undefined && { shape }), ...(Object.keys(style).length > 0 && { style }) }
 }
 
 const isToken = (value: string): boolean => TOKENS.some((token) => token === value)
@@ -64,6 +66,12 @@ const shortTheme = (leaf: LeafState): ThemeDef => {
   }
 }
 
+const shapedPaint = (leaf: LeafState): Pick<ThemeDef, 'paint'> => {
+  const shape = shapeValue(leaf.shape, leaf.roles)
+  if (shape === undefined) return {}
+  return { paint: Object.fromEntries(LEAVES.map((type) => [type, { shape }])) as Partial<Record<PaintType, Paint>> }
+}
+
 export const stateToTheme = (input: GeneratorState): ThemeDef => {
   const state = normalizeState(input)
   const first = state.leaves.text
@@ -73,7 +81,7 @@ export const stateToTheme = (input: GeneratorState): ThemeDef => {
   return {
     ...(state.extends && { extends: state.extends }),
     ...colorsOf(state),
-    ...(uniform ? shortTheme(first) : Object.keys(paint).length > 0 && { paint: paint as Partial<Record<PaintType, Paint>> }),
+    ...(uniform ? { ...shortTheme(first), ...shapedPaint(first) } : Object.keys(paint).length > 0 && { paint: paint as Partial<Record<PaintType, Paint>> }),
     ...(hover !== undefined && { hover }),
     ...(state.hoverMotion !== 'inherit' && !(state.hoverMotion === 'none' && !state.extends) && { hoverMotion: state.hoverMotion }),
   }

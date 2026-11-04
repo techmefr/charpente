@@ -1,4 +1,5 @@
-import type { HoverMotion, PaintType } from 'charpente/lite'
+import type { HoverMotion, PaintType, ShapeRole } from 'charpente/lite'
+import { customRoles } from './shapes'
 
 export const LEAVES: readonly PaintType[] = ['text', 'media', 'block', 'control']
 export const TOKENS = ['base', 'strong', 'shine', 'accent', 'accent2'] as const
@@ -25,6 +26,8 @@ export interface LeafState {
   custom: string
   size: string
   hover: string
+  shape: string
+  roles: ShapeRole[]
 }
 
 export interface GeneratorState {
@@ -53,6 +56,8 @@ export const inheritLeaf = (): LeafState => ({
   custom: '',
   size: '',
   hover: '',
+  shape: '',
+  roles: [],
 })
 
 const perLeaf = (make: () => LeafState): Record<PaintType, LeafState> => ({
@@ -101,6 +106,7 @@ export const normalizeState = (input: GeneratorState): GeneratorState => {
     current.clip = current.clip.trim()
     current.custom = current.custom.trim()
     current.size = current.size.trim()
+    current.roles = current.shape && customRoles(current.shape, current.roles) ? current.roles : []
     if (!state.extends && current.clip === 'none') current.clip = ''
     if (current.fill === 'custom' && !current.custom) current.fill = ''
   }
