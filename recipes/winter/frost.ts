@@ -69,3 +69,11 @@ export const frostPaint = (): Paint => ({
   control: frosted('control'),
   block: frosted('block'),
 })
+
+const SAGE = ['linear-gradient(180deg, color-mix(in srgb, var(--charpente-base) 94%, #fff), var(--charpente-strong))']
+const SNOW_SHAPES: Record<PaintType, string> = { text: 'snow-cap-chip', media: 'snow-cap', control: 'snow-cap-chip', block: 'snow-cap' }
+
+export const snowPaint = (): Paint => {
+  const sage = (type: PaintType): Paint[PaintType] => ({ fill: SAGE.join(', '), shape: SNOW_SHAPES[type] })
+  return { text: sage('text'), media: sage('media'), control: sage('control'), block: sage('block') }
+}

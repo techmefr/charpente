@@ -41,6 +41,19 @@ describe('recipes', () => {
     }
   })
 
+  it('ships winter as a frosted glass and a snowy variant that wraps every leaf in a snow cap', async () => {
+    const recipes = await discoverThemes(repositoryRoot, 'recipes')
+    const { css } = compile({ themes: recipes })
+    for (const theme of ['winter', 'winter-snow']) {
+      const scope = `[data-charpente-loading][data-charpente-theme="${theme}"]`
+      for (const selector of [':is(img, svg', ':is(button, input', '[data-charpente-block]', ':not(:has(*))']) {
+        const start = css.indexOf(`${scope} ${selector}`)
+        expect(start, `${theme} ${selector}`).toBeGreaterThan(-1)
+        expect(css.slice(start, css.indexOf('}', start)), `${theme} ${selector}`).toContain('mask-image')
+      }
+    }
+  })
+
   it('is not part of the built-in themes', () => {
     const { css } = compile()
     for (const name of ['christmas', 'halloween', 'winter']) expect(css).not.toContain(`data-charpente-theme="${name}"`)

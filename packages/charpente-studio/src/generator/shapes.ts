@@ -1,8 +1,8 @@
 import type { ShapeDef, ShapeRole } from 'charpente/lite'
-import { avatar, bubble, card, frostCard, frostChip, gift, giftWrap, giftWrapBand, label } from 'charpente/shapes'
+import { avatar, bubble, card, frostCard, frostChip, gift, giftWrap, giftWrapBand, label, snowCapCard, snowCapChip } from 'charpente/shapes'
 
-export const SHAPE_LIBRARY: Record<string, ShapeDef> = { gift, 'gift-wrap': giftWrap, 'gift-wrap-band': giftWrapBand, 'frost-card': frostCard, 'frost-chip': frostChip, card, avatar, label, bubble }
-export const SHAPE_TITLES: Record<string, string> = { gift: 'Gift', 'gift-wrap': 'Wrapped gift', 'gift-wrap-band': 'Ribbon band', 'frost-card': 'Frosted card', 'frost-chip': 'Frosted chip', card: 'Organic card', avatar: 'Avatar blob', label: 'Label', bubble: 'Speech bubble' }
+export const SHAPE_LIBRARY: Record<string, ShapeDef> = { gift, 'gift-wrap': giftWrap, 'gift-wrap-band': giftWrapBand, 'frost-card': frostCard, 'frost-chip': frostChip, 'snow-cap': snowCapCard, 'snow-cap-chip': snowCapChip, card, avatar, label, bubble }
+export const SHAPE_TITLES: Record<string, string> = { gift: 'Gift', 'gift-wrap': 'Wrapped gift', 'gift-wrap-band': 'Ribbon band', 'frost-card': 'Frosted card', 'frost-chip': 'Frosted chip', 'snow-cap': 'Snow cap', 'snow-cap-chip': 'Snow cap chip', card: 'Organic card', avatar: 'Avatar blob', label: 'Label', bubble: 'Speech bubble' }
 export const ROLES: readonly ShapeRole[] = ['body', 'accent', 'accent2', 'detail', 'shine']
 export const ROLE_TITLES: Record<ShapeRole, string> = { body: 'Theme paint', accent: 'Accent', accent2: 'Accent 2', detail: 'Shade', shine: 'Shine' }
 
