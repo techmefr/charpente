@@ -19,23 +19,26 @@ describe('recipes', () => {
     }
   })
 
-  it('draws the christmas gift border and ships its wrapping papers as variants', async () => {
+  it('wraps every christmas leaf in a snowy gift and ships its wrapping papers as variants', async () => {
     const recipes = await discoverThemes(repositoryRoot, 'recipes')
     const { css } = compile({ themes: recipes })
-    expect(css).toContain('border-image: url("data:image/svg+xml')
+    expect(css).toContain('mask-image: url("data:image/svg+xml')
     for (const paper of ['christmas', 'christmas-green', 'christmas-gold', 'christmas-snow']) {
       expect(css).toContain(`[data-charpente-theme="${paper}"]`)
     }
   })
 
-  it('shapes christmas cards as snowy gifts and keeps the border on text and controls', async () => {
+  it('stretches a snowy gift over every christmas leaf type without a border', async () => {
     const recipes = await discoverThemes(repositoryRoot, 'recipes')
     const { css } = compile({ themes: recipes })
-    const rules = css.split('\n\n').filter((rule) => rule.includes('[data-charpente-theme="christmas"]'))
-    const block = rules.find((rule) => rule.includes('[data-charpente-block]'))
-    expect(block).toContain('mask-image')
-    expect(block).toContain('border-image: none !important')
-    expect(rules.find((rule) => rule.includes(':is(button, input'))).toContain('border-image: url(')
+    const scope = '[data-charpente-loading][data-charpente-theme="christmas"]'
+    for (const selector of [':is(img, svg', ':is(button, input', '[data-charpente-block]', ':not(:has(*))']) {
+      const start = css.indexOf(`${scope} ${selector}`)
+      const rule = css.slice(start, css.indexOf('}', start))
+      expect(start, selector).toBeGreaterThan(-1)
+      expect(rule, selector).toContain('mask-size: 100% 100%')
+      expect(rule, selector).not.toContain('border-image')
+    }
   })
 
   it('is not part of the built-in themes', () => {

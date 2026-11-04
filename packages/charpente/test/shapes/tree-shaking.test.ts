@@ -31,7 +31,7 @@ describe('shape tree shaking', () => {
   it('bundles each shape on its own', async () => {
     const all = await bundle(`import * as shapes from 'charpente/shapes'
 console.log(shapes)`)
-    for (const name of Object.keys(shapes).filter((key) => ['gift', 'giftSnow', 'card', 'avatar', 'label', 'bubble'].includes(key))) {
+    for (const name of Object.keys(shapes).filter((key) => ['gift', 'giftSnow', 'giftSnowFill', 'giftSnowButton', 'giftSnowLine', 'card', 'avatar', 'label', 'bubble'].includes(key))) {
       const alone = await bundle(`import { ${name} } from 'charpente/shapes'
 console.log(${name})`)
       expect(alone.length, name).toBeLessThan(all.length)

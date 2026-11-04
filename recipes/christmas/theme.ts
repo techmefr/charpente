@@ -33,8 +33,8 @@ const scatter = ({ seed, width, height, count, min, max, shape }: Layer): string
   return image(body.join(''), width, height)
 }
 
-const GIFTS = ['media', 'block']
-const UNBORDERED = { borderStyle: 'none !important', borderWidth: '0 !important', borderImage: 'none !important' }
+
+const SHAPES = { text: 'gift-snow-line', media: 'gift-snow-fill', control: 'gift-snow-button', block: 'gift-snow-fill' }
 
 const SCALE = { text: 0.45, media: 0.8, control: 0.55, block: 1 }
 
@@ -45,7 +45,7 @@ const paintOf = (type: keyof typeof SCALE, layers: Layer[], ground: string) => {
     fill: [...layers.map(scatter), ground].join(', '),
     size: layers.map(({ width, height }) => `${(width * scale).toFixed(1)}px ${(height * scale).toFixed(1)}px`).join(', '),
     position: layers.map(({ width, height, dx, dy }) => `${shift(dx, width)} ${shift(dy, height)}`).join(', '),
-    ...(GIFTS.includes(type) ? { shape: 'gift-snow', style: UNBORDERED } : { style: { borderRadius: type === 'control' ? '999px' : '3px' } }),
+    shape: SHAPES[type],
   }
 }
 
@@ -79,7 +79,6 @@ export default {
   dark: { base: '#5c0f18', strong: '#3d0a10', accent: '#e0a526', accent2: '#e2e8f0', shine: 'rgba(255,255,255,0.16)' },
   motion: 'snow',
   paint: season(),
-  border: { image: './border.svg', slice: 30, width: '14px' },
   variants: {
     green: {
       tokens: { base: '#14532d', strong: '#0d3b20', accent: '#f5b82e', accent2: '#f8fafc' },

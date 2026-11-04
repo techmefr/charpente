@@ -85,3 +85,12 @@ describe('snowy gift in the generator', () => {
     expect(previewCss(shaped('gift-snow'), {}, false)).toContain('mask-image')
   })
 })
+
+describe('stretched snowy gifts in the generator', () => {
+  it('lists the three stretched variants and writes their names', () => {
+    for (const name of ['gift-snow-fill', 'gift-snow-button', 'gift-snow-line']) {
+      expect(SHAPE_LIBRARY[name]?.stretch).toBe(true)
+      expect(themeSource(shaped(name))).toContain(`shape: '${name}'`)
+    }
+  })
+})
