@@ -23,7 +23,7 @@ describe('recipes', () => {
     const recipes = await discoverThemes(repositoryRoot, 'recipes')
     const { css } = compile({ themes: recipes })
     expect(css).toContain('mask-image: url("data:image/svg+xml')
-    for (const paper of ['christmas', 'christmas-green', 'christmas-gold', 'christmas-snow']) {
+    for (const paper of ['christmas', 'christmas-green', 'christmas-cream', 'christmas-red', 'christmas-kraft-green']) {
       expect(css).toContain(`[data-charpente-theme="${paper}"]`)
     }
   })

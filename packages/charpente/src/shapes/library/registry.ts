@@ -1,12 +1,10 @@
 import type { ShapeDef } from '../../types'
-import { avatar, bubble, card, gift, giftSnow, giftSnowButton, giftSnowFill, giftSnowLine, label } from './named'
+import { avatar, bubble, card, gift, giftWrap, giftWrapBand, label } from './named'
 
 export const builtinShapes: Record<string, ShapeDef> = {
   gift,
-  'gift-snow': giftSnow,
-  'gift-snow-fill': giftSnowFill,
-  'gift-snow-button': giftSnowButton,
-  'gift-snow-line': giftSnowLine,
+  'gift-wrap': giftWrap,
+  'gift-wrap-band': giftWrapBand,
   card,
   avatar,
   label,

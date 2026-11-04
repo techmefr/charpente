@@ -31,7 +31,11 @@ export default defineTheme({
 })
 ```
 
-The built-in shapes are `gift`, `gift-snow` (a red box with a gold ribbon and a snow cap), `gift-snow-fill`, `gift-snow-button` and `gift-snow-line` (stretched variants that fill a card, a button or a text line, used by the christmas recipe), `card` (organic corners), `avatar` (blob with a status dot), `label` and `bubble`.
+The built-in shapes are `gift`, `gift-wrap` (stretched paper with a ribbon cross over its whole width and height and a fixed-ratio bow, used by the christmas recipe), `gift-wrap-band` (the same for thin bars, with one ribbon), `card` (organic corners), `avatar` (blob with a status dot), `label` and `bubble`.
+
+## Stretched shapes with a fixed part
+
+With `stretch: true` the layers fill the whole leaf. Add `fixed: { viewBox, layers, size }` to draw a second group that keeps its ratio and is centered, such as a bow on a stretched ribbon: `size` is a CSS background size like `auto 64%`. Give an `accent` or `accent2` layer `gradient: x | y | d` to shade it from the theme color (hex colors only), and `opacity` to tune a `detail` or `shine` layer.
 
 ## Tree-shakable shapes with the lite entry
 

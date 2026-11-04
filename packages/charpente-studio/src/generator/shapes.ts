@@ -1,8 +1,8 @@
 import type { ShapeDef, ShapeRole } from 'charpente/lite'
-import { avatar, bubble, card, gift, giftSnow, giftSnowButton, giftSnowFill, giftSnowLine, label } from 'charpente/shapes'
+import { avatar, bubble, card, gift, giftWrap, giftWrapBand, label } from 'charpente/shapes'
 
-export const SHAPE_LIBRARY: Record<string, ShapeDef> = { gift, 'gift-snow': giftSnow, 'gift-snow-fill': giftSnowFill, 'gift-snow-button': giftSnowButton, 'gift-snow-line': giftSnowLine, card, avatar, label, bubble }
-export const SHAPE_TITLES: Record<string, string> = { gift: 'Gift', 'gift-snow': 'Snowy gift', 'gift-snow-fill': 'Snowy gift (fills a card)', 'gift-snow-button': 'Snowy gift (button)', 'gift-snow-line': 'Snowy gift (text line)', card: 'Organic card', avatar: 'Avatar blob', label: 'Label', bubble: 'Speech bubble' }
+export const SHAPE_LIBRARY: Record<string, ShapeDef> = { gift, 'gift-wrap': giftWrap, 'gift-wrap-band': giftWrapBand, card, avatar, label, bubble }
+export const SHAPE_TITLES: Record<string, string> = { gift: 'Gift', 'gift-wrap': 'Wrapped gift', 'gift-wrap-band': 'Ribbon band', card: 'Organic card', avatar: 'Avatar blob', label: 'Label', bubble: 'Speech bubble' }
 export const ROLES: readonly ShapeRole[] = ['body', 'accent', 'accent2', 'detail', 'shine']
 export const ROLE_TITLES: Record<ShapeRole, string> = { body: 'Theme paint', accent: 'Accent', accent2: 'Accent 2', detail: 'Shade', shine: 'Shine' }
 

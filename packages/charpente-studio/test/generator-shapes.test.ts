@@ -77,20 +77,13 @@ describe('layered shapes in the generator', () => {
   })
 })
 
-describe('snowy gift in the generator', () => {
-  it('lists the shape and writes its name', () => {
-    expect(SHAPE_LIBRARY['gift-snow']).toBeDefined()
-    expect(stateToTheme(shaped('gift-snow')).paint?.block?.shape).toBe('gift-snow')
-    expect(themeSource(shaped('gift-snow'))).toContain("shape: 'gift-snow'")
-    expect(previewCss(shaped('gift-snow'), {}, false)).toContain('mask-image')
-  })
-})
-
-describe('stretched snowy gifts in the generator', () => {
-  it('lists the three stretched variants and writes their names', () => {
-    for (const name of ['gift-snow-fill', 'gift-snow-button', 'gift-snow-line']) {
+describe('wrapped gifts in the generator', () => {
+  it('lists both stretched variants with their fixed bow and writes their names', () => {
+    for (const name of ['gift-wrap', 'gift-wrap-band']) {
       expect(SHAPE_LIBRARY[name]?.stretch).toBe(true)
+      expect(SHAPE_LIBRARY[name]?.fixed?.layers.length).toBeGreaterThan(0)
       expect(themeSource(shaped(name))).toContain(`shape: '${name}'`)
+      expect(previewCss(shaped(name), {}, false)).toContain('mask-image')
     }
   })
 })
