@@ -32,6 +32,8 @@ jobs:
       - run: pnpm --dir examples/svelte exec svelte-kit sync
       - run: pnpm --filter ./examples/nuxt exec nuxt prepare
       - run: pnpm --filter site build
+      - run: pnpm --filter demo build
+      - run: cp -R demo/dist site/dist/demo
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site/dist

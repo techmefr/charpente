@@ -11,6 +11,7 @@ const seasonal = Object.entries(recipes).flatMap(([path, definition]) => {
 })
 const themes = [...Object.keys(builtins), 'mint', ...seasonal].sort()
 const layout = ref('videos')
+const brandPath = `${import.meta.env.BASE_URL}brand/`
 
 const motions = ['shimmer', 'sweep', 'pulse', 'glitch', 'crt', 'beam', 'border-beam', 'border-beam-line']
 
@@ -63,7 +64,7 @@ const items = computed(() => {
 <template>
   <main class="page">
     <header class="page__head">
-      <h1><img :src="dark ? '/brand/logo-dark.svg' : '/brand/logo-light.svg'" alt="" width="40" height="40" />charpente</h1>
+      <h1><img :src="brandPath + (dark ? 'logo-dark.svg' : 'logo-light.svg')" alt="" width="40" height="40" />charpente</h1>
       <p>Explorez les thèmes de chargement sur un accueil vidéo ou une grille de fiches.</p>
     </header>
 
