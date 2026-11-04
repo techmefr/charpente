@@ -28,6 +28,16 @@ describe('recipes', () => {
     }
   })
 
+  it('shapes christmas cards as snowy gifts and keeps the border on text and controls', async () => {
+    const recipes = await discoverThemes(repositoryRoot, 'recipes')
+    const { css } = compile({ themes: recipes })
+    const rules = css.split('\n\n').filter((rule) => rule.includes('[data-charpente-theme="christmas"]'))
+    const block = rules.find((rule) => rule.includes('[data-charpente-block]'))
+    expect(block).toContain('mask-image')
+    expect(block).toContain('border-image: none !important')
+    expect(rules.find((rule) => rule.includes(':is(button, input'))).toContain('border-image: url(')
+  })
+
   it('is not part of the built-in themes', () => {
     const { css } = compile()
     for (const name of ['christmas', 'halloween', 'winter']) expect(css).not.toContain(`data-charpente-theme="${name}"`)

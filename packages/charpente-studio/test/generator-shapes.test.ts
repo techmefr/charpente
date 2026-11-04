@@ -76,3 +76,12 @@ describe('layered shapes in the generator', () => {
     expect(stateToTheme(state)).toEqual({ extends: 'cyberpunk', paint: { block: { shape: 'card' } } })
   })
 })
+
+describe('snowy gift in the generator', () => {
+  it('lists the shape and writes its name', () => {
+    expect(SHAPE_LIBRARY['gift-snow']).toBeDefined()
+    expect(stateToTheme(shaped('gift-snow')).paint?.block?.shape).toBe('gift-snow')
+    expect(themeSource(shaped('gift-snow'))).toContain("shape: 'gift-snow'")
+    expect(previewCss(shaped('gift-snow'), {}, false)).toContain('mask-image')
+  })
+})

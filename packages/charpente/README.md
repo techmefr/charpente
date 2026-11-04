@@ -145,7 +145,7 @@ export default defineTheme({
 })
 ```
 
-Built-in shapes: `gift`, `card`, `avatar`, `label`, `bubble`. Each one is tree-shakable from `charpente/shapes` (register it with `shapes: { gift }` in `charpente/lite`). `blob(seed)` and `organicCard(seed)` draw organic shapes from a seed, and `charpente shape file.svg` turns an SVG into a shape file. In faithful mode block leaves have no slot, and `nativeTheme` ignores shapes. See [layered shapes](https://techmefr.github.io/charpente/layered-shapes/).
+Built-in shapes: `gift`, `gift-snow`, `card`, `avatar`, `label`, `bubble`. Each one is tree-shakable from `charpente/shapes` (register it with `shapes: { gift }` in `charpente/lite`). `blob(seed)` and `organicCard(seed)` draw organic shapes from a seed, and `charpente shape file.svg` turns an SVG into a shape file. In faithful mode block leaves have no slot, and `nativeTheme` ignores shapes. See [layered shapes](https://techmefr.github.io/charpente/layered-shapes/).
 
 ## One theme in a browser or React Native
 

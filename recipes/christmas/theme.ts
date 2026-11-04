@@ -33,6 +33,9 @@ const scatter = ({ seed, width, height, count, min, max, shape }: Layer): string
   return image(body.join(''), width, height)
 }
 
+const GIFTS = ['media', 'block']
+const UNBORDERED = { borderStyle: 'none !important', borderWidth: '0 !important', borderImage: 'none !important' }
+
 const SCALE = { text: 0.45, media: 0.8, control: 0.55, block: 1 }
 
 const paintOf = (type: keyof typeof SCALE, layers: Layer[], ground: string) => {
@@ -42,7 +45,7 @@ const paintOf = (type: keyof typeof SCALE, layers: Layer[], ground: string) => {
     fill: [...layers.map(scatter), ground].join(', '),
     size: layers.map(({ width, height }) => `${(width * scale).toFixed(1)}px ${(height * scale).toFixed(1)}px`).join(', '),
     position: layers.map(({ width, height, dx, dy }) => `${shift(dx, width)} ${shift(dy, height)}`).join(', '),
-    style: { borderRadius: type === 'control' ? '999px' : type === 'text' ? '3px' : '8px' },
+    ...(GIFTS.includes(type) ? { shape: 'gift-snow', style: UNBORDERED } : { style: { borderRadius: type === 'control' ? '999px' : '3px' } }),
   }
 }
 
@@ -72,14 +75,23 @@ const season = (): ThemeDef['paint'] => {
 }
 
 export default {
-  tokens: { base: '#f2a7a7', strong: '#e08585', accent: '#b91c1c', accent2: '#15803d' },
-  dark: { base: '#4a1f24', strong: '#8f3b44', shine: 'rgba(255,255,255,0.16)' },
+  tokens: { base: '#a31621', strong: '#7f1019', accent: '#f5b82e', accent2: '#f8fafc' },
+  dark: { base: '#5c0f18', strong: '#3d0a10', accent: '#e0a526', accent2: '#e2e8f0', shine: 'rgba(255,255,255,0.16)' },
   motion: 'snow',
   paint: season(),
   border: { image: './border.svg', slice: 30, width: '14px' },
   variants: {
-    green: { tokens: { base: '#a3d9b1', strong: '#6fb783', accent: '#15803d', accent2: '#b91c1c' } },
-    gold: { tokens: { base: '#f5d37a', strong: '#d9a93a', accent: '#a16207', accent2: '#b91c1c' } },
-    snow: { tokens: { base: '#bcd9ee', strong: '#7fb6d9', accent: '#0369a1', accent2: '#b91c1c' } },
+    green: {
+      tokens: { base: '#14532d', strong: '#0d3b20', accent: '#f5b82e', accent2: '#f8fafc' },
+      dark: { base: '#0b2e1a', strong: '#06190e', accent: '#e0a526', accent2: '#e2e8f0' },
+    },
+    gold: {
+      tokens: { base: '#c58b17', strong: '#9a6a0c', accent: '#b91c1c', accent2: '#f8fafc' },
+      dark: { base: '#6b4a0a', strong: '#4a3206', accent: '#ef4444', accent2: '#e2e8f0' },
+    },
+    snow: {
+      tokens: { base: '#1d5f94', strong: '#134568', accent: '#e2e8f0', accent2: '#ffffff' },
+      dark: { base: '#0f3556', strong: '#0a2338', accent: '#cbd5e1', accent2: '#e2e8f0' },
+    },
   },
 } satisfies ThemeDef
