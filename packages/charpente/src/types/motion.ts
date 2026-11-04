@@ -6,6 +6,8 @@ export interface MotionOverlay {
   keyframes: Record<string, Declarations>
 }
 
+export type MotionTrace = 'border' | 'line'
+
 export interface MotionDef {
   duration: string
   easing?: string
@@ -13,6 +15,7 @@ export interface MotionDef {
   layer?: string
   ambient?: boolean
   attachment?: string
+  trace?: MotionTrace
   keyframes: Record<string, Declarations>
   container?: Record<string, Declarations>
   overlay?: MotionOverlay

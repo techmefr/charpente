@@ -1,5 +1,5 @@
 import type { BonesData, PaintType, ZoneBones } from '../types'
-import { maskUrl } from './mask'
+import { maskUrl, ringUrl } from './mask'
 
 const LOADING = '[data-charpente-loading]'
 
@@ -27,32 +27,36 @@ const maskDeclarations = (zone: ZoneBones, kinds: PaintType[]): string[] => {
   return [`  -webkit-mask: ${mask} 0 0 / 100% 100% no-repeat;`, `  mask: ${mask} 0 0 / 100% 100% no-repeat;`]
 }
 
-const slotRule = (name: string, zone: ZoneBones, { pseudo, kinds }: (typeof SLOTS)[number]): string => {
+const ringDeclaration = (zone: ZoneBones, kinds: PaintType[]): string[] => [
+  `  --charpente-ring-mask: ${ringUrl({ ...zone, bones: zone.bones.filter((bone) => kinds.includes(bone.kind ?? 'block')) })};`,
+]
+
+const slotRule = (name: string, zone: ZoneBones, { pseudo, kinds }: (typeof SLOTS)[number], ring: boolean): string => {
   const selector = `${LOADING} [data-charpente-capture="${name}"]${pseudo}`
   const head = pseudo
     ? ['  content: "";', '  position: absolute;', '  inset: 0;', '  pointer-events: none;']
     : [`  min-height: ${Math.round(zone.height)}px;`, ...(zone.bones.some((bone) => bone.kind === 'text' || bone.kind === 'media') ? ['  position: relative;'] : [])]
-  return [`${selector} {`, ...head, ...maskDeclarations(zone, kinds), `}`].join('\n')
+  return [`${selector} {`, ...head, ...maskDeclarations(zone, kinds), ...(ring && !pseudo ? ringDeclaration(zone, kinds) : []), `}`].join('\n')
 }
 
-const zoneRule = (name: string, zone: ZoneBones): string =>
+const zoneRule = (name: string, zone: ZoneBones, ring: boolean): string =>
   SLOTS.filter(({ pseudo, kinds }) => !pseudo || zone.bones.some((bone) => kinds.includes(bone.kind ?? 'block')))
-    .map((slot) => slotRule(name, zone, slot))
+    .map((slot) => slotRule(name, zone, slot, ring))
     .join('\n')
 
-const zoneCss = (name: string, sets: Record<string, ZoneBones>): string => {
+const zoneCss = (name: string, sets: Record<string, ZoneBones>, ring: boolean): string => {
   const breakpoints = Object.keys(sets).map(Number).sort((a, b) => a - b)
   return ranges(breakpoints)
     .map(({ breakpoint, from, to }) => {
-      const rule = zoneRule(name, sets[String(breakpoint)] as ZoneBones)
+      const rule = zoneRule(name, sets[String(breakpoint)] as ZoneBones, ring)
       const query = mediaQuery(from, to)
       return query ? `@media ${query} {\n${rule}\n}` : rule
     })
     .join('\n')
 }
 
-export const bonesCss = (data: BonesData): string =>
+export const bonesCss = (data: BonesData, ring = false): string =>
   Object.entries(data)
     .sort(([first], [second]) => first.localeCompare(second))
-    .map(([name, sets]) => zoneCss(name, sets))
+    .map(([name, sets]) => zoneCss(name, sets, ring))
     .join('\n')

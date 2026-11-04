@@ -109,6 +109,8 @@ export const sanitizeState = (input: unknown): GeneratorState => {
     hoverMotion: choice(data.hoverMotion, HOVER_MOTIONS, 'hover motion'),
     motions: [...new Set((data.motions as unknown[]).map((motion) => choice<MotionName>(motion, MOTION_NAMES, 'motion')))],
     speed: bounded(data.speed, 'the speed', 0.1, 5),
+    beamSize: data.beamSize === undefined ? 70 : bounded(data.beamSize, 'the beam size', 10, 360),
+    beamWidth: data.beamWidth === undefined ? 2 : bounded(data.beamWidth, 'the beam width', 1, 12),
     delay: bounded(data.delay, 'the delay', 0, 5000),
     stagger: bounded(data.stagger, 'the stagger', 0, 2000),
   }

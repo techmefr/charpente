@@ -38,6 +38,8 @@ export const maskDeclarations = (shape: ShapeDef): string[] => {
   const silhouette = imageOf(shape, shape.layers.map((layer) => `<path d="${layer.path}"/>`).join(''))
   const entries = [['image', silhouette], ['size', sizeOf(shape)], ['repeat', 'no-repeat'], ['position', 'center']]
   return [
+    `--charpente-shape-mask: ${silhouette}`,
+    `--charpente-shape-fit: ${sizeOf(shape)}`,
     ...entries.flatMap(([name, value]) => [`mask-${name}: ${value}`, `-webkit-mask-${name}: ${value}`]),
     'outline: none',
     'box-shadow: none',

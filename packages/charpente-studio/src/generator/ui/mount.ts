@@ -56,6 +56,9 @@ export const mountGenerator = async (host: HTMLElement, options: GeneratorOption
     if (store.state.extends && !themes[store.state.extends]) return
     previewStyle.textContent = previewCss(store.state, themes, forced)
     root.style.setProperty('--charpente-speed', String(store.state.speed))
+    const unit = store.state.motions.includes('border-beam') ? 'deg' : '%'
+    root.style.setProperty('--charpente-beam-size', `${store.state.beamSize}${unit}`)
+    root.style.setProperty('--charpente-beam-width', `${store.state.beamWidth}px`)
     panel.update(store.state)
     if (options.hash) {
       window.clearTimeout(timer)

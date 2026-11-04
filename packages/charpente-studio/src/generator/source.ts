@@ -15,7 +15,15 @@ export const configSource = (state: GeneratorState): string => {
   return ["import { defineCharpente } from 'charpente'", '', `export default defineCharpente(${toLiteral(config)})`, ''].join('\n')
 }
 
-export const speedSource = (state: GeneratorState): string => `:root {\n  --charpente-speed: ${state.speed};\n}\n`
+const beamLines = (state: GeneratorState): string => {
+  const traced = state.motions.some((motion) => motion === 'border-beam' || motion === 'border-beam-line')
+  if (!traced) return ''
+  const unit = state.motions.includes('border-beam') ? 'deg' : '%'
+  return `  --charpente-beam-size: ${state.beamSize}${unit};\n  --charpente-beam-width: ${state.beamWidth}px;\n`
+}
+
+export const speedSource = (state: GeneratorState): string =>
+  `:root {\n  --charpente-speed: ${state.speed};\n${beamLines(state)}}\n`
 
 export const FILES = {
   theme: 'theme.ts',

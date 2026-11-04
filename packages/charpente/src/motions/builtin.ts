@@ -1,4 +1,5 @@
 import type { MotionDef } from '../types'
+import { beamMotions } from './beam'
 
 const split = (x: number, y: number): string =>
   `drop-shadow(${x}px ${y}px 0 var(--charpente-${x < 0 ? 'accent2' : 'accent'}, ${x < 0 ? '#22d3ee' : '#ec4899'}))`
@@ -17,6 +18,7 @@ const rgb = (alpha: string): string =>
   `repeating-linear-gradient(90deg, rgba(255,0,0,${alpha}) 0 1px, rgba(0,255,0,${alpha}) 1px 2px, rgba(0,0,255,${alpha}) 2px 3px)`
 
 export const builtinMotions: Record<string, MotionDef> = {
+  ...beamMotions,
   waves: flow('10s'),
   matrix: flow('6s'),
   snow: flow('18s'),

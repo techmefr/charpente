@@ -2,7 +2,7 @@ import { builtinMotions, normalizeMotion } from '../motions'
 import { validateSchedule } from '../schedule'
 import { assertAvailable, builtinThemes, resolveTheme, withVariants } from '../themes'
 import { builtinShapes } from '../shapes'
-import type { CharpenteConfig, CompileResult, ShapeDef, ThemeDef } from '../types'
+import type { CharpenteConfig, CompileResult, MotionDef, ShapeDef, ThemeDef } from '../types'
 import { bonesCss } from '../bones'
 import { baseCss } from './base'
 import { keyframesCss, motionCss } from './motion'
@@ -11,6 +11,8 @@ import { selectThemes } from './selection'
 import { themeCss } from './theme'
 import { themeMotions } from './theme-motion'
 import { tokensCss } from './tokens'
+
+const usesTrace = (motions: Record<string, MotionDef>, names: string[]): boolean => names.some((name) => motions[name]?.trace)
 
 export const createCompiler =
   (registry: Record<string, ThemeDef>, onlyRegistry = false, shapeRegistry: Record<string, ShapeDef> = {}) =>
@@ -41,11 +43,13 @@ export const createCompiler =
       ),
       motionCss(motions, defaultMotion, delay, stagger, warnings, Boolean(config.bones), themed),
       revealCss(config.reveal ?? 0),
-      ...(config.bones ? [bonesCss(config.bones)] : []),
+      ...(config.bones ? [bonesCss(config.bones, usesTrace(motions, [...defaultMotion, ...themed.flatMap(({ names }) => names)]))] : []),
     ].join('\n')
 
     const css = [
       `@property --charpente-shine-x { syntax: '<percentage>'; inherits: false; initial-value: -80%; }`,
+      `@property --charpente-beam-angle { syntax: '<angle>'; inherits: true; initial-value: 40deg; }`,
+      `@property --charpente-beam-x { syntax: '<percentage>'; inherits: true; initial-value: 50%; }`,
       `@property --charpente-flow { syntax: '<number>'; inherits: false; initial-value: 0; }`,
       `@keyframes charpente-reveal { from { visibility: hidden; } to { visibility: visible; } }`,
       `@keyframes charpente-reveal-in { from { opacity: 0; } to { opacity: 1; } }`,

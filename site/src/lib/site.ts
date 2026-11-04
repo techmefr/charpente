@@ -37,4 +37,7 @@ export const MOTIONS = [
   { name: 'pulse', note: 'Opacity breathing, offset by position with stagger' },
   { name: 'glitch', note: 'Brief bursts where the skeleton splits into a cyan and magenta ghost' },
   { name: 'crt', note: 'Scrolling scanlines, phosphor glow, faint flicker and a dark vignette' },
+  { name: 'beam', note: 'Thin diagonal band with a sharp core and a soft halo crossing each shape' },
+  { name: 'border-beam', note: 'A beam with a halo travelling all around the border of each shape' },
+  { name: 'border-beam-line', note: 'A beam gliding back and forth along the bottom edge' },
 ]

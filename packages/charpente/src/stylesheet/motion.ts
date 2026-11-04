@@ -1,6 +1,7 @@
 import { declarations } from '../css'
 import type { MotionDef } from '../types'
 import { overlayKeyframes, overlayRules } from './overlay'
+import { traceRules } from './trace'
 import { LOADING, allLeaves, capturedLeaves } from './selectors'
 import type { ThemeMotion } from './theme-motion'
 
@@ -88,7 +89,7 @@ export const motionCss = (
   }
 
   const containerRule = (scopes: string[], names: string[]): string[] => {
-    const extra = overlayRules(scopes, names, motions, speed, delayVar)
+    const extra = [...overlayRules(scopes, names, motions, speed, delayVar), ...traceRules(scopes, names, motions, captured)]
     const own = names.filter((name) => motions[name]?.container)
     if (own.length === 0) return extra
     const animations = own.map((name) => {
@@ -109,6 +110,7 @@ export const motionCss = (
     ...themed.map(({ scopes, names }) => rule(scopes, names, true)),
     ...containerRule([`${LOADING}:not([data-charpente-motion])`], defaultNames),
     ...subsets(allNames).flatMap((names) => containerRule(motionScopes(names, allNames), names)),
+    ...ambient.flatMap((name) => containerRule([`${LOADING}[data-charpente-motion="${name}"]`], [name])),
     ...themed.flatMap(({ scopes, names }) => containerRule(scopes, names)),
     `@media (prefers-reduced-motion: reduce) {\n  ${LOADING} {\n    animation: none !important;\n  }\n}`,
   ]

@@ -1,6 +1,6 @@
 ---
 title: Motions and timing
-description: Shimmer, pulse, glitch and crt; each motion rendered, the delay before appearing, the offset between elements, combinations and their conflicts.
+description: Shimmer, beam, border beam, pulse, glitch and crt; each motion rendered, the delay before appearing, the offset between elements, combinations and their conflicts.
 ---
 
 import { Aside } from '@astrojs/starlight/components'
@@ -39,9 +39,31 @@ The scanlines, the optional RGB mask and the vignette are drawn on an overlay of
 defineCharpente({ defaultTheme: "crt", motion: "crt" })
 ```
 
+## Border beam
+
+`border-beam` sends a beam of light with a halo around the border of every block and button, in the `accent` and `accent2` tokens with a fallback. The ring is drawn on the `::before` (halo) and `::after` (core) of each shape, painted by a conic gradient whose angle is the registered property `--charpente-beam-angle`, and cut into a ring with `mask-composite: exclude`. Rounded corners are followed natively. A shape with a `shape` follows its own silhouette: the ring is the difference between the silhouette and a smaller copy of it. Captured zones get a ring generated from their bones, 3px wide.
+
+`border-beam-line` keeps the beam on the bottom edge only and moves it back and forth with `--charpente-beam-x`.
+
+Both are exclusive in the `data-charpente-motion` attribute (like the ambient motions); set several in the configuration with `motion: ["border-beam", "pulse"]`. Three variables tune them, on `:root` or on one area:
+
+- `--charpente-beam-size`: opening of the beam, `70deg` for `border-beam`, `40%` of the edge for the line.
+- `--charpente-beam-width`: thickness of the core, `2px`.
+- `--charpente-beam-glow`: spread of the halo, `6px`.
+
+The speed follows `--charpente-speed`. Under `prefers-reduced-motion` the beam stops at a fixed position and stays visible. The generator exposes the three motions and the size and width settings, written to `speed.css`.
+
+```ts
+defineCharpente({ motion: "border-beam" })
+```
+
+## Beam shimmer
+
+`beam` is a variant of `shimmer`: a thin diagonal band with a sharp core and a soft halo crosses each shape, through the same background layer as the shimmer. It is exclusive in the attribute too.
+
 ## Speed
 
-Durations are tuned to be neither nervous nor sluggish: `shimmer` 1.8s, `sweep` 2.4s, `pulse` 1.6s, `glitch` 3.4s (one burst per cycle), `crt` 5s (7s for the scanline scroll), all with `ease-in-out` except the stepped `glitch` and the linear `crt`. Every duration is multiplied by `--charpente-speed` (default `1`): `style="--charpente-speed: 0.5"` makes the motions twice as fast, `2` twice as slow. It can be set on `:root` or on one area.
+Durations are tuned to be neither nervous nor sluggish: `shimmer` 1.8s, `sweep` 2.4s, `pulse` 1.6s, `glitch` 3.4s (one burst per cycle), `crt` 5s (7s for the scanline scroll), `beam` 2.2s, `border-beam` 3.2s, `border-beam-line` 2.8s, all with `ease-in-out` except the stepped `glitch` and the linear `crt`. Every duration is multiplied by `--charpente-speed` (default `1`): `style="--charpente-speed: 0.5"` makes the motions twice as fast, `2` twice as slow. It can be set on `:root` or on one area.
 
 ## One sweep across the page
 

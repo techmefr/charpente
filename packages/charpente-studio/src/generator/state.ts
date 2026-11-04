@@ -4,7 +4,7 @@ import { customRoles } from './shapes'
 export const LEAVES: readonly PaintType[] = ['text', 'media', 'block', 'control']
 export const TOKENS = ['base', 'strong', 'shine', 'accent', 'accent2'] as const
 export const COLOR_KEYS = ['base', 'strong', 'accent', 'accent2'] as const
-export const MOTION_NAMES = ['shimmer', 'sweep', 'pulse', 'glitch', 'crt'] as const
+export const MOTION_NAMES = ['shimmer', 'sweep', 'pulse', 'glitch', 'crt', 'beam', 'border-beam', 'border-beam-line'] as const
 export const BORDER_KINDS = ['inherit', 'none', 'solid', 'dashed', 'dotted', 'double', 'groove', 'outline', 'inset', 'diagonal'] as const
 export const HOVER_MOTIONS = ['inherit', 'none', 'pause', 'faster'] as const
 
@@ -39,6 +39,8 @@ export interface GeneratorState {
   hoverMotion: HoverMotion | 'inherit'
   motions: MotionName[]
   speed: number
+  beamSize: number
+  beamWidth: number
   delay: number
   stagger: number
 }
@@ -76,6 +78,8 @@ export const baseState = (): GeneratorState => ({
   hoverMotion: 'inherit',
   motions: ['shimmer'],
   speed: 1,
+  beamSize: 70,
+  beamWidth: 2,
   delay: 120,
   stagger: 0,
 })

@@ -61,6 +61,8 @@ export const motionSection = (store: Store): Control => {
     return input
   }
   const speed = number(0.25, 3, 0.05, (value) => (store.state.speed = value))
+  const beamSize = number(10, 360, 5, (value) => (store.state.beamSize = value))
+  const beamWidth = number(1, 12, 1, (value) => (store.state.beamWidth = value))
   const delay = number(0, 2000, 10, (value) => (store.state.delay = value))
   const stagger = number(0, 1000, 10, (value) => (store.state.stagger = value))
   const { root } = section(
@@ -68,6 +70,8 @@ export const motionSection = (store: Store): Control => {
     false,
     h('div', { class: 'gen-chips', role: 'group', 'aria-label': 'Motions' }, ...boxes.map((box) => box.label)),
     labelled('Duration multiplier (--charpente-speed)', speed, 'Above 1 is slower, below 1 is faster.'),
+    labelled('Beam size (--charpente-beam-size)', beamSize, 'Degrees around the border, percent of the edge for the line.'),
+    labelled('Beam width (px)', beamWidth, 'Thickness of the border beam.'),
     labelled('Delay (ms)', delay),
     labelled('Stagger (ms)', stagger),
   )
@@ -75,7 +79,7 @@ export const motionSection = (store: Store): Control => {
     root,
     refresh: () => {
       for (const box of boxes) box.input.checked = store.state.motions.includes(box.motion)
-      for (const [input, value] of [[speed, store.state.speed], [delay, store.state.delay], [stagger, store.state.stagger]] as const) {
+      for (const [input, value] of [[speed, store.state.speed], [beamSize, store.state.beamSize], [beamWidth, store.state.beamWidth], [delay, store.state.delay], [stagger, store.state.stagger]] as const) {
         if (document.activeElement !== input) input.value = String(value)
       }
     },
