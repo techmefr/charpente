@@ -1,45 +1,63 @@
 import { builtinMotions, normalizeMotion } from '../motions'
 import { validateSchedule } from '../schedule'
-import { builtinThemes, resolveTheme, withVariants } from '../themes'
-import type { CharpenteConfig, CompileResult } from '../types'
+import { assertAvailable, builtinThemes, resolveTheme, withVariants } from '../themes'
+import { builtinShapes } from '../shapes'
+import type { CharpenteConfig, CompileResult, MotionDef, ShapeDef, ThemeDef } from '../types'
 import { bonesCss } from '../bones'
 import { baseCss } from './base'
 import { keyframesCss, motionCss } from './motion'
 import { revealCss } from './reveal'
 import { selectThemes } from './selection'
 import { themeCss } from './theme'
+import { themeMotions } from './theme-motion'
 import { tokensCss } from './tokens'
 
-export function compile(config: CharpenteConfig = {}): CompileResult {
-  const warnings: string[] = []
-  const themes = withVariants({ ...builtinThemes, ...config.themes })
-  const motions = { ...builtinMotions, ...config.motions }
-  const defaultTheme = config.defaultTheme ?? 'solid'
-  const defaultMotion = normalizeMotion(config.motion ?? 'shimmer', motions)
-  const delay = config.timing?.delay ?? 120
-  const stagger = config.timing?.stagger ?? 0
+const usesTrace = (motions: Record<string, MotionDef>, names: string[]): boolean => names.some((name) => motions[name]?.trace)
 
-  resolveTheme(defaultTheme, themes)
-  validateSchedule(config.schedule ?? [], Object.keys(themes), config.timeZone)
+export const createCompiler =
+  (registry: Record<string, ThemeDef>, onlyRegistry = false, shapeRegistry: Record<string, ShapeDef> = {}) =>
+  (config: CharpenteConfig = {}): CompileResult => {
+    const warnings: string[] = []
+    const themes = withVariants({ ...registry, ...config.themes })
+    if (onlyRegistry) {
+      const named = [config.defaultTheme, ...(config.include ?? []), ...(config.schedule ?? []).map((entry) => entry.theme)]
+      assertAvailable(named, themes)
+    }
+    const shapes = { ...shapeRegistry, ...config.shapes }
+    const motions = { ...builtinMotions, ...config.motions }
+    const defaultTheme = config.defaultTheme ?? 'solid'
+    const defaultMotion = normalizeMotion(config.motion ?? 'shimmer', motions)
+    const delay = config.timing?.delay ?? 120
+    const stagger = config.timing?.stagger ?? 0
 
-  const layered = [
-    tokensCss(config),
-    baseCss(),
-    ...selectThemes(config, themes).map((name) =>
-      themeCss(name, name === defaultTheme, themes, config.colorScheme, Boolean(config.bones)),
-    ),
-    motionCss(motions, defaultMotion, delay, stagger, warnings, Boolean(config.bones)),
-    revealCss(config.reveal ?? 0),
-    ...(config.bones ? [bonesCss(config.bones)] : []),
-  ].join('\n')
+    resolveTheme(defaultTheme, themes)
+    validateSchedule(config.schedule ?? [], Object.keys(themes), config.timeZone)
 
-  const css = [
-    `@property --charpente-shine-x { syntax: '<percentage>'; inherits: false; initial-value: -80%; }`,
-    `@keyframes charpente-reveal { from { visibility: hidden; } to { visibility: visible; } }`,
-    `@keyframes charpente-reveal-in { from { opacity: 0; } to { opacity: 1; } }`,
-    ...Object.entries(motions).map(([name, motion]) => keyframesCss(name, motion)),
-    `@layer charpente {\n${layered}\n}`,
-  ].join('\n')
+    const selected = selectThemes(config, themes)
+    const themed = config.motion === undefined ? themeMotions(selected, themes, motions, defaultTheme) : []
+    const layered = [
+      tokensCss(config),
+      baseCss(),
+      ...selected.map((name) =>
+        themeCss(name, name === defaultTheme, themes, config.colorScheme, Boolean(config.bones), shapes),
+      ),
+      motionCss(motions, defaultMotion, delay, stagger, warnings, Boolean(config.bones), themed),
+      revealCss(config.reveal ?? 0),
+      ...(config.bones ? [bonesCss(config.bones, usesTrace(motions, [...defaultMotion, ...themed.flatMap(({ names }) => names)]))] : []),
+    ].join('\n')
 
-  return { css, warnings }
-}
+    const css = [
+      `@property --charpente-shine-x { syntax: '<percentage>'; inherits: false; initial-value: -80%; }`,
+      `@property --charpente-beam-angle { syntax: '<angle>'; inherits: true; initial-value: 40deg; }`,
+      `@property --charpente-beam-x { syntax: '<percentage>'; inherits: true; initial-value: 50%; }`,
+      `@property --charpente-flow { syntax: '<number>'; inherits: false; initial-value: 0; }`,
+      `@keyframes charpente-reveal { from { visibility: hidden; } to { visibility: visible; } }`,
+      `@keyframes charpente-reveal-in { from { opacity: 0; } to { opacity: 1; } }`,
+      ...Object.entries(motions).map(([name, motion]) => keyframesCss(name, motion)),
+      `@layer charpente {\n${layered}\n}`,
+    ].join('\n')
+
+    return { css, warnings }
+  }
+
+export const compile = (config: CharpenteConfig = {}): CompileResult => createCompiler(builtinThemes, false, builtinShapes)(config)

@@ -12,6 +12,7 @@ export const slugs = [
   'capture',
   'create-a-theme',
   'playground',
+  'generator',
   'accessibility',
 ]
 

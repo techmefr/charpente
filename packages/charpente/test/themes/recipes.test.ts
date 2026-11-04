@@ -19,12 +19,38 @@ describe('recipes', () => {
     }
   })
 
-  it('draws the christmas gift border and ships its wrapping papers as variants', async () => {
+  it('wraps every christmas leaf in a snowy gift and ships its wrapping papers as variants', async () => {
     const recipes = await discoverThemes(repositoryRoot, 'recipes')
     const { css } = compile({ themes: recipes })
-    expect(css).toContain('border-image: url("data:image/svg+xml')
-    for (const paper of ['christmas', 'christmas-green', 'christmas-gold', 'christmas-snow']) {
+    expect(css).toContain('mask-image: url("data:image/svg+xml')
+    for (const paper of ['christmas', 'christmas-green', 'christmas-cream', 'christmas-red', 'christmas-kraft-green']) {
       expect(css).toContain(`[data-charpente-theme="${paper}"]`)
+    }
+  })
+
+  it('stretches a snowy gift over every christmas leaf type without a border', async () => {
+    const recipes = await discoverThemes(repositoryRoot, 'recipes')
+    const { css } = compile({ themes: recipes })
+    const scope = '[data-charpente-loading][data-charpente-theme="christmas"]'
+    for (const selector of [':is(img, svg', ':is(button, input', '[data-charpente-block]', ':not(:has(*))']) {
+      const start = css.indexOf(`${scope} ${selector}`)
+      const rule = css.slice(start, css.indexOf('}', start))
+      expect(start, selector).toBeGreaterThan(-1)
+      expect(rule, selector).toContain('mask-size: 100% 100%')
+      expect(rule, selector).not.toContain('border-image')
+    }
+  })
+
+  it('ships winter as a frosted glass and a snowy variant that wraps every leaf in a snow cap', async () => {
+    const recipes = await discoverThemes(repositoryRoot, 'recipes')
+    const { css } = compile({ themes: recipes })
+    for (const theme of ['winter', 'winter-snow']) {
+      const scope = `[data-charpente-loading][data-charpente-theme="${theme}"]`
+      for (const selector of [':is(img, svg', ':is(button, input', '[data-charpente-block]', ':not(:has(*))']) {
+        const start = css.indexOf(`${scope} ${selector}`)
+        expect(start, `${theme} ${selector}`).toBeGreaterThan(-1)
+        expect(css.slice(start, css.indexOf('}', start)), `${theme} ${selector}`).toContain('mask-image')
+      }
     }
   })
 

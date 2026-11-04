@@ -1,12 +1,22 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { Charpente } from 'charpente-vue'
+import * as builtins from 'charpente/themes'
+import type { ThemeDef } from 'charpente'
 
-const themes = ['solid', 'outline', 'dots', 'cyberpunk', 'web', 'glass', 'frost', 'smoked', 'mint']
-const motions = ['shimmer', 'pulse', 'glitch']
+const recipes = import.meta.glob('../../recipes/*/theme.ts', { eager: true, import: 'default' }) as Record<string, ThemeDef>
+const seasonal = Object.entries(recipes).flatMap(([path, definition]) => {
+  const name = path.split('/').at(-2)!
+  return [name, ...Object.keys(definition.variants ?? {}).map((variant) => `${name}-${variant}`)]
+})
+const themes = [...Object.keys(builtins), 'mint', ...seasonal].sort()
+const layout = ref('videos')
+const brandPath = `${import.meta.env.BASE_URL}brand/`
+
+const motions = ['shimmer', 'sweep', 'pulse', 'glitch', 'crt', 'beam', 'border-beam', 'border-beam-line']
 
 const loading = ref(true)
-const theme = ref('solid')
+const theme = ref('winter-topo')
 const motion = ref<string[]>(['shimmer'])
 const delay = ref(120)
 const stagger = ref(40)
@@ -45,20 +55,30 @@ const people = [
 
 const placeholder = { name: 'Nom du collaborateur', role: 'Fonction du poste', bio: 'Une courte présentation qui occupe la place du texte réel pendant le chargement de la fiche.' }
 
-const items = computed(() => people.map((person) => (loading.value ? placeholder : person)))
+const items = computed(() => {
+  const entries = layout.value === 'videos' ? [...people, ...people] : people
+  return entries.map((person) => loading.value ? placeholder : person)
+})
 </script>
 
 <template>
   <main class="page">
     <header class="page__head">
-      <h1><img :src="dark ? '/brand/logo-dark.svg' : '/brand/logo-light.svg'" alt="" width="40" height="40" />charpente</h1>
-      <p>Skeleton loaders en CSS pur. Le thème, la motion et le timing sont indépendants.</p>
+      <h1><img :src="brandPath + (dark ? 'logo-dark.svg' : 'logo-light.svg')" alt="" width="40" height="40" />charpente</h1>
+      <p>Explorez les thèmes de chargement sur un accueil vidéo ou une grille de fiches.</p>
     </header>
 
     <section class="panel" aria-label="Réglages">
       <label>Thème
         <select v-model="theme">
           <option v-for="name in themes" :key="name" :value="name">{{ name }}</option>
+        </select>
+      </label>
+
+      <label>Disposition
+        <select v-model="layout">
+          <option value="videos">Accueil vidéo</option>
+          <option value="cards">Fiches</option>
         </select>
       </label>
 
@@ -98,14 +118,18 @@ const items = computed(() => people.map((person) => (loading.value ? placeholder
     <Charpente
       :loading="loading"
       :theme="theme"
-      :motion="motion"
+      :motion="motion.length ? motion : undefined"
       :delay="delay"
       :stagger="stagger"
       label="Chargement des fiches"
       class="grid"
-      :class="{ 'grid--glass': isGlass && loading }"
+      :class="{ 'grid--glass': isGlass && loading, 'grid--videos': layout === 'videos', 'grid--cyberpunk': loading && theme === 'cyberpunk' }"
       :style="glassStyle"
     >
+      <nav v-if="layout === 'videos'" class="video-nav" aria-label="Catégories">
+        <strong>Charpente Vidéos</strong>
+        <span>Accueil</span><span>Découvrir</span><span>Abonnements</span>
+      </nav>
       <article v-for="(person, index) in items" :key="index" class="card">
         <div class="card__banner" data-charpente-block></div>
         <div class="card__row">
@@ -115,8 +139,8 @@ const items = computed(() => people.map((person) => (loading.value ? placeholder
             <span class="card__role">{{ person.role }}</span>
           </div>
         </div>
-        <p>{{ person.bio }}</p>
-        <div class="card__actions">
+        <p v-if="layout === 'cards'">{{ person.bio }}</p>
+        <div v-if="layout === 'cards'" class="card__actions">
           <button type="button">Contacter</button>
           <input type="text" placeholder="Note" aria-label="Note" />
         </div>

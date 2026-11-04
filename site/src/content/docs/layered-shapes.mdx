@@ -1,0 +1,87 @@
+---
+title: Layered shapes
+description: 'Draw a leaf as an SVG with roles: the body takes the theme paint, the accents take the theme colors. Includes a library, seeded organic shapes and an SVG importer.'
+---
+
+import { Aside } from '@astrojs/starlight/components'
+
+`radius` and `clip-path` cut a leaf into a silhouette. A layered shape goes further: it is an SVG whose every layer has a role, rendered in pure CSS.
+
+- `body` layers are only a silhouette. They show the paint of the theme (dots, stripes, neon, aurora...), so the shape follows any theme.
+- `accent` and `accent2` layers use the accent colors of the theme, resolved for light and dark.
+- `detail` darkens and `shine` lightens what lies under them.
+
+Example: the `gift` shape. The box and the lid are `body`, the ribbons and the bow are `accent`, the knot is `accent2`.
+
+## Use a shape in a theme
+
+Reference a shape by name in the paint of a leaf type. Names work in `charpente.config.ts`, in theme folders, with the Vite plugin and with the CLI.
+
+```ts title="themes/birthday/theme.ts"
+import { defineTheme } from 'charpente'
+
+export default defineTheme({
+  tokens: { accent: '#ec4899', accent2: '#facc15' },
+  dark: { accent: '#f472b6' },
+  pattern: 'dots',
+  paint: {
+    media: { shape: 'gift' },
+    block: { shape: 'gift' },
+  },
+})
+```
+
+The built-in shapes are `gift`, `gift-wrap` (stretched paper with a ribbon cross over its whole width and height and a fixed-ratio bow, used by the christmas recipe), `gift-wrap-band` (the same for thin bars, with one ribbon), `frost-card` and `frost-chip` (frosted glass with a thick snow cap and frost ferns anchored in two corners, used by the winter recipe), `snow-cap` and `snow-cap-chip` (a plain body under a thick overhanging snow mass with icicles, or two small snow tufts, used by the winter-snow variant), `card` (organic corners), `avatar` (blob with a status dot), `label` and `bubble`.
+
+## Stretched shapes with a fixed part
+
+With `stretch: true` the layers fill the whole leaf. Add `fixed: { viewBox, layers, size }` to draw a second group that keeps its ratio and is centered, such as a bow on a stretched ribbon: `size` is a CSS background size like `auto 64%`. `fixed` can be a list, and `position` anchors a part, for example `left 2px top 15%` for a corner ornament. Give an `accent` or `accent2` layer `gradient: x | y | d` to shade it from the theme color (hex colors only), and `opacity` to tune a `detail` or `shine` layer.
+
+## Tree-shakable shapes with the lite entry
+
+Like themes, each shape lives in its own file and is exported from `charpente/shapes`. With `charpente/lite`, import only what you use and pass it in `shapes`:
+
+```ts title="charpente.config.ts"
+import { defineCharpente } from 'charpente/lite'
+import { gift } from 'charpente/shapes'
+
+export default defineCharpente({
+  shapes: { gift },
+  themes: { party: { paint: { block: { shape: 'gift' } } } },
+})
+```
+
+Using a name that is not registered fails with an error that says how to import it. Without a registry, a theme can also hold the shape object directly: `shape: { viewBox: [100, 100], layers: [{ path: 'M...', role: 'body' }] }`. Add `stretch: true` to fill the box instead of fitting inside it.
+
+## Organic shapes with a seed
+
+`blob(seed)` and `organicCard(seed)` draw the same natural-looking shape for the same seed, and a different one for another seed.
+
+```ts
+import { blob, organicCard } from 'charpente/shapes'
+
+const avatar = blob(42)
+const card = organicCard(7, 320, 200)
+```
+
+## Import an SVG
+
+```sh
+charpente shape gift.svg
+```
+
+The command reads the SVG, groups its paths by fill color, proposes a role for each group (the largest area becomes `body`, the others `accent`, `accent2`, `detail`) and writes `shapes/gift.ts`. Check the roles, then register the shape in `shapes`. Paths are measured by their bounding box, so the choice of body is a proposal: change it by hand when needed.
+
+## In the generator
+
+The [generator](/charpente/generator/) has a Layered shapes section in Shapes: pick a shape, change the role of each layer, see it live with the chosen paint, and get the `shape` field in the generated `theme.ts`. With all leaves selected, the shape goes on media and block.
+
+## How it renders
+
+The silhouette of all layers is a `mask-image`, and the non-body layers are an SVG `background-image` drawn over the theme paint, with the accent colors written into the SVG. A base color sits under the paint so light patterns such as dots stay readable. The same rule applies to the leaves painted in faithful mode (media and text slots), and to the hover fill.
+
+<Aside type="caution">
+Limits. The accent colors are resolved when the stylesheet is built: a theme token written as `var(...)` falls back to the default accent. The hover fill keeps the light accent colors. Shapes are CSS only and do not apply to `nativeTheme` (React Native). The shape replaces `border-radius`, `outline` and `box-shadow` on its leaf, since the mask would cut them. In faithful mode, block leaves have no capture slot, so a shape on blocks applies to the real elements only.
+</Aside>
+
+Motions keep working: the shimmer band is clipped by the silhouette, and `prefers-reduced-motion` is honored as for every other paint.

@@ -5,6 +5,7 @@ description: 'Step-by-step tutorial: start from an existing theme with extends, 
 
 import { Aside } from '@astrojs/starlight/components'
 import ThemeStage from '../../components/ThemeStage.astro'
+import HoverDemo from '../../components/HoverDemo.astro'
 
 We start from `solid`, change the colors, add a paint, then a motion. Each step is rendered next to its code, with the real CSS generated from this site's configuration file.
 
@@ -53,6 +54,29 @@ themes: {
 ```
 
 <ThemeStage label="Theme brume-ronde" theme="brume-ronde" />
+
+## Add a hover
+
+A theme can also react to the pointer. This one extends `brume`, gives each type a hover and pauses the animation under the pointer. Hover a shape to see it. Hover needs an area without `inert`, as in this demo.
+
+```ts title="charpente.config.ts"
+themes: {
+  'survol-fin': {
+    extends: 'brume',
+    hover: {
+      text: { fill: 'linear-gradient(var(--charpente-accent), var(--charpente-accent))', radius: '999px' },
+      media: { border: '3px solid var(--charpente-accent)' },
+      control: { style: { opacity: '0.6' } },
+      block: { fill: 'linear-gradient(var(--charpente-accent2), var(--charpente-accent2))' },
+    },
+    hoverMotion: 'pause',
+  },
+}
+```
+
+<HoverDemo label="Theme survol-fin" theme="survol-fin" />
+
+For a plain color change, `hover: 'accent'` is enough: a token name or a color paints every type. Hover is ignored on React Native.
 
 ## Scale-aware short format
 

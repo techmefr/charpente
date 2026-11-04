@@ -4,7 +4,6 @@ export default defineCharpente({
   themesDir: '../recipes',
   defaultTheme: 'solid',
   timeZone: 'Europe/Paris',
-  motion: 'shimmer',
   timing: { delay: 120, stagger: 60 },
   colorScheme: { dark: '[data-theme="dark"]' },
   schedule: [
@@ -43,6 +42,20 @@ export default defineCharpente({
           fill: 'repeating-linear-gradient(45deg, var(--charpente-base) 0 10px, var(--charpente-strong) 10px 20px)',
         },
       },
+    },
+    survol: {
+      extends: 'solid',
+      hover: 'accent',
+    },
+    'survol-fin': {
+      extends: 'brume',
+      hover: {
+        text: { fill: 'linear-gradient(var(--charpente-accent), var(--charpente-accent))', radius: '999px' },
+        media: { border: '3px solid var(--charpente-accent)' },
+        control: { style: { opacity: '0.6' } },
+        block: { fill: 'linear-gradient(var(--charpente-accent2), var(--charpente-accent2))' },
+      },
+      hoverMotion: 'pause',
     },
   },
   motions: {

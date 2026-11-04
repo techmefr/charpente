@@ -45,13 +45,13 @@ Many skeleton libraries ask you to draw placeholder shapes yourself and ship Jav
 | --- | --- | --- |
 | Placeholder shapes | Described or duplicated by hand | Detected automatically from your real layout |
 | Runtime cost | JavaScript components | CSS generated at build time |
-| Look and feel | Configured per component | One config file, 28 themes plus recipes |
+| Look and feel | Configured per component | One config file, 18 themes plus recipes |
 | Frameworks | Often a single one | Vue, React, Svelte, Solid, Angular, Astro, Blade and vanilla |
 
 ## Looks, motion and timing
 
 <p align="center">
-  <img src="site/public/readme/looks.gif" alt="The same list switching between cyberpunk, blueprint, brutalist, aurora, neon, christmas, paper and vegas themes" width="520">
+  <img src="site/public/readme/looks.gif" alt="The same list switching between cyberpunk, blueprint, brutalist, aurora, neon and christmas themes" width="520">
 </p>
 
 <p align="center">
@@ -127,6 +127,19 @@ import virtual:charpente.css
 ```
 
 Remove the attributes when your content is ready.
+
+## Import one theme
+
+Built-in theme names in `theme:` work with the Vite plugin and the CLI (Node build, no JavaScript at runtime). In a browser or React Native, import the theme object instead:
+
+```ts
+import { compile } from charpente/lite
+import { cyberpunk } from charpente/themes
+
+compile({ themes: { cyberpunk }, defaultTheme: cyberpunk })
+```
+
+Only the themes you import end up in your bundle: `compile` goes from 24.2 kB to 14.6 kB minified with one theme, `nativeTheme` from 14.8 kB to 4.2 kB.
 
 ## Go further
 

@@ -16,13 +16,14 @@ const extra = `export default defineCharpente({
 <StarlightPage
   frontmatter={{
     title: 'Themes',
-    description: 'The 35 charpente themes rendered with real elements: base, use cases, atlas, seasons and holidays.',
+    description: 'Charpente themes rendered with real elements: base, use cases, atlas, seasons and holidays.',
     tableOfContents: false,
   }}
 >
   <p>
     A theme describes how to paint four families of elements: text, media, controls and blocks.
     Each card below is real markup in its loading state.
+    <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/demo/`}>Open the video and card demo</a>.
   </p>
   <p>
     Choose the theme of an area with <code>data-charpente-theme</code>, or of an entire site with
@@ -37,7 +38,7 @@ const extra = `export default defineCharpente({
       <label class="field">
         <span>Motion for the whole gallery</span>
         <select id="gallery-motion">
-          <option value="">Site default (shimmer)</option>
+          <option value="">Theme default</option>
           {MOTIONS.map((motion) => <option value={motion.name}>{motion.name}</option>)}
           <option value="pulse shimmer">pulse + shimmer</option>
           <option value="none">None (none)</option>

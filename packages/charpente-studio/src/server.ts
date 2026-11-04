@@ -1,8 +1,11 @@
 import { readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { studioPage } from './page'
-import { ThemeExistsError, listThemes, saveTheme, themeBase } from './store'
+import { themeSource as generatedSource } from './generator/source'
+import { sanitizeState } from './generator/validate'
+import { ThemeExistsError, listThemes, saveTheme, themeBase, writeTheme } from './store'
 import { validateForm } from './theme-file'
 
 export interface StudioOptions {
@@ -12,7 +15,7 @@ export interface StudioOptions {
   clientPath: string
 }
 
-export const MAX_BODY = 10_000
+export const MAX_BODY = 100_000
 
 const NOSNIFF = { 'x-content-type-options': 'nosniff' }
 const PAGE_HEADERS = {
@@ -64,7 +67,12 @@ const guard = (request: IncomingMessage, port: number): void => {
 
 const save = async (request: IncomingMessage, response: ServerResponse, { root, dir }: StudioOptions): Promise<void> => {
   const input: unknown = JSON.parse(await readBody(request))
-  const overwrite = typeof input === 'object' && input !== null && (input as Record<string, unknown>).overwrite === true
+  const fields = typeof input === 'object' && input !== null ? (input as Record<string, unknown>) : {}
+  const overwrite = fields.overwrite === true
+  if ('state' in fields) {
+    const state = sanitizeState(fields.state)
+    return sendJson(response, 200, { file: writeTheme(root, dir, state.name, generatedSource(state), overwrite) })
+  }
   sendJson(response, 200, { file: saveTheme(root, dir, validateForm(input), overwrite) })
 }
 
@@ -73,6 +81,7 @@ const handle = async (request: IncomingMessage, response: ServerResponse, option
   const { pathname } = new URL(request.url ?? '/', 'http://localhost')
   if (request.method === 'GET' && pathname === '/') return send(response, 200, 'text/html', studioPage(), PAGE_HEADERS)
   if (request.method === 'GET' && pathname === '/client.js') return send(response, 200, 'text/javascript', readFileSync(options.clientPath, 'utf8'), NOSNIFF)
+  if (request.method === 'GET' && pathname === '/themes.js') return send(response, 200, 'text/javascript', readFileSync(join(dirname(options.clientPath), 'themes.js'), 'utf8'), NOSNIFF)
   if (request.method === 'GET' && pathname === '/api/themes') return sendJson(response, 200, listThemes(options.root, options.dir))
   if (request.method === 'POST' && pathname === '/api/themes') return save(request, response, options)
   send(response, 404, 'text/plain', 'not found', NOSNIFF)
