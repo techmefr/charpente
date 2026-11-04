@@ -28,7 +28,7 @@ The Vite plugin generates the CSS at build time. Skeleton painting and animation
 
 | Appearance | Movement | Timing |
 | --- | --- | --- |
-| 29 built-in themes, ready-made recipes, custom tokens, light and dark modes | Shimmer, pulse, glitch and crt, alone or combined | Delay to avoid flashes on fast loads; stagger between elements |
+| 20 built-in themes, ready-made recipes, custom tokens, light and dark modes | Shimmer, pulse, glitch and crt, alone or combined | Delay to avoid flashes on fast loads; stagger between elements |
 
 ## Get started
 
@@ -149,7 +149,7 @@ Built-in shapes: `gift`, `gift-wrap`, `gift-wrap-band`, `frost-card`, `frost-chi
 
 ## One theme in a browser or React Native
 
-Theme names such as `theme: cyberpunk` are resolved by the Vite plugin and the CLI, in Node. To run `compile` or `nativeTheme` in a browser or React Native without the 29 built-in themes, use `charpente/lite` and import only the themes you need from `charpente/themes`:
+Theme names such as `theme: cyberpunk` are resolved by the Vite plugin and the CLI, in Node. To run `compile` or `nativeTheme` in a browser or React Native without the 20 built-in themes, use `charpente/lite` and import only the themes you need from `charpente/themes`:
 
 ```ts
 import { compile } from charpente/lite
