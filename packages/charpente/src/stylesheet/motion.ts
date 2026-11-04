@@ -1,5 +1,6 @@
 import { declarations } from '../css'
 import type { MotionDef } from '../types'
+import { overlayKeyframes, overlayRules } from './overlay'
 import { LOADING, allLeaves, capturedLeaves } from './selectors'
 import type { ThemeMotion } from './theme-motion'
 
@@ -12,8 +13,8 @@ const stepsCss = (keyframes: MotionDef['keyframes']): string =>
 
 export const keyframesCss = (name: string, motion: MotionDef): string => {
   const own = `@keyframes charpente-${name} { ${stepsCss(motion.keyframes)} }`
-  if (!motion.container) return own
-  return `${own}\n@keyframes charpente-${name}-container { ${stepsCss(motion.container)} }`
+  const container = motion.container ? `\n@keyframes charpente-${name}-container { ${stepsCss(motion.container)} }` : ''
+  return `${own}${container}${overlayKeyframes(name, motion)}`
 }
 
 const speed = (duration: string): string => `calc(${duration} * var(--charpente-speed, 1))`
@@ -87,13 +88,14 @@ export const motionCss = (
   }
 
   const containerRule = (scopes: string[], names: string[]): string[] => {
+    const extra = overlayRules(scopes, names, motions, speed, delayVar)
     const own = names.filter((name) => motions[name]?.container)
-    if (own.length === 0) return []
+    if (own.length === 0) return extra
     const animations = own.map((name) => {
       const motion = motions[name] as MotionDef
       return `charpente-${name}-container ${speed(motion.duration)} ${motion.easing ?? 'ease-in-out'} ${delayVar} ${motion.iterations ?? 'infinite'}`
     })
-    return [`${scopes.join(',\n')} {\n  animation: ${animations.join(', ')};\n}`]
+    return [`${scopes.join(',\n')} {\n  animation: ${animations.join(', ')};\n}`, ...extra]
   }
 
   warnings.push(...conflictWarnings(motions, defaultNames))
@@ -107,6 +109,7 @@ export const motionCss = (
     ...themed.map(({ scopes, names }) => rule(scopes, names, true)),
     ...containerRule([`${LOADING}:not([data-charpente-motion])`], defaultNames),
     ...subsets(allNames).flatMap((names) => containerRule(motionScopes(names, allNames), names)),
+    ...themed.flatMap(({ scopes, names }) => containerRule(scopes, names)),
     `@media (prefers-reduced-motion: reduce) {\n  ${LOADING} {\n    animation: none !important;\n  }\n}`,
   ]
   return rules.join('\n')

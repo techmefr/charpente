@@ -4,7 +4,7 @@ import { customRoles } from './shapes'
 export const LEAVES: readonly PaintType[] = ['text', 'media', 'block', 'control']
 export const TOKENS = ['base', 'strong', 'shine', 'accent', 'accent2'] as const
 export const COLOR_KEYS = ['base', 'strong', 'accent', 'accent2'] as const
-export const MOTION_NAMES = ['shimmer', 'sweep', 'pulse', 'glitch'] as const
+export const MOTION_NAMES = ['shimmer', 'sweep', 'pulse', 'glitch', 'crt'] as const
 export const BORDER_KINDS = ['inherit', 'none', 'solid', 'dashed', 'dotted', 'double', 'groove', 'outline', 'inset', 'diagonal'] as const
 export const HOVER_MOTIONS = ['inherit', 'none', 'pause', 'faster'] as const
 

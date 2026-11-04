@@ -16,6 +16,7 @@ export const THEMES = [
   { name: 'topo', label: 'Topo', note: 'Contour lines of a map' },
   { name: 'waves', label: 'Waves', note: 'Rolling blue waves' },
   { name: 'developer', label: 'Developer', note: 'Matrix rain of falling green characters' },
+  { name: 'crt', label: 'CRT', note: 'Tube screen with rounded corners, green phosphor and scanlines' },
   { name: 'birthday', label: 'Birthday', note: 'Colored sprinkles' },
   { name: 'halloween', label: 'Halloween', note: 'A few large bats, a moon and corner cobwebs' },
   { name: 'christmas', label: 'Christmas', note: 'Gift border with falling snow' },
@@ -35,4 +36,5 @@ export const MOTIONS = [
   { name: 'shimmer', note: 'Glint sweeping across the shape' },
   { name: 'pulse', note: 'Opacity breathing, offset by position with stagger' },
   { name: 'glitch', note: 'Brief bursts where the skeleton splits into a cyan and magenta ghost' },
+  { name: 'crt', note: 'Scrolling scanlines, phosphor glow, faint flicker and a dark vignette' },
 ]

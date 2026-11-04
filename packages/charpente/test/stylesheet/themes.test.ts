@@ -26,7 +26,7 @@ describe('compile themes', () => {
     expect(() => compile({ defaultTheme: 'nope' })).toThrow('unknown theme "nope"')
   })
 
-  it.each(['glass', 'blueprint', 'halftone', 'neon', 'aurora', 'brutalist', 'sketch', 'topo', 'waves', 'developer'])(
+  it.each(['glass', 'blueprint', 'halftone', 'neon', 'aurora', 'brutalist', 'sketch', 'topo', 'waves', 'developer', 'crt'])(
     'ships the %s theme with a paint for every leaf type',
     (name) => {
       const { css } = compile({ defaultTheme: name })

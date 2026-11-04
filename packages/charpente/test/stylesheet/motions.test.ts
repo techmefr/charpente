@@ -66,7 +66,7 @@ describe('compile motions', () => {
 
   it('matches motion names whatever their order in the attribute', () => {
     expect(compile().css).toContain(
-      '[data-charpente-loading][data-charpente-motion~="glitch"][data-charpente-motion~="shimmer"]:not([data-charpente-motion~="pulse"])',
+      '[data-charpente-loading][data-charpente-motion~="glitch"][data-charpente-motion~="shimmer"]:not([data-charpente-motion~="crt"]):not([data-charpente-motion~="pulse"])',
     )
   })
 })

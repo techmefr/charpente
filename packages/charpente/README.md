@@ -28,7 +28,7 @@ The Vite plugin generates the CSS at build time. Skeleton painting and animation
 
 | Appearance | Movement | Timing |
 | --- | --- | --- |
-| 20 built-in themes, ready-made recipes, custom tokens, light and dark modes | Shimmer, pulse and glitch, alone or combined | Delay to avoid flashes on fast loads; stagger between elements |
+| 18 built-in themes, ready-made recipes, custom tokens, light and dark modes | Shimmer, pulse, glitch and crt, alone or combined | Delay to avoid flashes on fast loads; stagger between elements |
 
 ## Get started
 
@@ -109,7 +109,7 @@ Simple by default: Charpente paints the content already in the page. For a skele
 
 ## Make it yours
 
-Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `neon`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `developer`. Motions: `shimmer`, `sweep` (one band across the page), `pulse`, `glitch`. With Vite, `initial: true` serves the page already marked as loading, so nothing flashes before your scripts run.
+Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `neon`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `developer`, `crt`. Motions: `shimmer`, `sweep` (one band across the page), `pulse`, `glitch`, `crt`. With Vite, `initial: true` serves the page already marked as loading, so nothing flashes before your scripts run.
 
 Add your own theme by creating a folder in `themes/` with a `theme.ts` file: it is declared automatically, and the folder name is the theme name.
 
@@ -149,7 +149,7 @@ Built-in shapes: `gift`, `card`, `avatar`, `label`, `bubble`. Each one is tree-s
 
 ## One theme in a browser or React Native
 
-Theme names such as `theme: cyberpunk` are resolved by the Vite plugin and the CLI, in Node. To run `compile` or `nativeTheme` in a browser or React Native without the 20 built-in themes, use `charpente/lite` and import only the themes you need from `charpente/themes`:
+Theme names such as `theme: cyberpunk` are resolved by the Vite plugin and the CLI, in Node. To run `compile` or `nativeTheme` in a browser or React Native without the 18 built-in themes, use `charpente/lite` and import only the themes you need from `charpente/themes`:
 
 ```ts
 import { compile } from charpente/lite

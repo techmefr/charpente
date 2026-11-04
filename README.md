@@ -45,7 +45,7 @@ Many skeleton libraries ask you to draw placeholder shapes yourself and ship Jav
 | --- | --- | --- |
 | Placeholder shapes | Described or duplicated by hand | Detected automatically from your real layout |
 | Runtime cost | JavaScript components | CSS generated at build time |
-| Look and feel | Configured per component | One config file, 17 themes plus recipes |
+| Look and feel | Configured per component | One config file, 18 themes plus recipes |
 | Frameworks | Often a single one | Vue, React, Svelte, Solid, Angular, Astro, Blade and vanilla |
 
 ## Looks, motion and timing

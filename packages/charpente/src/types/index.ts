@@ -1,6 +1,8 @@
 import type { ShapeDef } from './shape'
+import type { MotionDef } from './motion'
 
 export type * from './shape'
+export type * from './motion'
 
 export type LoadingScope = 'element' | 'page'
 
@@ -61,17 +63,6 @@ export interface ThemeDef {
   hover?: HoverDef
   hoverMotion?: HoverMotion
   motion?: string | string[]
-}
-
-export interface MotionDef {
-  duration: string
-  easing?: string
-  iterations?: string
-  layer?: string
-  ambient?: boolean
-  attachment?: string
-  keyframes: Record<string, Declarations>
-  container?: Record<string, Declarations>
 }
 
 export interface Timing {
