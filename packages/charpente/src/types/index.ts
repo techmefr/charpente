@@ -1,3 +1,9 @@
+import type { ShapeDef } from './shape'
+import type { MotionDef } from './motion'
+
+export type * from './shape'
+export type * from './motion'
+
 export type LoadingScope = 'element' | 'page'
 
 export type PaintType = 'text' | 'media' | 'control' | 'block'
@@ -13,8 +19,20 @@ export type Tokens = Partial<Record<TokenName, string>>
 export interface Paint {
   fill?: string
   size?: string
+  position?: string
+  repeat?: string
+  shape?: string | ShapeDef
   style?: Declarations
 }
+
+export type HoverMotion = 'pause' | 'faster' | 'none'
+
+export interface HoverPaint extends Paint {
+  border?: string | BorderImage
+  radius?: string
+}
+
+export type HoverDef = string | Partial<Record<PaintType, HoverPaint>>
 
 export type Stepped<T> = T | ((step: number) => T)
 
@@ -31,6 +49,7 @@ export interface BorderImage {
 }
 
 export interface ThemeDef {
+  backdrop?: string
   extends?: string
   colors?: [base: string, strong: string]
   pattern?: string | PatternDef
@@ -42,15 +61,9 @@ export interface ThemeDef {
   tokens?: Tokens
   dark?: Tokens
   paint?: Partial<Record<PaintType, Paint>>
-}
-
-export interface MotionDef {
-  duration: string
-  easing?: string
-  iterations?: string
-  layer?: string
-  attachment?: string
-  keyframes: Record<string, Declarations>
+  hover?: HoverDef
+  hoverMotion?: HoverMotion
+  motion?: string | string[]
 }
 
 export interface Timing {
@@ -113,6 +126,7 @@ export interface CharpenteConfig {
   colorScheme?: ColorScheme
   themes?: Record<string, ThemeDef>
   themesDir?: string
+  shapes?: Record<string, ShapeDef>
   motions?: Record<string, MotionDef>
   capture?: CaptureConfig
   bones?: BonesData

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { nativeTheme } from '../../src'
+import { cyberpunk } from '../../src/theme-exports'
 
 describe('native theme', () => {
   it('gives the default colors and radius to the solid theme', () => {
@@ -27,5 +28,15 @@ describe('native theme', () => {
     const themes = { paper: { colors: ['#111111', '#222222'] as [string, string], pattern: 'solid', variants: { gold: { colors: ['#ccaa00', '#aa8800'] as [string, string] } } } }
     expect(nativeTheme('paper-gold', themes).light.base).toBe('#ccaa00')
     expect(() => nativeTheme('nope')).toThrow('unknown theme')
+  })
+
+  it('takes a theme object imported from charpente/themes', () => {
+    const theme = nativeTheme('cyberpunk', { cyberpunk })
+    expect(theme.light.base).toBe('#0b1426')
+    expect(theme.radius).toBe(3)
+  })
+
+  it('resolves builtin themes by name in the full entry', () => {
+    expect(nativeTheme('cyberpunk').light.base).toBe('#0b1426')
   })
 })

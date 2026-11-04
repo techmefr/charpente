@@ -13,16 +13,17 @@ export const tokensCss = (config: CharpenteConfig): string => {
   return `${root}\n@media (prefers-color-scheme: dark) {\n  :root {\n    ${tokenDeclarations(dark)};\n  }\n}${forcedLight}`
 }
 
+export const darkRule = (selectors: string[], body: string, scheme: CharpenteConfig['colorScheme']): string => {
+  if (scheme?.dark) {
+    const dark = scheme.dark
+    return `${selectors.map((selector) => `${dark} ${selector}`).join(',\n')} {\n  ${body};\n}`
+  }
+  const guarded = scheme?.light ? selectors.map((selector) => `${selector}:not(${scheme.light} *)`) : selectors
+  return `@media (prefers-color-scheme: dark) {\n  ${guarded.join(',\n  ')} {\n    ${body};\n  }\n}`
+}
+
 export const darkThemeTokens = (
   scopes: string[],
   tokens: Tokens,
   scheme: CharpenteConfig['colorScheme'],
-): string => {
-  const body = tokenDeclarations(tokens)
-  if (scheme?.dark) {
-    const dark = scheme.dark
-    return `${scopes.map((scope) => `${dark} ${scope}`).join(',\n')} {\n  ${body};\n}`
-  }
-  const guarded = scheme?.light ? scopes.map((scope) => `${scope}:not(${scheme.light} *)`) : scopes
-  return `@media (prefers-color-scheme: dark) {\n  ${guarded.join(',\n  ')} {\n    ${body};\n  }\n}`
-}
+): string => darkRule(scopes, tokenDeclarations(tokens), scheme)

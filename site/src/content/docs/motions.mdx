@@ -1,6 +1,6 @@
 ---
 title: Motions and timing
-description: Shimmer, pulse and glitch; each motion rendered, the delay before appearing, the offset between elements, combinations and their conflicts.
+description: Shimmer, beam, border beam, pulse, glitch and crt; each motion rendered, the delay before appearing, the offset between elements, combinations and their conflicts.
 ---
 
 import { Aside } from '@astrojs/starlight/components'
@@ -11,11 +11,59 @@ The motion describes the movement, the timing describes the moment. Both are set
 
 <LoopPause />
 
-## The three motions
+## The motions
 
 Each one is a CSS animation applied to every leaf of the area. Without an attribute, the motion from `motion` in the configuration applies.
 
 <MotionDemos kind="motions" />
+
+## The glitch split
+
+`glitch` stays calm, then splits in short bursts: a cyan ghost and a magenta ghost separate to either side of the skeleton, like an RGB split, while the shapes jolt by a few pixels, then everything snaps back clean. The ghost colors are the `accent` and `accent2` tokens of the theme, with a cyan and magenta fallback.
+
+The split is a `drop-shadow` filter applied to the loading container (`data-charpente-loading`) and not to each leaf, so it also works with captured zones, whose masks would otherwise clip it. A custom motion can do the same with a `container` field, keyframes applied to the container next to the leaf keyframes. It is disabled under `prefers-reduced-motion`.
+
+## Ambient motions
+
+`waves`, `matrix`, `snow`, `petals`, `leaves` and `sparkle` animate the layers of a theme instead of adding a glint: they move the `--charpente-flow` variable from 0 to 1, and a theme positions its layers with `calc(var(--charpente-flow) * <tile size>)`, so each layer scrolls by one whole tile per cycle and loops without a seam. Layers whose tiles have unrelated sizes never line up, which hides the repetition.
+
+A theme picks its motion with `motion: 'waves'` (a name or a list). It applies when the configuration sets no `motion` of its own and an area has no `data-charpente-motion`. `waves`, `developer` and `crt` use it, and so do the `christmas`, `winter`, `spring`, `summer` and `autumn` recipes. Ambient motions cannot be combined with the others through the attribute.
+
+## The CRT screen
+
+`crt` turns the skeleton into a cathode-ray tube: thin scanlines scroll slowly over the area, a faint bar rolls from top to bottom, a green-tinted glow follows the shapes, the screen flickers for a fraction of a second now and then, and a dark vignette closes the edges. The glow takes the `accent` token, so it follows the theme.
+
+The scanlines, the optional RGB mask and the vignette are drawn on an overlay of the loading container (its `::after`), declared with the `overlay` field of a motion, so it works in automatic and captured mode alike. Two variables tune it: `--charpente-crt-mask` (opacity of the red, green and blue stripes, `0.05` by default, `0` to remove them) and `--charpente-crt-vignette` (`0.38`). Under `prefers-reduced-motion` the flicker, the glow animation and the scrolling stop, and the scanlines stay in place. The `crt` theme, with its amber variant `crt-amber`, declares this motion as its default through the `motion` field.
+
+```ts
+defineCharpente({ defaultTheme: "crt", motion: "crt" })
+```
+
+## Border beam
+
+`border-beam` sends a beam of light with a halo around the border of every block and button, in the `accent` and `accent2` tokens with a fallback. The ring is drawn on the `::before` (halo) and `::after` (core) of each shape, painted by a conic gradient whose angle is the registered property `--charpente-beam-angle`, and cut into a ring with `mask-composite: exclude`. Rounded corners are followed natively. A shape with a `shape` follows its own silhouette: the ring is the difference between the silhouette and a smaller copy of it. Captured zones get a ring generated from their bones, 3px wide.
+
+`border-beam-line` keeps the beam on the bottom edge only and moves it back and forth with `--charpente-beam-x`.
+
+Both are exclusive in the `data-charpente-motion` attribute (like the ambient motions); set several in the configuration with `motion: ["border-beam", "pulse"]`. Three variables tune them, on `:root` or on one area:
+
+- `--charpente-beam-size`: opening of the beam, `70deg` for `border-beam`, `40%` of the edge for the line.
+- `--charpente-beam-width`: thickness of the core, `2px`.
+- `--charpente-beam-glow`: spread of the halo, `6px`.
+
+The speed follows `--charpente-speed`. Under `prefers-reduced-motion` the beam stops at a fixed position and stays visible. The generator exposes the three motions and the size and width settings, written to `speed.css`.
+
+```ts
+defineCharpente({ motion: "border-beam" })
+```
+
+## Beam shimmer
+
+`beam` is a variant of `shimmer`: a thin diagonal band with a sharp core and a soft halo crosses each shape, through the same background layer as the shimmer. It is exclusive in the attribute too.
+
+## Speed
+
+Durations are tuned to be neither nervous nor sluggish: `shimmer` 1.8s, `sweep` 2.4s, `pulse` 1.6s, `glitch` 3.4s (one burst per cycle), `crt` 5s (7s for the scanline scroll), `beam` 2.2s, `border-beam` 3.2s, `border-beam-line` 2.8s, all with `ease-in-out` except the stepped `glitch` and the linear `crt`. Every duration is multiplied by `--charpente-speed` (default `1`): `style="--charpente-speed: 0.5"` makes the motions twice as fast, `2` twice as slow. It can be set on `:root` or on one area.
 
 ## One sweep across the page
 

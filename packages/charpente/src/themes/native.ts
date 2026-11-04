@@ -1,4 +1,5 @@
 import type { ThemeDef, Tokens } from '../types'
+import { assertAvailable } from './available'
 import { builtinThemes } from './builtin'
 import { DEFAULT_TOKENS } from './default-tokens'
 import { resolveTheme } from './resolve'
@@ -34,11 +35,18 @@ const radiusOf = (value: string | undefined): number => {
   return Math.round(match[2] === 'em' || match[2] === 'rem' ? amount * EM_IN_PIXELS : amount)
 }
 
-export const nativeTheme = (name: string, themes: Record<string, ThemeDef> = {}): NativeTheme => {
-  const resolved = resolveTheme(name, withVariants({ ...builtinThemes, ...themes }))
-  return {
-    light: colorsOf(resolved.tokens, DEFAULT_TOKENS.light),
-    dark: colorsOf({ ...resolved.tokens, ...resolved.dark }, DEFAULT_TOKENS.dark),
-    radius: radiusOf(resolved.paint.text?.style?.borderRadius),
+export const createNativeTheme =
+  (registry: Record<string, ThemeDef>, onlyRegistry = false) =>
+  (name: string, themes: Record<string, ThemeDef> = {}): NativeTheme => {
+    const all = withVariants({ ...registry, ...themes })
+    if (onlyRegistry) assertAvailable([name], all)
+    const resolved = resolveTheme(name, all)
+    return {
+      light: colorsOf(resolved.tokens, DEFAULT_TOKENS.light),
+      dark: colorsOf({ ...resolved.tokens, ...resolved.dark }, DEFAULT_TOKENS.dark),
+      radius: radiusOf(resolved.paint.text?.style?.borderRadius),
+    }
   }
-}
+
+export const nativeTheme = (name: string, themes: Record<string, ThemeDef> = {}): NativeTheme =>
+  createNativeTheme(builtinThemes)(name, themes)

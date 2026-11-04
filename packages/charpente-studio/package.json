@@ -2,7 +2,7 @@
   "name": "charpente-studio",
   "version": "0.1.0",
   "license": "MIT",
-  "description": "Optional visual editor for charpente themes: tune colors, pattern and radius with a live preview and save a short-format theme folder.",
+  "description": "Theme generator for charpente: choose shapes, borders, paint, motion and hover with a live preview, then copy or save the theme.ts file.",
   "keywords": [
     "charpente",
     "skeleton",
@@ -35,5 +35,11 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "exports": {
+    "./generator": {
+      "types": "./dist/generator.d.ts",
+      "import": "./dist/generator.js"
+    }
   }
 }

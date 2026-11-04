@@ -23,3 +23,13 @@ export const capturedLeaves = (scope: string): string => CAPTURED_SLOTS.map((slo
 
 export const allLeaves =(scope: string): string =>
   PAINT_TYPES.map((type) => `${scope} ${TYPE_SELECTORS[type]}`).join(',\n')
+
+const CAPTURED_PSEUDO: Partial<Record<PaintType, string>> = { text: '::before', media: '::after' }
+
+export const leavesOf = (type: PaintType, captured: boolean, hover = false): string[] => {
+  const state = hover ? ':hover' : ''
+  const pseudo = CAPTURED_PSEUDO[type]
+  return [`${TYPE_SELECTORS[type]}${state}`, ...(captured && pseudo ? [`[data-charpente-capture]${state}${pseudo}`] : [])]
+}
+
+export const withinAll = (scopes: string[], selectors: string[]): string => selectors.map((selector) => within(scopes, selector)).join(',\n')

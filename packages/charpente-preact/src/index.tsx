@@ -1,9 +1,9 @@
 import { loadingAttributes, motionAttribute, revealWindow, type LoadingScope } from "charpente"
 import { configuredScope, setLoading } from "charpente/dom"
-import { Fragment, h, type ComponentChildren, type ComponentType, type JSX } from "preact"
+import { Fragment, h, type ComponentChildren, type ComponentType, type CSSProperties } from "preact"
 import { useEffect, useRef, useState } from "preact/hooks"
 
-const SCREEN_READER_ONLY: JSX.CSSProperties = {
+const SCREEN_READER_ONLY: CSSProperties = {
   position: "absolute",
   width: "1px",
   height: "1px",
@@ -24,7 +24,7 @@ export interface CharpenteProps {
   capture?: string
   revealMs?: number
   scope?: LoadingScope
-  style?: JSX.CSSProperties
+  style?: CSSProperties
   children?: ComponentChildren
   [attribute: string]: unknown
 }

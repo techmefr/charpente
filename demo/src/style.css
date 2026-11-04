@@ -169,3 +169,37 @@ body {
   color: var(--muted);
   font-size: 0.875rem;
 }
+
+.grid--videos {
+  padding: clamp(12px, 3vw, 30px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+
+.video-nav {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  align-items: center;
+  padding: 4px 0 12px;
+}
+
+.grid--videos .card {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.grid--videos .card__banner {
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+}
+
+.grid--cyberpunk {
+  background: #10142d;
+  color: #f0f4ff;
+  border-color: #5d63aa;
+}

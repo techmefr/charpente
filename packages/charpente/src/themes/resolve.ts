@@ -1,10 +1,15 @@
-import { PAINT_TYPES, type Paint, type PaintType, type ThemeDef, type Tokens } from '../types'
+import { PAINT_TYPES, type HoverMotion, type Paint, type PaintType, type ThemeDef, type Tokens } from '../types'
+import { expandHover } from './hover'
 import { expandTheme } from './short-format'
 
 export interface ResolvedTheme {
+  backdrop?: string
   tokens: Tokens
   dark: Tokens
   paint: Partial<Record<PaintType, Paint>>
+  hover: Partial<Record<PaintType, Paint>>
+  hoverMotion: HoverMotion
+  motion?: string[]
 }
 
 const mergePaint = (
@@ -24,6 +29,9 @@ const mergePaint = (
   return merged
 }
 
+const motionNames = (motion: ThemeDef['motion']): string[] | undefined =>
+  motion === undefined ? undefined : Array.isArray(motion) ? motion : [motion]
+
 export const resolveTheme = (
   name: string,
   themes: Record<string, ThemeDef>,
@@ -35,10 +43,14 @@ export const resolveTheme = (
   if (chain.includes(name)) throw new Error(`charpente: theme "${name}" extends itself`)
   const parent = def.extends
     ? resolveTheme(def.extends, themes, [...chain, name])
-    : { tokens: {}, dark: {}, paint: {} }
+    : { tokens: {}, dark: {}, paint: {}, hover: {}, hoverMotion: 'none' as HoverMotion }
   return {
+    backdrop: def.backdrop ?? parent.backdrop,
     tokens: { ...parent.tokens, ...def.tokens },
     dark: { ...parent.dark, ...def.dark },
     paint: mergePaint(parent.paint, def.paint),
+    hover: mergePaint(parent.hover, expandHover(def.hover)),
+    hoverMotion: def.hoverMotion ?? parent.hoverMotion,
+    motion: motionNames(def.motion) ?? parent.motion,
   }
 }

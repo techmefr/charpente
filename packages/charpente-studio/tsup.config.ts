@@ -15,4 +15,18 @@ export default defineConfig([
     noExternal: ["charpente"],
     outExtension: () => ({ js: ".js" }),
   },
+  {
+    entry: { themes: "src/client/themes.ts" },
+    format: ["iife"],
+    platform: "browser",
+    noExternal: ["charpente"],
+    outExtension: () => ({ js: ".js" }),
+  },
+  {
+    entry: { generator: "src/generator/index.ts" },
+    format: ["esm"],
+    platform: "browser",
+    dts: true,
+    noExternal: ["charpente"],
+  },
 ])

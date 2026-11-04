@@ -16,7 +16,7 @@ const extra = `export default defineCharpente({
 <StarlightPage
   frontmatter={{
     title: 'Themes',
-    description: 'The 35 charpente themes rendered with real elements: base, use cases, atlas, seasons and holidays.',
+    description: 'Charpente themes rendered with real elements: base, use cases, atlas, seasons and holidays.',
     tableOfContents: false,
   }}
 >
@@ -37,7 +37,7 @@ const extra = `export default defineCharpente({
       <label class="field">
         <span>Motion for the whole gallery</span>
         <select id="gallery-motion">
-          <option value="">Site default (shimmer)</option>
+          <option value="">Theme default</option>
           {MOTIONS.map((motion) => <option value={motion.name}>{motion.name}</option>)}
           <option value="pulse shimmer">pulse + shimmer</option>
           <option value="none">None (none)</option>

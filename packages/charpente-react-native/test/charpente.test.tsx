@@ -3,6 +3,7 @@ import { act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { ViewStyle } from 'react-native'
+import { cyberpunk } from 'charpente/themes'
 import { Block, Charpente, Image, Pressable, Text } from '../src'
 import { native } from './native-mock'
 
@@ -106,6 +107,24 @@ describe('Charpente', () => {
       </Charpente>,
     )
     expect(styleOf('text')).toMatchObject({ backgroundColor: '#112233', borderRadius: 12 })
+  })
+
+  it('takes a theme object imported from charpente/themes', async () => {
+    await render(
+      <Charpente loading dark={false} theme={cyberpunk}>
+        <Text testID="text">Hello</Text>
+      </Charpente>,
+    )
+    expect(styleOf('text')).toMatchObject({ backgroundColor: '#0b1426', borderRadius: 3 })
+  })
+
+  it('resolves a themes entry that is an imported theme object by name', async () => {
+    await render(
+      <Charpente loading dark={false} themes={{ cyberpunk }} theme="cyberpunk">
+        <Text testID="text">Hello</Text>
+      </Charpente>,
+    )
+    expect(styleOf('text')).toMatchObject({ backgroundColor: '#0b1426' })
   })
 
   it('replaces images with a painted view and hides the content of blocks and pressables', async () => {

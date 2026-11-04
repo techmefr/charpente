@@ -21,7 +21,7 @@ const imageUrl = (image: string): string => {
   throw new Error(`charpente: border image "${image}" is neither SVG markup nor url(...)`)
 }
 
-const borderDeclarations = (border: string | BorderImage): Declarations => {
+export const borderDeclarations = (border: string | BorderImage): Declarations => {
   if (typeof border === 'string') return { border }
   const width = border.width ?? DEFAULT_BORDER_WIDTH
   return {

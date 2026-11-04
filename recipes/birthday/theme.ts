@@ -26,6 +26,7 @@ export default {
       }
     },
     "media": {
+      "shape": "gift",
       "fill": "radial-gradient(circle at 15% 30%, #ec4899 0 1.8399999999999999px, transparent 2.34px), radial-gradient(circle at 45% 70%, #facc15 0 1.8399999999999999px, transparent 2.34px), radial-gradient(circle at 70% 25%, #22d3ee 0 1.8399999999999999px, transparent 2.34px), radial-gradient(circle at 90% 65%, #a78bfa 0 1.8399999999999999px, transparent 2.34px), linear-gradient(rgba(254, 243, 199, 0.55), rgba(254, 243, 199, 0.55))",
       "size": "20.7px 16.099999999999998px, 20.7px 16.099999999999998px, 20.7px 16.099999999999998px, 20.7px 16.099999999999998px, auto",
       "style": {
@@ -35,6 +36,7 @@ export default {
       }
     },
     "block": {
+      "shape": "gift",
       "fill": "radial-gradient(circle at 15% 30%, #ec4899 0 1.8399999999999999px, transparent 2.34px), radial-gradient(circle at 45% 70%, #facc15 0 1.8399999999999999px, transparent 2.34px), radial-gradient(circle at 70% 25%, #22d3ee 0 1.8399999999999999px, transparent 2.34px), radial-gradient(circle at 90% 65%, #a78bfa 0 1.8399999999999999px, transparent 2.34px), linear-gradient(rgba(254, 243, 199, 0.55), rgba(254, 243, 199, 0.55))",
       "size": "20.7px 16.099999999999998px, 20.7px 16.099999999999998px, 20.7px 16.099999999999998px, 20.7px 16.099999999999998px, auto",
       "style": {

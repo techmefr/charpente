@@ -28,7 +28,7 @@ The Vite plugin generates the CSS at build time. Skeleton painting and animation
 
 | Appearance | Movement | Timing |
 | --- | --- | --- |
-| 28 built-in themes, ready-made recipes, custom tokens, light and dark modes | Shimmer, pulse and glitch, alone or combined | Delay to avoid flashes on fast loads; stagger between elements |
+| 29 built-in themes, ready-made recipes, custom tokens, light and dark modes | Shimmer, pulse, glitch and crt, alone or combined | Delay to avoid flashes on fast loads; stagger between elements |
 
 ## Get started
 
@@ -109,7 +109,7 @@ Simple by default: Charpente paints the content already in the page. For a skele
 
 ## Make it yours
 
-Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `paper`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `stripes`, `scanline`, `neon`, `vegas`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `valentine`, `birthday`, `pride`, `editorial`, `commerce`, `analytics`, `gaming`, `music`, `developer`, `travel`, `wellness`. Motions: `shimmer`, `sweep` (one band across the page), `pulse`, `glitch`. With Vite, `initial: true` serves the page already marked as loading, so nothing flashes before your scripts run.
+Themes: `solid`, `outline`, `dots`, `cyberpunk`, `web`, `glass`, `frost`, `smoked`, `blueprint`, `halftone`, `neon`, `aurora`, `brutalist`, `sketch`, `topo`, `waves`, `developer`, `crt`. Motions: `shimmer`, `sweep` (one band across the page), `pulse`, `glitch`, `crt`. With Vite, `initial: true` serves the page already marked as loading, so nothing flashes before your scripts run.
 
 Add your own theme by creating a folder in `themes/` with a `theme.ts` file: it is declared automatically, and the folder name is the theme name.
 
@@ -127,11 +127,38 @@ export default defineTheme({
 
 A theme can draw its border from an SVG file next to `theme.ts` (`border: { image: './border.svg' }`) and offer `variants`, for example several wrapping papers around one gift border.
 
-Celebration and season themes (`christmas`, `halloween`, `new-year`, `winter`, `spring`, `summer`, `autumn`, `valentine`, `birthday`, `pride`) are recipes: copy a folder from [`recipes/`](https://github.com/techmefr/charpente/tree/main/recipes) into your `themes/`, then choose when to use it with `schedule`.
+Celebration and season themes (`christmas`, `halloween`, `new-year`, `winter`, `spring`, `summer`, `autumn`, `birthday`) are recipes: copy a folder from [`recipes/`](https://github.com/techmefr/charpente/tree/main/recipes) into your `themes/`, then choose when to use it with `schedule`.
 
 `include: ['dots', 'blueprint']` ships only those themes, plus the default theme, the scheduled ones and your own.
 
 A theme can define `dark: { ... }` for its dark-mode tokens, and `colorScheme.light` (for example `'[data-theme="light"]'`) forces light inside a subtree.
+
+## Layered shapes
+
+A leaf can take the form of an SVG whose layers have roles: `body` layers show the paint of the theme (dots, neon, aurora...), `accent` and `accent2` layers use the accent colors, `detail` and `shine` shade and highlight. It is rendered in pure CSS (a mask for the silhouette, an SVG background for the accents).
+
+```ts
+export default defineTheme({
+  tokens: { accent: '#ec4899', accent2: '#facc15' },
+  pattern: 'dots',
+  paint: { media: { shape: 'gift' }, block: { shape: 'gift' } },
+})
+```
+
+Built-in shapes: `gift`, `gift-wrap`, `gift-wrap-band`, `frost-card`, `frost-chip`, `snow-cap`, `snow-cap-chip`, `card`, `avatar`, `label`, `bubble`. Each one is tree-shakable from `charpente/shapes` (register it with `shapes: { gift }` in `charpente/lite`). `blob(seed)` and `organicCard(seed)` draw organic shapes from a seed, and `charpente shape file.svg` turns an SVG into a shape file. In faithful mode block leaves have no slot, and `nativeTheme` ignores shapes. See [layered shapes](https://techmefr.github.io/charpente/layered-shapes/).
+
+## One theme in a browser or React Native
+
+Theme names such as `theme: cyberpunk` are resolved by the Vite plugin and the CLI, in Node. To run `compile` or `nativeTheme` in a browser or React Native without the 29 built-in themes, use `charpente/lite` and import only the themes you need from `charpente/themes`:
+
+```ts
+import { compile } from charpente/lite
+import { cyberpunk } from charpente/themes
+
+compile({ themes: { cyberpunk }, defaultTheme: cyberpunk })
+```
+
+Minified with esbuild, `compile` goes from 24.2 kB (7.7 kB gzip) to 14.6 kB (5.7 kB gzip) with one theme, and `nativeTheme` from 14.8 kB to 4.2 kB.
 
 ## Glass themes
 

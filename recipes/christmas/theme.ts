@@ -1,22 +1,31 @@
 import type { ThemeDef } from 'charpente'
-
-const paper = (ground: string, dot: string, line: string): ThemeDef => ({
-  tokens: { base: ground, strong: line, accent: dot },
-  pattern: {
-    fill: (step) =>
-      `radial-gradient(circle, ${dot} 0 ${1.4 * step}px, transparent ${1.4 * step + 0.5}px), repeating-linear-gradient(45deg, transparent 0 ${8 * step}px, ${line} ${8 * step}px ${9 * step}px), linear-gradient(${ground}, ${ground})`,
-    size: (step) => `${12 * step}px ${12 * step}px, auto, auto`,
-  },
-})
+import { paperPaint } from './papers'
 
 export default {
-  ...paper('#fecaca', '#b91c1c', '#fca5a5'),
-  radius: (step) => `${3 * step}px`,
-  border: { image: './border.svg', slice: 30, width: '14px' },
-  dark: { shine: 'rgba(255,255,255,0.16)' },
+  tokens: { base: '#c99a63', strong: '#a87a45', accent: '#b3202b' },
+  dark: { base: '#7a5a36', strong: '#5d4326', accent: '#d03a46', shine: 'rgba(255,255,255,0.16)' },
+  motion: 'snow',
+  paint: paperPaint('kraft', false),
   variants: {
-    green: paper('#bbf7d0', '#15803d', '#86efac'),
-    gold: paper('#fde68a', '#a16207', '#fcd34d'),
-    snow: paper('#e0f2fe', '#0369a1', '#bae6fd'),
+    green: {
+      tokens: { base: '#1f5a34', strong: '#143d24', accent: '#d4a63a' },
+      dark: { base: '#143d24', strong: '#0b2616', accent: '#e0b44a' },
+      paint: paperPaint('green', true),
+    },
+    cream: {
+      tokens: { base: '#f0e3c8', strong: '#d8c8a4', accent: '#b3202b' },
+      dark: { base: '#6b6450', strong: '#4e4838', accent: '#d03a46' },
+      paint: paperPaint('cream', false),
+    },
+    red: {
+      tokens: { base: '#a01f2a', strong: '#751219', accent: '#d4a63a' },
+      dark: { base: '#6b141c', strong: '#470c12', accent: '#e0b44a' },
+      paint: paperPaint('red', true),
+    },
+    'kraft-green': {
+      tokens: { base: '#c99a63', strong: '#a87a45', accent: '#1f6b3a' },
+      dark: { base: '#7a5a36', strong: '#5d4326', accent: '#2f8a4f' },
+      paint: paperPaint('kraft-green', true),
+    },
   },
 } satisfies ThemeDef

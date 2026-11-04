@@ -1,0 +1,38 @@
+name: Theme proposal
+description: Share a finished theme so it can join the built-in list
+title: 'theme: '
+labels: [theme]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      description: Lowercase letters, digits and dashes, starting with a letter
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Theme file
+      description: The content of your theme.ts, or the output of charpente-studio
+      render: ts
+    validations:
+      required: true
+  - type: textarea
+    id: preview
+    attributes:
+      label: Preview
+      description: A screenshot or a short capture in light and in dark
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: It stays readable in light and in dark
+          required: true
+        - label: The motion is calm and stops when the system asks for reduced motion
+          required: true
+        - label: I am the author and I agree to publish it under the MIT license
+          required: true

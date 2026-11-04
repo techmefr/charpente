@@ -1,16 +1,18 @@
 #!/usr/bin/env node
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
-import { dirname, resolve } from 'node:path'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { basename, dirname, extname, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 import { createJiti } from 'jiti'
 import { readBones, runCapture } from './capturing'
 import { compile } from './stylesheet'
 import { discoverThemes } from './discovery'
 import { themeAt } from './schedule'
+import { shapeIdentifier, shapeSource, svgToShape } from './shapes'
 import type { CharpenteConfig } from './types'
 
 const USAGE = [
   'usage: charpente build [--config charpente.config.ts] [--out charpente.css]',
+  '       charpente shape file.svg [--out shapes]',
   '       charpente theme [--config charpente.config.ts] [--date YYYY-MM-DD]',
   '       charpente capture [--url http://localhost:3000] [--config charpente.config.ts] [--watch]',
   '                         [--breakpoints 375,768,1280] [--wait 500] [--out charpente.bones.json]',
@@ -49,9 +51,28 @@ if (values.help) {
 }
 
 const command = positionals[0]
-if (command !== 'build' && command !== 'theme' && command !== 'capture') {
+if (command !== 'build' && command !== 'theme' && command !== 'capture' && command !== 'shape') {
   console.error(USAGE)
   process.exit(1)
+}
+
+if (command === 'shape') {
+  const file = positionals[1]
+  if (!file) {
+    console.error(USAGE)
+    process.exit(1)
+  }
+  try {
+    const name = basename(file, extname(file))
+    const target = resolve(process.cwd(), values.out ?? 'shapes', `${name}.ts`)
+    mkdirSync(dirname(target), { recursive: true })
+    writeFileSync(target, shapeSource(name, svgToShape(readFileSync(resolve(process.cwd(), file), 'utf8'))))
+    console.log(`charpente: wrote ${target} (export ${shapeIdentifier(name)}), check the layer roles`)
+  } catch (error) {
+    console.error((error as Error).message)
+    process.exit(1)
+  }
+  process.exit(0)
 }
 
 if (values['env-file']) process.loadEnvFile(resolve(process.cwd(), values['env-file']))
