@@ -28,6 +28,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test
       - run: pnpm --dir examples/svelte install --frozen-lockfile --ignore-scripts
       - run: pnpm --dir examples/svelte exec svelte-kit sync
