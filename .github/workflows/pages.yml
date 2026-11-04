@@ -34,7 +34,7 @@ jobs:
       - run: pnpm --filter site build
       - run: pnpm --filter demo build
       - run: cp -R demo/dist site/dist/demo
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: site/dist
 
