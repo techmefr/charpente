@@ -10,7 +10,7 @@
   "dependencies": {
     "charpente": "workspace:*",
     "charpente-vue": "workspace:*",
-    "nuxt": "^4.6.3",
-    "vue": "^3.5.44"
+    "nuxt": "^4.6.4",
+    "vue": "^3.5.45"
   }
 }

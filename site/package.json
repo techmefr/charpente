@@ -9,10 +9,10 @@
     "check": "node scripts/check.mjs"
   },
   "dependencies": {
-    "@astrojs/starlight": "0.42.8",
-    "astro": "^7.4.4",
+    "@astrojs/starlight": "0.43.1",
+    "astro": "^7.4.12",
     "charpente": "workspace:*",
     "charpente-studio": "workspace:*",
-    "starlight-theme-rapide": "0.6.0"
+    "starlight-theme-rapide": "0.7.0"
   }
 }
